@@ -17,3 +17,4 @@ Imports:
     Seurat,
     bluster,
     tibble
+LazyData: true
