@@ -12,9 +12,19 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3.9000
 Depends: R (>= 3.5.1)
 Imports:
-    data.table,
-    ggplot2,
-    Seurat,
     bluster,
-    tibble
+    cluster,
+    data.table,
+    fgsea,
+    ggplot2,
+    grDevices,
+    lisi,
+    patchwork,
+    pheatmap,
+    RColorBrewer,
+    reshape2,
+    Seurat,
+    stringr,
+    tibble,
+    tidyverse
 LazyData: true
