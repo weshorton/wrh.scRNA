@@ -9,16 +9,11 @@ plotClusterProps = function (seurat_obj, clusters_v = "seurat_clusters", ident_v
   #' @return Returns patchwork of two ggplots of cluster data plots
   #' @export
   #' 
-  library(Seurat)
-  library(patchwork)
-  library(ggplot2)
-  library(reshape2)
-  library(RColorBrewer)
   
   ### Tabulate occurrences and melt for plotting
   counts_tab <- table(seurat_obj@meta.data[[clusters_v]], seurat_obj@meta.data[[ident_v]])
-  counts_dt <- convertDFT(as.data.frame.matrix(counts_tab), newName_v = "cluster")
-  meltCounts_dt <- melt(counts_dt, id.vars = "cluster")
+  counts_dt <- wrh.rUtils::convertDFT(as.data.frame.matrix(counts_tab), newName_v = "cluster")
+  meltCounts_dt <- reshape2::melt(counts_dt, id.vars = "cluster")
   meltCounts_dt$cluster <- as.factor(meltCounts_dt$cluster)
   
   ### Grab size of each cluster
@@ -43,7 +38,7 @@ plotClusterProps = function (seurat_obj, clusters_v = "seurat_clusters", ident_v
     ylab("Fraction of cells in each dataset") + xlab("Cluster number") + theme(legend.position="top")
   
   ### Combine
-  out_gg <- p2 + p1 + plot_layout(widths = c(3,1))
+  out_gg <- p2 + p1 + patchwork::plot_layout(widths = c(3,1))
   
   ### Return
   return(out_gg)

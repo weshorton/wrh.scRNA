@@ -19,15 +19,15 @@ runFGSEA <- function(data_df, geneCol_v = "Gene", rankCol_v = "avg_log2FC", path
   
   ### Run function
   set.seed(seed_v)
-  fgsea_res <- fgsea(pathways = pathways_v,
+  fgsea_res <- fgsea::fgsea(pathways = pathways_v,
                      stats = rank,
                      minSize = 15,
                      maxSize = 500)
   
   ### Wrangle output
-  results <- collapsePathways(fgseaRes = fgsea_res, pathways = pathways_v, stats = rank)
+  results <- fgsea::collapsePathways(fgseaRes = fgsea_res, pathways = pathways_v, stats = rank)
   df <- as.data.frame(results$parentPathways)
-  df <- rownames_to_column(df, var="pathway")
+  df <- tibble::rownames_to_column(df, var="pathway")
   names(df)[2] <- 'Parent'
   df <- merge(fgsea_res, df, by='pathway', sort=FALSE)
   df <- (df[order(-NES), ])

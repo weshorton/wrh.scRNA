@@ -33,7 +33,7 @@ addVDJ <- function(seurat_obj, type_v, dir_v, barcodeString_v = "1", flag_v = T)
                       by = "clonotype_id", sort = F)
   
   ### Reformat with barcodes as rownames for integration with Seurat
-  contigs_df <- convertDFT(contigs_dt, col_v = "barcode", rmCol_v = T)
+  contigs_df <- wrh.rUtils::convertDFT(contigs_dt, col_v = "barcode", rmCol_v = T)
   
   ### Add type designator to column names
   colnames(contigs_df) <- paste(type_v, colnames(contigs_df), sep = "_")
@@ -44,7 +44,7 @@ addVDJ <- function(seurat_obj, type_v, dir_v, barcodeString_v = "1", flag_v = T)
   subContigs_df <- contigs_df[rownames(contigs_df) %in% barcodes_v,]
   
   ### Replace barcode string with 1
-  rownames(subContigs_df) <- str_replace(rownames(subContigs_df), pattern = barcodeString_v, replacement = "1")
+  rownames(subContigs_df) <- stringr::str_replace(rownames(subContigs_df), pattern = barcodeString_v, replacement = "1")
   
   ### Add flags
   if (flag_v) {
@@ -53,7 +53,7 @@ addVDJ <- function(seurat_obj, type_v, dir_v, barcodeString_v = "1", flag_v = T)
   }
   
   ### Add to object
-  seurat_obj <- AddMetaData(object = seurat_obj, metadata = subContigs_df)
+  seurat_obj <- Seurat::AddMetaData(object = seurat_obj, metadata = subContigs_df)
   
   ### Change NA to false if adding flags
   if (flag_v) {

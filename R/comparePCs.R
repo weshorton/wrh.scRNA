@@ -27,15 +27,15 @@ comparePCs <- function(obj1, obj2, dr1 = "pca", dr2 = NULL, dim1, dim2 = NULL, n
   } # fi
   
   ### Get Features
-  feat1 <- TopFeatures(object = obj1[[dr1]],
-                       dim = dim1,
-                       nfeatures = nFeat_v,
-                       balanced = balance_v)
+  feat1 <- Seurat::TopFeatures(object = obj1[[dr1]],
+                               dim = dim1,
+                               nfeatures = nFeat_v,
+                               balanced = balance_v)
   
-  feat2 <- TopFeatures(object = obj2[[dr2]],
-                       dim = dim2,
-                       nfeatures = nFeat_v,
-                       balanced = balance_v)
+  feat2 <- Seurat::TopFeatures(object = obj2[[dr2]],
+                               dim = dim2,
+                               nfeatures = nFeat_v,
+                               balanced = balance_v)
   
   ### Get either positive, negative, or both.
   if (which_v == "positive") {

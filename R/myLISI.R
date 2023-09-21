@@ -17,7 +17,7 @@ myLISI <- function(seurat_obj, reduction_v, metaCols_v, name_v) {
   meta_df <- seurat_obj@meta.data[,metaCols_v]
   
   ### Calculate LISI
-  lisi_df <- compute_lisi(X = embeddings_df, meta_data = meta_df, label_colnames = metaCols_v)
+  lisi_df <- lisi::compute_lisi(X = embeddings_df, meta_data = meta_df, label_colnames = metaCols_v)
   colnames(lisi_df) <- c("iLISI", "cLISI")
   
   ### Merge results with metadata

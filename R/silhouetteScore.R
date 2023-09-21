@@ -12,12 +12,12 @@ silhouetteScore <- function(seurat_obj, resolution_v = 0.6, graph_v = "RNA_snn",
   #' @export
   
   ### Calculate clusters
-  seurat_obj <- FindClusters(object = seurat_obj,
+  seurat_obj <- Seurat::FindClusters(object = seurat_obj,
                              resolution = resolution_v,
                              graph.name = graph_v)
   
   ### DimPlot
-  p1_gg <- DimPlot(seurat_obj,
+  p1_gg <- Seurat::DimPlot(seurat_obj,
                    reduction = umap_v,
                    group.by = "seurat_clusters") +
     coord_equal() +
@@ -35,7 +35,7 @@ silhouetteScore <- function(seurat_obj, resolution_v = 0.6, graph_v = "RNA_snn",
   ### Get Clusters and silhouette
   clusters_v <- seurat_obj@meta_data$seurat_clusters
   nClust_v <- length(levels(clusters_v))
-  silhouette_v <- silhouette(as.numeric(clusters_v), dist = distance_mat)
+  silhouette_v <- cluster::silhouette(as.numeric(clusters_v), dist = distance_mat)
   
   ### Add scores to metadata and get average
   seurat_obj@meta.data$silhouette_score <- silhouette[,3]

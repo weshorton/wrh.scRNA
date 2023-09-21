@@ -42,10 +42,10 @@ myClusterSweep <- function(seurat_obj,
   ###
   
   ### Find neighbors using specified number of dimensions
-  seurat_obj <- FindNeighbors(seurat_obj, reduction = reduction_v, dims = 1:ndims_v, verbose = verbose_v)
+  seurat_obj <- Seurat::FindNeighbors(seurat_obj, reduction = reduction_v, dims = 1:ndims_v, verbose = verbose_v)
   
   ### Find clusters using the specified resolutions
-  seurat_obj <- FindClusters(seurat_obj, resolution = res_v, verbose = verbose_v)
+  seurat_obj <- Seurat::FindClusters(seurat_obj, resolution = res_v, verbose = verbose_v)
   
   ### Compute QC metrics
   seuratClusterQC <- clusterQC(seurat_obj = seurat_obj, embedding_v = embedding_v, ndims_v = ndims_v, reductionName_v = reductionName_v, reduction_v = reduction_v)
@@ -175,17 +175,17 @@ clusterQC <- function(seurat_obj, embedding_v, ndims_v, reductionName_v, reducti
     
     ### Grab resolution from cluster name
     currRes_v <- as.numeric(str_remove(currClusterName_v,
-                                       pattern = paste0(DefaultAssay(seurat_obj), '_snn_res.')))
+                                       pattern = paste0(Seurat::DefaultAssay(seurat_obj), '_snn_res.')))
     
     ### Make reduction name
     currRedName_v <- paste0(reductionName_v, currRes_v)
     
     ### Calculate UMAP
-    seurat_obj <- RunUMAP(seurat_obj, dims = 1:ndims_v, nn.name = currClusterName_v,
+    seurat_obj <- Seurat::RunUMAP(seurat_obj, dims = 1:ndims_v, nn.name = currClusterName_v,
                           reduction = reduction_v, reduction.name = currRedName_v, verbose = F)
     
     ### Create DimPlot with clusters labelled.
-    dim_ls[[i]] <- DimPlot(seurat_obj,
+    dim_ls[[i]] <- Seurat::DimPlot(seurat_obj,
                            group.by = currClusterName_v,
                            reduction = currRedName_v,
                            label = T, pt.size = 0.1) +
@@ -193,7 +193,7 @@ clusterQC <- function(seurat_obj, embedding_v, ndims_v, reductionName_v, reducti
       ggtitle(currClusterName_v)
     
     ### Calculate silhouettes for cluster
-    currSil <- as.data.frame(approxSilhouette(x = embedding_v,
+    currSil <- as.data.frame(bluster::approxSilhouette(x = embedding_v,
                                               clusters = currClusterCalls_v))
     
     ### Boxplot of silhouette widths for each cluster
@@ -213,7 +213,7 @@ clusterQC <- function(seurat_obj, embedding_v, ndims_v, reductionName_v, reducti
     
     ### Calculate root mean-squared deviation for each cluster (measure of dispersion)
     ### High RMSD -> large internal heterogeneity -> might need further subclustering
-    currRMSD <- clusterRMSD(embedding_v, currClusterCalls_v)
+    currRMSD <- bluster::clusterRMSD(embedding_v, currClusterCalls_v)
     currRMSD_df <- data.frame(Cluster = names(currRMSD), RMSD = currRMSD)
     
     ### Barplot

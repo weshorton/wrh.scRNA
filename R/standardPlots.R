@@ -18,7 +18,7 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
   out_lsgg <- list()
   
   ### Default
-  out_lsgg[["clusters"]] <- DimPlot(seurat_obj, reduction = reduction_v, group.by = clustCol_v, label = T, pt.size = pt.size_v) +
+  out_lsgg[["clusters"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = clustCol_v, label = T, pt.size = pt.size_v) +
     coord_equal() +
     ggtitle(paste0(name_v, " clusters; res - ", res_v))
   
@@ -28,18 +28,18 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
   } else {
     
     ### Color by treatment
-    out_lsgg[["cTreat"]] <- DimPlot(seurat_obj, reduction = reduction_v, group.by = "Treatment", label = F, pt.size = pt.size_v) +
+    out_lsgg[["cTreat"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "Treatment", label = F, pt.size = pt.size_v) +
       coord_equal() +
       ggtitle(paste0(name_v, " clusters by Treatment"))
     
     ### Split by batch, color treatment
-    out_lsgg[["fBatchcTreat"]] <- DimPlot(seurat_obj, reduction = reduction_v, group.by = "Treatment", 
+    out_lsgg[["fBatchcTreat"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "Treatment", 
                                           split.by = "batchID", label = F, pt.size = pt.size_v) +
       coord_equal() + theme(legend.position = "bottom") +
       ggtitle(paste0(name_v, " clusters; res - ", res_v))
     
     ### Split by treatment
-    out_lsgg[["fTreat"]] <- DimPlot(seurat_obj, reduction = reduction_v, group.by = clustCol_v, 
+    out_lsgg[["fTreat"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = clustCol_v, 
                                     split.by = "Treatment", label = F, pt.size = pt.size_v, ncol = 2) +
       coord_equal() + theme(legend.position = "bottom") +
       ggtitle(paste0(name_v, " clusters; res - ", res_v))
@@ -51,12 +51,12 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
   } else {
     
     ### Color by batch
-    out_lsgg[["cBatch"]] <- DimPlot(seurat_obj, reduction = reduction_v, group.by = "batchID", label = F, pt.size = pt.size_v) +
+    out_lsgg[["cBatch"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "batchID", label = F, pt.size = pt.size_v) +
       coord_equal() +
       ggtitle(paste0(name_v, " clusters by Batch"))
     
     ### Split by batch
-    out_lsgg[["fBatch"]] <- DimPlot(seurat_obj, reduction = reduction_v, group.by = clustCol_v, 
+    out_lsgg[["fBatch"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = clustCol_v, 
                                     split.by = "batchID", label = F, pt.size = pt.size_v) +
       coord_equal() + theme(legend.position = "bottom") +
       ggtitle(paste0(name_v, " clusters; res - ", res_v))
@@ -66,7 +66,7 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
   if (!"tbcr" %in% colnames(seurat_obj@meta.data)) {
     warning("tbcr column not found. Will not make plot.")
   } else {
-    out_lsgg[["tbcr"]] <- DimPlot(seurat_obj, reduction = reduction_v, group.by = "tbcr", cols = c("red", "grey", "blue"), 
+    out_lsgg[["tbcr"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "tbcr", cols = c("red", "grey", "blue"), 
                                   label = F, pt.size = pt.size_v) + coord_equal() +
       ggtitle(paste0(name_v, " clusters - TCR/BCR"))
   }
@@ -75,7 +75,7 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
   if (!"ind_mPop" %in% colnames(seurat_obj@meta.data)) {
     warning("ind_mPop column not found. Will not make plot.")
   } else {
-    out_lsgg[["origMpop"]] <- DimPlot(seurat_obj, reduction = reduction_v, group.by = "ind_mPop", label = F, pt.size = pt.size_v) +
+    out_lsgg[["origMpop"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "ind_mPop", label = F, pt.size = pt.size_v) +
       coord_equal() + ggtitle(paste0(name_v, " Embedding,\nindividual-batch Cell Classes"))
   }
   
@@ -85,7 +85,7 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
     if (!"S.Score" %in% colnames(seurat_obj@meta.data)) {
       warning("S.Score column not found. Will not make plot.")
     } else {
-      out_lsgg[["S.Score"]] <- FeaturePlot(seurat_obj, reduction = reduction_v, features = "S.Score", max.cutoff = maxQ_v, pt.size = pt.size_v) +
+      out_lsgg[["S.Score"]] <- Seurat::FeaturePlot(seurat_obj, reduction = reduction_v, features = "S.Score", max.cutoff = maxQ_v, pt.size = pt.size_v) +
         coord_equal() + ggtitle(paste0(name_v, " S Phase Scores")) +
         scale_color_gradientn(colors = rev(RColorBrewer::brewer.pal(n = 11, name = "RdBu")))
     } # fi
@@ -94,7 +94,7 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
     if (!"G2M.Score" %in% colnames(seurat_obj@meta.data)) {
       warning("G2M.Score column not found. Will not make plot.")
     } else {
-      out_lsgg[["G2M.Score"]] <- FeaturePlot(seurat_obj, reduction = reduction_v, features = "G2M.Score", max.cutoff = maxQ_v, pt.size = pt.size_v) +
+      out_lsgg[["G2M.Score"]] <- Seurat::FeaturePlot(seurat_obj, reduction = reduction_v, features = "G2M.Score", max.cutoff = maxQ_v, pt.size = pt.size_v) +
         coord_equal() + ggtitle(paste0(name_v, " G2M Phase Scores")) +
         scale_color_gradientn(colors = rev(RColorBrewer::brewer.pal(n = 11, name = "RdBu")))
     } # fi
@@ -103,7 +103,7 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
     if (!"logUMI" %in% colnames(seurat_obj@meta.data)) {
       warning("logUMI column not found. Will not make plot.")
     } else {
-      out_lsgg[["logUMI"]] <- FeaturePlot(seurat_obj, reduction = reduction_v, features = "logUMI", pt.size = pt.size_v) +
+      out_lsgg[["logUMI"]] <- Seurat::FeaturePlot(seurat_obj, reduction = reduction_v, features = "logUMI", pt.size = pt.size_v) +
         coord_equal() + ggtitle(paste0(name_v, " Log nUMI")) +
         scale_color_gradientn(colors = rev(RColorBrewer::brewer.pal(n = 11, name = "RdBu")))
     } # fi
@@ -112,7 +112,7 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
     if (!"logGene" %in% colnames(seurat_obj@meta.data)) {
       warning("logGene column not found. Will not make plot.")
     } else {
-      out_lsgg[["logGene"]] <- FeaturePlot(seurat_obj, reduction = reduction_v, features = "logGene", pt.size = pt.size_v) +
+      out_lsgg[["logGene"]] <- Seurat::FeaturePlot(seurat_obj, reduction = reduction_v, features = "logGene", pt.size = pt.size_v) +
         coord_equal() + ggtitle(paste0(name_v, " Log nGene")) +
         scale_color_gradientn(colors = rev(RColorBrewer::brewer.pal(n = 11, name = "RdBu")))
     } # fi
@@ -121,7 +121,7 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
     if (!"percent.mt" %in% colnames(seurat_obj@meta.data)) {
       warning("percent.mt column not found. Will not make plot.")
     } else {
-      out_lsgg[["percent.mt"]] <- FeaturePlot(seurat_obj, reduction = reduction_v, features = "percent.mt", pt.size = pt.size_v) +
+      out_lsgg[["percent.mt"]] <- Seurat::FeaturePlot(seurat_obj, reduction = reduction_v, features = "percent.mt", pt.size = pt.size_v) +
         coord_equal() + ggtitle(paste0(name_v, " Percent Mt")) +
         scale_color_gradientn(colors = rev(RColorBrewer::brewer.pal(n = 11, name = "RdBu")))
     } # fi

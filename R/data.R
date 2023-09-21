@@ -259,3 +259,17 @@
 #'    \item{Name}{Full Rx Name}
 #' }
 "fullAbbrTreatmentMap_dt"
+
+#' Feature Plot Color Scale
+#' 
+#' Color scale to use in Feature plots
+#' blue - green - yellow - orange - red
+#' low - med - high
+#' Provided by Sushma Nagaraj
+#' 
+#' @format ## `fpCols_v`
+#' vector of hex codes of length 9
+#' \describe{
+#'    \item{value}{Hex Color}
+#'  }
+"fpCols_v"
