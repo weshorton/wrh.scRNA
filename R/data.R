@@ -10,6 +10,6 @@
 #' Named vector of length 6
 #' \describe{
 #'    \item{values}{Hex Color}
-#'    \itme{names}{Population Name}
+#'    \item{names}{Population Name}
 #' }
 "mPopColors_v"
