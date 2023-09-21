@@ -13,6 +13,7 @@ Named vector of length 6
 \itme{names}{Population Name}
 }
 }
+}
 \usage{
 mPopColors_v
 }

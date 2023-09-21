@@ -11,4 +11,5 @@
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \itme{names}{Population Name}
+#' }
 "mPopColors_v"
