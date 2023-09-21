@@ -20,15 +20,15 @@ calcEmbeddings <- function(seurat_obj, clusterName_v, reductionName_v, breaks_v 
   } # fi
   
   ### Calculate average embeddings per cluster
-  clusterEmbedding_tib <- tibble(seurat_clusters = seurat_obj@meta.data[[clusterName_v]]) %>%
+  clusterEmbedding_tib <- dplyr::tibble(seurat_clusters = seurat_obj@meta.data[[clusterName_v]]) %>%
     cbind(seurat_obj@reductions[[reductionName_v]]@cell.embeddings) %>%
-    group_by(seurat_clusters) %>%
-    summarize(across(everything(), list(mean)))
+    dplyr::group_by(seurat_clusters) %>%
+    dplyr::summarize(dplyr::across(dplyr::everything(), list(mean)))
   
   ### Adjust color breaks
   if (breaks_v) {
     breaks_lsv <- wrh.rUtils::determineBreaks(data_mat = scale(data.frame(clusterEmbedding_tib[,2:ncol(clusterEmbedding_tib)])),
-                                  colors_v = colorRampPalette(rev(RColorBrewer::brewer.pal(n = 7, name = "RdYlBu")))(100),
+                                  colors_v = grDevices::colorRampPalette(rev(RColorBrewer::brewer.pal(n = 7, name = "RdYlBu")))(100),
                                   ...)
     color_v <- breaks_lsv$colors
     break_v <- breaks_lsv$breaks

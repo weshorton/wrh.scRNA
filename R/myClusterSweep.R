@@ -65,7 +65,7 @@ myClusterSweep <- function(seurat_obj,
   if (indPlots_v) {
     if (!is.null(plotDir_v)) {
       
-      mkdir(baseDir_v = dirname(plotDir_v), newDir_v = basename(plotDir_v))
+      wrh.rUtils::mkdir(baseDir_v = dirname(plotDir_v), newDir_v = basename(plotDir_v))
       
       ### Dim Plots
       pdf(file = file.path(plotDir_v, paste0(name_v, "_dimPlots.pdf")), onefile = T)
@@ -174,7 +174,7 @@ clusterQC <- function(seurat_obj, embedding_v, ndims_v, reductionName_v, reducti
     currClusterCalls_v <- clusterCalls_df[,currClusterName_v]
     
     ### Grab resolution from cluster name
-    currRes_v <- as.numeric(str_remove(currClusterName_v,
+    currRes_v <- as.numeric(stringr::str_remove(currClusterName_v,
                                        pattern = paste0(Seurat::DefaultAssay(seurat_obj), '_snn_res.')))
     
     ### Make reduction name
@@ -223,7 +223,7 @@ clusterQC <- function(seurat_obj, embedding_v, ndims_v, reductionName_v, reducti
       ggtitle(paste0("Res: ", currRes_v), subtitle = paste0("Mean RMSD: ", mean(currRMSD)))
     
     ### Output table
-    currQC <- tibble(res = currRes_v,
+    currQC <- dplyr::tibble(res = currRes_v,
                      nClust = length(unique(currSil$cluster)),
                      meanSilWidth = mean(currSil$width),
                      meanRMSD = mean(currRMSD))
