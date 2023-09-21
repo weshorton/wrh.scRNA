@@ -252,7 +252,7 @@
 #' that PTX_ENT_aCSF1R_unt is in sc
 #' 
 #' @format ## `fullAbbrTreatmentMap_dt`
-#' data.table with 22 rows and 2 columns
+#' data.table with 10 rows and 3 columns
 #' \describe{
 #'    \item{Treatment}{scRNAseq Treatment Code}
 #'    \item{longTreatment}{long-form treatment code used in scATAC}
