@@ -169,7 +169,7 @@
 #'    \item{values}{umap name from seurat object}
 #'    \item{names}{seurat object name}
 #' }
-"b12_clusterNames_v"
+"b12_umapNames_v"
 
 #' Batch1+2 Resolution values
 #' 
@@ -181,7 +181,7 @@
 #'    \item{values}{resolution}
 #'    \item{names}{seurat object name}
 #' }
-"b12_clusterNames_v"
+"b12_res_v"
 
 ###
 ### BATCH 3 OBJECT ATTRIBUTES  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -214,7 +214,7 @@
 #'    \item{values}{umap name from seurat object}
 #'    \item{names}{seurat object name}
 #' }
-"b3_clusterNames_v"
+"b3_umapNames_v"
 
 #' Batch3 Resolution values
 #' 
@@ -226,7 +226,7 @@
 #'    \item{values}{resolution}
 #'    \item{names}{seurat object name}
 #' }
-"b3_clusterNames_v"
+"b3_res_v"
 
 ###
 ### MISC STUFF  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

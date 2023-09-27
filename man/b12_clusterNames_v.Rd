@@ -13,30 +13,8 @@ Named vector of length 4
 \item{names}{seurat object name}
 }
 }
-
-\subsection{\code{b12_umapNames_v}}{
-
-Named vector of length 4
-\describe{
-\item{values}{umap name from seurat object}
-\item{names}{seurat object name}
-}
-}
-
-\subsection{\code{b12_res_v}}{
-
-Named vector of length 4
-\describe{
-\item{values}{resolution}
-\item{names}{seurat object name}
-}
-}
 }
 \usage{
-b12_clusterNames_v
-
-b12_clusterNames_v
-
 b12_clusterNames_v
 }
 \description{
@@ -46,9 +24,5 @@ from the Seurat analysis pipeline. The names
 are formated "seurat_clusters_d\link{dim}_res\link{res}
 where dim = dimensions used in reduction and
 res = resolution used for clustering
-
-UMAP names found in names() of batch12 seurat object
-
-Resolution values used for clustering in batch12 seurat object
 }
 \keyword{datasets}
