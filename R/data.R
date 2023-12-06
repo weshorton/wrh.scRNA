@@ -123,7 +123,7 @@
 "b3_myeloid2Colors_v"
 
 ###
-### TREATMENT COLORS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### TREATMENT COLORS AND ASSIGNMENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ###
 
 #' Treatment Colors
@@ -137,6 +137,28 @@
 #'    \item{names}{Treatment Name}
 #' }
 "treatColors_v"
+
+#' Batch1+2 Treatment Labels
+#' 
+#' Treatment names
+#' 
+#' @format ## `b12_treats_v`
+#' vector of length 7
+#' \describe{
+#'    \item{values}{"4x", "3xR", "3xNR", "2x", "Ent", "PTX", "Unt"}
+#' }
+"b12_treats_v"
+
+#' Batch3 Treatment Labels
+#' 
+#' Treatment names
+#' 
+#' @format ## `b3_treats_v`
+#' vector of length 8
+#' \describe{
+#'    \item{values}{"4x", "3xR", "3xNR", "2x", "Ent", "PTX", "NT", "d80"}
+#' }
+"b3_treats_v"
 
 ###
 ### BATCH 1+2 OBJECT ATTRIBUTES  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -273,3 +295,52 @@
 #'    \item{value}{Hex Color}
 #'  }
 "fpCols_v"
+
+#' GSEA Plot Color Scale
+#' 
+#' Color scale to use in GSEA plots
+#' blue - down
+#' red - up
+#' 
+#' @format ## `gseaColors_v`
+#' named vector of color names of length 2
+#' \describe{
+#'    \item{values}{red, blue}
+#'    \itme{names}{UP, DOWN}
+#'  }
+"gseaColors_v"
+
+#' Volcano Color Scale - One group
+#' 
+#' Color scale to use in standard
+#' volcano plots
+#' red - higher expression
+#' blue - lower expression
+#' grey - no change in expression
+#' 
+#' @format ## `oneGroupVolcanoColors_v`
+#' named vector of colors of length 3
+#' \describe{
+#'    \item{values}{grey, blue, red}
+#'    \itme{names}(NO, DOWN, UP)
+#'  }
+"oneGroupVolcanoColors_v"
+
+#' Volcano Color Scale - Two groups
+#' 
+#' Color scale to use in comparison (two-group)
+#' volcano plots
+#' red - higher expression in g1
+#' blue - lower expression in g1
+#' grey - no change in expression in g1
+#' darkred - higher expression in g2
+#' darkblue - lower expression in g2
+#' darkgrey - no change in expression in g2
+#' 
+#' @format ## `twoGroupVolcanoColors_v`
+#' named vector of colors of length 6
+#' \describe{
+#'    \item{values}{grey, blue, red, darkgrey, darkblue, darkred}
+#'    \itme{names}{NO_1, DOWN_1, UP_1, NO_2, DOWN_2, UP_2}
+#'  }
+"twoGroupVolcanoColors_v"
