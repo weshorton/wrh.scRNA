@@ -306,7 +306,7 @@
 #' named vector of color names of length 2
 #' \describe{
 #'    \item{values}{red, blue}
-#'    \itme{names}{UP, DOWN}
+#'    \item{names}{UP, DOWN}
 #'  }
 "gseaColors_v"
 
@@ -322,7 +322,7 @@
 #' named vector of colors of length 3
 #' \describe{
 #'    \item{values}{grey, blue, red}
-#'    \itme{names}(NO, DOWN, UP)
+#'    \item{names}(NO, DOWN, UP)
 #'  }
 "oneGroupVolcanoColors_v"
 
@@ -341,6 +341,6 @@
 #' named vector of colors of length 6
 #' \describe{
 #'    \item{values}{grey, blue, red, darkgrey, darkblue, darkred}
-#'    \itme{names}{NO_1, DOWN_1, UP_1, NO_2, DOWN_2, UP_2}
+#'    \item{names}{NO_1, DOWN_1, UP_1, NO_2, DOWN_2, UP_2}
 #'  }
 "twoGroupVolcanoColors_v"

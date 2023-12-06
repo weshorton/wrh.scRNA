@@ -10,7 +10,7 @@
 named vector of colors of length 6
 \describe{
 \item{values}{grey, blue, red, darkgrey, darkblue, darkred}
-\itme{names}{NO_1, DOWN_1, UP_1, NO_2, DOWN_2, UP_2}
+\item{names}{NO_1, DOWN_1, UP_1, NO_2, DOWN_2, UP_2}
 }
 }
 }

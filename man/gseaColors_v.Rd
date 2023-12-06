@@ -10,7 +10,7 @@
 named vector of color names of length 2
 \describe{
 \item{values}{red, blue}
-\itme{names}{UP, DOWN}
+\item{names}{UP, DOWN}
 }
 }
 }

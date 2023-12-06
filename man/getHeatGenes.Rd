@@ -2,7 +2,7 @@
 % Please edit documentation in R/getHeatGenes.R
 \name{getHeatGenes}
 \alias{getHeatGenes}
-\title{Get Heatmap Genes}
+\title{Get Heatmap Genes - NOT UPDATED!!}
 \usage{
 getHeatGenes(
   data_dt,
@@ -12,8 +12,7 @@ getHeatGenes(
   lfc_v = 0.25,
   pvalCol_v = "p_val_adj",
   pval_v = 0.05,
-  labelAll_v = T,
-  lfcLabelCutOff_v = T
+  labelAll_v = T
 )
 }
 \arguments{
@@ -41,4 +40,7 @@ If kind_v == "sig", then these will be the same. If kind_v = #, then it will be 
 }
 \description{
 filter find marker results to get genes for heatmap plotting
+}
+\details{
+Need to update the label options to mirror volcanowrangleMarkers. Essentially need to add labelGenes_v argument.
 }
