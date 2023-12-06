@@ -12,6 +12,7 @@ compareMarkerResults(
   ident2_v,
   identCol_v,
   meta_dt = NULL,
+  seurat_obj = NULL,
   geneCol_v = "Gene",
   runNames_v = c("sct", "rna"),
   lfc_v = 0.5,

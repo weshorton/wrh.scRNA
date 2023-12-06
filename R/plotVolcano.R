@@ -49,11 +49,13 @@ plotVolcano <- function(data_dt, splitVar_v = "assay", runNames_v, geneCol_v, lf
   
   ### Get colors
   if (colorCol_v == "diffExp") {
-    colors_v <- c("grey", "blue", "red")
+    colors_v <- wrh.scRNA::oneGroupVolcanoColors_v
+    labels_v <- names(colors_v)
   } else if (is.null(splitVar_v)) {
     stop("Colors column is not diffExp, but splitVar_v is NULL.\n")
   } else if (colorCol_v == paste0(splitVar_v, "DE")) {
-    colors_v <- c("grey", "blue", "red", "darkgrey", "darkblue", "darkred")
+    colors_v <- wrh.scRNA::twoGroupVolcanoColors_v
+    labels_v <- gsub("_2", runNames_v[2], gsub("_1", runNames_v[1], names(colors_v)))
   } else {
     stop(sprintf("Colors column must be diffExp or paste0(splitVar_v, 'DE'). %s provided.\n", colorCol_v))
   }

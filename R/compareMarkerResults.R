@@ -1,4 +1,4 @@
-compareMarkerResults <- function(data1_dt, data2_dt, name_v = NULL, ident1_v, ident2_v, identCol_v, meta_dt = NULL, geneCol_v = "Gene",
+compareMarkerResults <- function(data1_dt, data2_dt, name_v = NULL, ident1_v, ident2_v, identCol_v, meta_dt = NULL, seurat_obj = NULL, geneCol_v = "Gene",
                                     runNames_v = c("sct", "rna"), lfc_v = 0.5, pval_v = 0.05, toPlot_v = c("scatter", "volcano"), compareName_v, verbose_v = F) {
   #' Compare Marker Results Log-Fold-Change
   #' @description plot lfc results of different findMarkers runs
@@ -20,32 +20,29 @@ compareMarkerResults <- function(data1_dt, data2_dt, name_v = NULL, ident1_v, id
   #' Written to compare runs between different assays (SCT vs RNA), but could compare other things, I think.
   #' @export
   
-  data1_dt = currSCTDEG_dt
-  data2_dt = currRNADEG_dt
-  name_v = currmPop_v
-  ident1_v = currTreat_v
-  ident2_v = currOtherTreat_v
-  identCol_v = "Treatment"
-  compareName_v = "assay"
-  meta_dt = meta_dt
-  geneCol_v = "Gene"
-  runNames_v = c("sct", "rna")
-  lfc_v = 0.5
-  pval_v = 0.05
-  toPlot_v = c("scatter", "volcano")
-  verbose_v = F
-  
   ###
   ### WRANGLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ###
   
   ### Get number of cells
-  cells1_v <- nrow(meta_dt[get(identCol_v) == ident1_v,])
-  cells2_v <- nrow(meta_dt[get(identCol_v) == ident2_v,])
+  if (!is.null(meta_dt)) {
+    cells1_v <- nrow(meta_dt[get(identCol_v) == ident1_v,])
+    cells2_v <- nrow(meta_dt[get(identCol_v) == ident2_v,])
+  } else if (!is.null(seurat_obj)) {
+    cells1_v <- nrow(seurat_obj@meta.data[seurat_obj[[identCol_v]] == ident1_v,])
+    cells2_v <- nrow(seurat_obj@meta.data[seurat_obj[[identCol_v]] == ident2_v,])
+  } else {
+    warning("meta_dt and seurat_obj are both NULL, so nowhere to get cell counts from. Won't include.")
+  }
   
   ### Base title name
-  baseTitle_v <- paste0(paste(cells1_v, ident1_v, "Cells"), " vs ",
-                        paste(cells2_v, ident2_v, "Cells"))
+  if (!is.null(meta_dt) | !is.null(seurat_obj)) {
+    baseTitle_v <- paste0(paste(cells1_v, ident1_v, "Cells"), " vs ",
+                          paste(cells2_v, ident2_v, "Cells"))
+  } else {
+    baseTitle_v <- paste0(ident1_v, " vs ", ident2_v)
+  } # fi is.null(meta_dt or seurat_obj)
+  
   if (!is.null(name_v)) baseTitle_v <- paste(name_v, baseTitle_v, sep = "\n")
   
   ### Update percentage column names

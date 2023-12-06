@@ -11,12 +11,13 @@ volcanoWrangleMarkers(
   lfc_v = 0.25,
   pvalCol_v = "p_val_adj",
   pval_v = 0.05,
+  labelGenes_v = NULL,
   labelAll_v = T,
-  lfcLabelCutOff_v = T
+  labelTop_v = 20
 )
 }
 \arguments{
-\item{data_dt}{data.table output from FindAllMarkers}
+\item{data_dt}{data.table output from FindMarkers}
 
 \item{geneCol_v}{name of column containing gene names. Default is Gene}
 
@@ -26,15 +27,28 @@ volcanoWrangleMarkers(
 
 \item{pvalCol_v}{name of column contianing adjusted pvalues. Default is p_val_adj}
 
-\item{pval_v}{pvalue cut off for labels}
+\item{pval_v}{p-value cut off for labels}
 
-\item{labelAll_v}{logical. TRUE - label all significant genes. FALSE - label top 25 only}
+\item{labelGenes_v}{character vector of gene names to label. See details.}
 
-\item{lfcLabelCutOff_v}{logical. TRUE - only label genes that are significant and above the lfc_v threshold.}
+\item{labelAll_v}{logical. TRUE - label all significant genes. See details.}
+
+\item{labelTop_v}{numeric. if labelAll_v == F, number of significant genes to label}
 }
 \value{
 original data_dt with updated metadata info for plotting
 }
 \description{
 Add information for volcano plot
+}
+\details{
+Reformat the default FindMarkers() DEG output to contain information we want for volcano plots.
+\enumerate{
+\item Binarize differential expression by assigning all significant genes (i.e. p-value less than pval_v) to either "UP"
+or "DOWN" depending of if lfcCol_v is greater than or less than lfc_v, respectively.
+\item Assign labels to specific genes in the plot (3 options). Default is option b.
+a. If labelGenes_v is set (i.e. not NULL), then these genes will be labeled, if present. This takes precedence
+b. If labelAll_v == T (and is.null(labelGenes_v)), then label all genes that pass the pvalue and lfc threshold
+c. If labelAll_v == F (and is.null(labelGenes_v)), then label labelTop_v genes. If labelTop_v == 0, no labels.
+}
 }
