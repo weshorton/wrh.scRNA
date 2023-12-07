@@ -11,6 +11,7 @@ getSummaryTables <- function(seurat_obj, subset_v = NULL, subCol_v = "mPop",
   #' @description Currently make 3 different tables: treatment, population, and treatment x population
   #' Treatment should almost always be 'treat = Treatment'; population should be 'mPop' if subset_v = NULL and
   #' 'sPop' if not (or sPop2 or another version); treatment x population must agree with the others.
+  #' @export
   
   ### Extract meta data
   meta_dt <- as.data.table(seurat_obj@meta.data)

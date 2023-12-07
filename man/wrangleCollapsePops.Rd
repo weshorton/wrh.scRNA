@@ -4,7 +4,7 @@
 \alias{wrangleCollapsePops}
 \title{Wrangle Collapse Populations}
 \usage{
-wrangleCollapsePops(obj, name_v, batch_v, col_v = "sPop")
+wrangleCollapsePops(obj, name_v, batch_v, col_v = "sPop", newCol_v = NULL)
 }
 \arguments{
 \item{obj}{seurat object}
@@ -14,9 +14,12 @@ wrangleCollapsePops(obj, name_v, batch_v, col_v = "sPop")
 \item{batch_v}{name of batch. Used if name_v doesn't have batch in the name}
 
 \item{col_v}{what column of meta.data are we updating? sPop is only one so far.}
+
+\item{newCol_v}{name of column to put collapsed populations in. Default NULL will replace values in col_v}
 }
 \value{
-same exact seurat object, but col_v is now updated with fewer populations
+Either: (1) same exact seurat object, but col_v is now updated with collapsed populations
+(2) same seurat object with one more metadata column containing the collapsed populations
 }
 \description{
 Use population map tables to collapse original sPop names
