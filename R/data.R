@@ -43,6 +43,19 @@
 #' }
 "b12_lymphoid2Colors_v"
 
+#' Batch1+2 Lymphoid Pop Map
+#' 
+#' Data.table that matches original sPops
+#' with collapsed populations
+#' 
+#' @format ## `b12_lymphoidPopMap_dt`
+#' data.table with 11 rows and 2 columns
+#' \describe{
+#'    \item{sPop}{original sPop labels}
+#'    \item{collapsePop}{collapsed population labels}
+#' }
+"b12_lymphoidPopMap_dt"
+
 #' Batch1+2 Myeloid Colors
 #' 
 #' Colors used on UMAPs for b1+b2 myeloid populations
@@ -67,6 +80,19 @@
 #'    \item{names}{Collapsed Sub Population Name}
 #' }
 "b12_myeloid2Colors_v"
+
+#' Batch1+2 Myeloid Pop Map
+#' 
+#' Data.table that matches original sPops
+#' with collapsed populations
+#' 
+#' @format ## `b12_lymphoidPopMap_dt`
+#' data.table with 7 rows and 2 columns
+#' \describe{
+#'    \item{sPop}{original sPop labels}
+#'    \item{collapsePop}{collapsed population labels}
+#' }
+"b12_myeloidPopMap_dt"
 
 ###
 ### BATCH 3 POPULATIONS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -97,6 +123,19 @@
 #' }
 "b3_lymphoid2Colors_v"
 
+#' Batch3 Lymphoid Pop Map
+#' 
+#' Data.table that matches original sPops
+#' with collapsed populations
+#' 
+#' @format ## `b3_lymphoidPopMap_dt`
+#' data.table with 11 rows and 2 columns
+#' \describe{
+#'    \item{sPop}{original sPop labels}
+#'    \item{collapsePop}{collapsed population labels}
+#' }
+"b3_lymphoidPopMap_dt"
+
 #' Batch3 Myeloid Colors
 #' 
 #' Colors used on UMAPs for b3 myeloid populations
@@ -121,6 +160,19 @@
 #'    \item{names}{Collapsed Sub Population Name}
 #' }
 "b3_myeloid2Colors_v"
+
+#' Batch3 Myeloid Pop Map
+#' 
+#' Data.table that matches original sPops
+#' with collapsed populations
+#' 
+#' @format ## `b3_lymphoidPopMap_dt`
+#' data.table with 11 rows and 2 columns
+#' \describe{
+#'    \item{sPop}{original sPop labels}
+#'    \item{collapsePop}{collapsed population labels}
+#' }
+"b3_myeloidPopMap_dt"
 
 ###
 ### TREATMENT COLORS AND ASSIGNMENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
