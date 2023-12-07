@@ -24,7 +24,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "mPop",
     #' 
     #' The default will summarize Treatment alone, major population alone, and treat x pop
     #' together. Right now can only handle 'treat', 'pop' and 'combo'
-  #' @return no object returned. Two optional outputs: 
+  #' @return returns list of summary tables as well as two optional outputs: 
   #' 1. save plots and data to file 
   #' and/or
   #' 2. print plots to console.
@@ -85,31 +85,52 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "mPop",
   } # fi print
   
   ### Make Tables
-  if ('treat' %in% names(summary_lsv)) {
+  if ('treat' %in% names(summary_lsdt)) {
     print(wrh.rUtils::myKable(data = summary_lsdt$treat, width_v = 20,
                               caption = paste0(name_v, " Cells by Treat")) %>%
             kable_styling(position = "float_left"))
   } # fi treat
   
-  if ('pop' %in% names(summary_lsv)) {
+  if ('pop' %in% names(summary_lsdt)) {
     print(wrh.rUtils::myKable(data = summary_lsdt$pop, width_v = 50,
                               caption = paste0(name_v, " Cells by Pop")) %>%
             kable_styling(position = "left"))
   } # fi treat
   
-  if ('combo' %in% names(summary_lsv)) {
+  if ('combo' %in% names(summary_lsdt)) {
+    
+    if (is.logical(all.equal(class(summary_lsdt$combo), "list"))) {
+      colnames_v <- unique(unlist(sapply(summary_lsdt$combo, colnames)))
+      summary_lsdt$combo <- do.call(rbind, sapply(names(summary_lsdt$combo), function(x) {
+        y <- summary_lsdt$combo[[x]]
+        cols_v <- setdiff(colnames_v, colnames(y))
+        for (c_v in cols_v) y[,(c_v) := NA]
+        y <- y[which(rowSums(y[,2:ncol(y)], na.rm = T) != 0),]
+        y$batch <- x
+        return(y)}, simplify = F))
+      summary_lsdt$combo <- summary_lsdt$combo[,mget(c("batch", "Pop", setdiff(colnames(summary_lsdt$combo), c("batch", "Pop"))))]
+      n_v <- 3
+      cols_v <- c("batch", "Pop")
+    } else {
+      n_v <- 2
+      cols_v <- "Pop"
+    } # fi
+    
     print(wrh.rUtils::kableHighlightColumns(data_dt = summary_lsdt$combo, 
-                                cols_v = colnames(summary_lsdt$combo)[2:ncol(summary_lsdt$combo)], 
+                                cols_v = colnames(summary_lsdt$combo)[n_v:ncol(summary_lsdt$combo)], 
                                 condition_v = paste0(">", cutOff_v),
                                 caption = paste0(name_v, " Cells by Treat/Pop")))
     
-    lowCounts_lsv <- apply(wrh.rUtils::convertDFT(summary_lsdt$combo, col_v = "Pop"), 1, function(x) names(which(x <= cutOff_v)))
+    lowCounts_lsv <- apply(wrh.rUtils::convertDFT(summary_lsdt$combo, col_v = cols_v), 1, function(x) names(which(x <= cutOff_v)))
     lowCounts_lsv <- lowCounts_lsv[which(sapply(lowCounts_lsv, length) > 0)]
     invisible(sapply(names(lowCounts_lsv), function(x) {
       cat(sprintf("Fewer than %s cells for %s\n\t\t%s\n\n", cutOff_v, x, paste(lowCounts_lsv[[x]], collapse = "; ")))
     }))
 
   } # fi treat
+  
+  ### Return table
+  return(summary_lsdt)
   
 } # displaySummary
 

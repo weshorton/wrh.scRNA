@@ -29,14 +29,14 @@ getSummaryTables <- function(seurat_obj, subset_v = NULL, subCol_v = "mPop",
   
     ### Treatments
     if ("treat" %in% names(summary_lsv)) {
-      treat <- as.data.table(table(meta_dt[[summary_lsv$treat]])); colnames(treat) <- c("Treat", "nCells")
+      treat <- as.data.table(table(as.character(meta_dt[[summary_lsv$treat]]))); colnames(treat) <- c("Treat", "nCells")
       treat <- rbind(treat, list("Total", sum(treat$nCells)))
       out_ls[["treat"]] <- treat
     } # fi
     
     ### Major or minor populations
     if ("pop" %in% names(summary_lsv)) {
-      pop <- as.data.table(table(meta_dt[[summary_lsv$pop]])); colnames(pop) <- c("Pop", "nCells")
+      pop <- as.data.table(table(as.character(meta_dt[[summary_lsv$pop]]))); colnames(pop) <- c("Pop", "nCells")
       out_ls[["pop"]] <- pop
     }
     
@@ -44,8 +44,9 @@ getSummaryTables <- function(seurat_obj, subset_v = NULL, subCol_v = "mPop",
     if ("combo" %in% names(summary_lsv)) {
       #newName_v <- ifelse(is.null(subset_v), paste(subset_v, "Pop", collapse = ", "))
       newName_v <- "Pop"
-      combo <- convertDFT(t(as.data.frame.matrix(table(meta_dt[,mget(summary_lsv$combo)]))),
-                          newName_v = newName_v)
+      combo_tab <- t(as.data.frame.matrix(table(meta_dt[,mget(summary_lsv$combo)])))
+      combo_tab <- combo_tab[unname(apply(combo_tab, 1, function(x) length(which(x == 0)) != length(x))),]
+      combo <- convertDFT(combo_tab, newName_v = newName_v)
       out_ls[["combo"]] <- combo
     }
     

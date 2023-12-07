@@ -36,7 +36,7 @@ displaySummary(
 \item{cutOff_v}{numeric value indicating minimum number of cells needed in each group.}
 }
 \value{
-no object returned. Two optional outputs:
+returns list of summary tables as well as two optional outputs:
 \enumerate{
 \item save plots and data to file
 and/or

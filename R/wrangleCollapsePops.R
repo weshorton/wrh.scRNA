@@ -38,6 +38,13 @@ wrangleCollapsePops <- function(obj, name_v, batch_v, col_v = "sPop", newCol_v =
     for (c_v in collapse_v) {
       obj@meta.data[obj@meta.data[[col_v]] %in% map_dt[collapsePop == c_v,sPop], updateCol_v] <- unique(map_dt[collapsePop == c_v,collapsePop])
     }
+    
+    # Shorten
+    obj@meta.data[[col_v]] <- gsub(" ", "\\.", gsub("\\/", "-", obj@meta.data[[col_v]]))
+    obj@meta.data[[updateCol_v]] <- gsub(" ", "\\.", gsub("\\/", "-", obj@meta.data[[updateCol_v]]))
+    
+    # Factor
+    obj@meta.data[[col_v]] <- factor(obj@meta.data[[col_v]], levels = unique(obj@meta.data[[col_v]]))
     obj@meta.data[[updateCol_v]] <- factor(obj@meta.data[[updateCol_v]], levels = unique(obj@meta.data[[updateCol_v]]))
     
     # Return
