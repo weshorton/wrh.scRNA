@@ -4,6 +4,8 @@ makePairs <- function(vector_v, pairs_lsv = NULL, counter_v = 1) {
     #' Get all unique pairs of values from a vector.
     #' (order doesn't matter)
   #' @param vector_v vector of elements to combine pairwise
+  #' @param paris_lsv list of pairs fed back in recursively
+  #' @param counter_v counter for recursion
   #' @return list of pairs. Each element of vector_v will be a list element whose values are the other elements of vector_v.
   #' @export
   
