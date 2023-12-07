@@ -2,6 +2,7 @@
 
 export(addVDJ)
 export(calcEmbeddings)
+export(checkNames)
 export(clusterQC)
 export(compareMarkerResults)
 export(comparePCs)
