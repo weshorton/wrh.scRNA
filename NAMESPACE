@@ -2,6 +2,7 @@
 
 export(addVDJ)
 export(calcEmbeddings)
+export(checkGenesInData)
 export(checkNames)
 export(clusterQC)
 export(compareMarkerResults)
