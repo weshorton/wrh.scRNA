@@ -1,4 +1,4 @@
-plotGSEA <- function(data_dt, list_v, listName_v, title_v = NULL, pop_v, treat_v, otherTreat_v, le_v = T, shortenNames_v = T) {
+plotGSEA <- function(data_dt, list_v, listName_v, title_v = NULL, pop_v, spop_v = NULL, treat_v, otherTreat_v, le_v = T, shortenNames_v = T, lfc_v = 0.5, pval_v = 0.05) {
   #' Run GSEA
   #' @description
     #' Run GSEA and output results. Optionally output plots
@@ -7,11 +7,14 @@ plotGSEA <- function(data_dt, list_v, listName_v, title_v = NULL, pop_v, treat_v
   #' @param listName_v name of the gene set
   #' @param title_v optional plot title
   #' @param pop_v name describing where the cells are coming from. Usually batch12_lymphoid, batch3_neoplastic, etc.
+  #' @param spop_v optional name describing the sub-population cells are from (if applicable)
   #' @param treat_v name of first treatment in comparison
   #' @param otherTreat_v name of second treatment in comparison
   #' @param le_v logical indicating if leading edge should be run
   #' @param plot_v logical indicating if plots should be made/saved or just the results calculated.
   #' @param shortenNames_v logical indicating if gene set names should be shortened.
+  #' @param lfc_v log fold change - passed through for leading edge gene filter
+  #' @param pval_v adjusted p-value - used to filter significant pathways and also passed through for leading edge filter
   #' @return not sure yet
   #' @export
   
@@ -24,7 +27,11 @@ plotGSEA <- function(data_dt, list_v, listName_v, title_v = NULL, pop_v, treat_v
   ### Skip if empty
   if (nrow(gsea_res) == 0) {
     
-    cat(sprintf("No pathways found for: %s - %s - %s - %s\n", pop_v, treat_v, otherTreat_v, listName_v))
+    if (!is.null(spop_v)) {
+      cat(sprintf("No pathways found for: %s - %s - %s - %s - %s\n", pop_v, spop_v, treat_v, otherTreat_v, listName_v))
+    } else {
+      cat(sprintf("No pathways found for: %s - %s - %s - %s\n", pop_v, treat_v, otherTreat_v, listName_v))
+    } # fi spop_v
     
   } else {
     
@@ -46,11 +53,15 @@ plotGSEA <- function(data_dt, list_v, listName_v, title_v = NULL, pop_v, treat_v
     } # fi shortenNames_v
     
     ### Filter and skip if empty
-    gsea_res <- gsea_res[padj <= 0.05,]
+    gsea_res <- gsea_res[padj <= pval_v,]
     
     if (nrow(gsea_res) == 0) {
       
-      cat(sprintf("None of the pathways found for: %s - %s - %s - %s were significant.\n", pop_v, treat_v, otherTreat_v, listName_v))
+      if (!is.null(spop_v)) {
+        cat(sprintf("None of the pathways found for: %s - %s - %s - %s - %s were significant.\n", pop_v, spop_v, treat_v, otherTreat_v, listName_v))
+      } else {
+        cat(sprintf("None of the pathways found for: %s - %s - %s - %s were significant.\n", pop_v, treat_v, otherTreat_v, listName_v))
+      } # fi spop
       
     } else {
       

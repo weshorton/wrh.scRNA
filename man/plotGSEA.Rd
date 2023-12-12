@@ -10,10 +10,13 @@ plotGSEA(
   listName_v,
   title_v = NULL,
   pop_v,
+  spop_v = NULL,
   treat_v,
   otherTreat_v,
   le_v = T,
-  shortenNames_v = T
+  shortenNames_v = T,
+  lfc_v = 0.5,
+  pval_v = 0.05
 )
 }
 \arguments{
@@ -27,6 +30,8 @@ plotGSEA(
 
 \item{pop_v}{name describing where the cells are coming from. Usually batch12_lymphoid, batch3_neoplastic, etc.}
 
+\item{spop_v}{optional name describing the sub-population cells are from (if applicable)}
+
 \item{treat_v}{name of first treatment in comparison}
 
 \item{otherTreat_v}{name of second treatment in comparison}
@@ -34,6 +39,10 @@ plotGSEA(
 \item{le_v}{logical indicating if leading edge should be run}
 
 \item{shortenNames_v}{logical indicating if gene set names should be shortened.}
+
+\item{lfc_v}{log fold change - passed through for leading edge gene filter}
+
+\item{pval_v}{adjusted p-value - used to filter significant pathways and also passed through for leading edge filter}
 
 \item{plot_v}{logical indicating if plots should be made/saved or just the results calculated.}
 }
