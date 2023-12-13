@@ -13,8 +13,8 @@ vlnPlotCompareMeans(
   method_v = "wilcox.test",
   padjMethod_v = "holm",
   displayP_v = "padj",
-  comp_dt,
-  colors_v,
+  comp_dt = NULL,
+  colors_v = NULL,
   nrow_v = 1
 )
 }
@@ -35,7 +35,7 @@ vlnPlotCompareMeans(
 
 \item{displayP_v}{vector. If "padj", will display adjusted p-value. if numeric, will round p-value to that many digits.}
 
-\item{comp_dt}{data.table of comparisons to calculate stats for. See details.}
+\item{comp_dt}{data.table of comparisons to subset calculated stats for. If null, will do all. See details.}
 
 \item{colors_v}{named vector of hex codes. Names must be values of indVar_v}
 }

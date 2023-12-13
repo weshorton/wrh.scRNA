@@ -1,5 +1,5 @@
 vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measureVar_v, groupBy_v = NULL, method_v = "wilcox.test", 
-                                padjMethod_v = "holm", displayP_v = "padj", comp_dt, colors_v, nrow_v = 1) {
+                                padjMethod_v = "holm", displayP_v = "padj", comp_dt = NULL, colors_v = NULL, nrow_v = 1) {
   #' Violin Plot Compare Means
   #' @description
   #' Make a violin plot of some metric and compare groups
@@ -11,7 +11,7 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
   #' @param method_v passed to stat::compare_means 'method' argument
   #' @param padjMethod_v passed to stat::compare_means 'p.adjust.method' argument
   #' @param displayP_v vector. If "padj", will display adjusted p-value. if numeric, will round p-value to that many digits.
-  #' @param comp_dt data.table of comparisons to calculate stats for. See details.
+  #' @param comp_dt data.table of comparisons to subset calculated stats for. If null, will do all. See details.
   #' @param colors_v named vector of hex codes. Names must be values of indVar_v
   #' @details
   #' indVar_v is used to build a formula with measureVar_v: as.formula(paste0(measureVar_v, " ~ ", indVar_v))
@@ -23,7 +23,13 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
   ### Build a formula and run compare means
   formula_v <- as.formula(paste0(measureVar_v, " ~ ", indVar_v))
   cm_df <- compare_means(formula = formula_v, data = data_df, group.by = groupBy_v, method = method_v, p.adjust.method = padjMethod_v)
-  cm_df <- merge(cm_df, comp_dt, by = c("group1", "group2"), sort = F)
+  if (!is.null(comp_dt)) cm_df <- merge(cm_df, comp_dt, by = c("group1", "group2"), sort = F)
+  
+  ### Handle colors
+  if (is.null(colors_v)) {
+    colors_v <- getColors(n_v = length(unique(data_df[[indVar_v]])))
+    names(colors_v) <- unique(data_df[[indVar_v]])
+  }
   
   ### Get plotting info
   plotInfo_ls <- calcViolinStatPositions(plot_df = data_df, measureVar_v = measureVar_v, cm_df = cm_df,
@@ -40,7 +46,7 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
       scale_y_continuous(limits = ylim_v) +
       scale_fill_manual(values = colors_v, breaks = names(colors_v)) +
       wrh.rUtils::my_theme() + wrh.rUtils::angle_x() +
-      theme(legend.position = "bottom", axis.text = element_text(size=20), axis.title.y = element_text(size = 20), plot.title = element_text(size=16), axis.title.x = element_blank(),
+      theme(legend.position = "bottom", axis.text = element_text(size=20), axis.title.y = element_text(size = 20), plot.title = element_text(size=16),
             axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
       ylab(measureVar_v) + ggtitle(name_v) +
       stat_compare_means(label = c("p.format"), size = 3, label.x = 2)
@@ -48,10 +54,13 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
     ### Add stats
     if (displayP_v == "padj") {
       plot_gg <- plot_gg +
-        ggpubr::geom_signif(data = cm_df, aes(xmin = group1, xmax = group2, annotations = p.adj, y_position = yPos), manual = T, textsize = 2)
+        ggsignif::geom_signif(data = cm_df, inherit.aes = F, mapping = aes(xmin = group1, xmax = group2, annotations = p.adj, y_position = yPos), manual = T, textsize = 2)
+    } else if (displayP_v == "none") {
+      plot_gg <- plot_gg
     } else if (is.logical(all.equal(class(displayP_v), "numeric"))) {
       plot_gg <- plot_gg +
-        ggpubr::geom_signif(data = cm_df, aes(xmin = group1, xmax = group2, annotations = round(p, digits = displayP_v), y_position = yPos), manual = T, textsize = 2)
+        ggpubr::geom_signif(data = cm_df, inherit.aes = F, mapping = aes(xmin = group1, xmax = group2, 
+                                                                         annotations = round(p, digits = displayP_v), y_position = yPos), manual = T, textsize = 2)
     } # fi displayP_v
     
   } else {
@@ -97,4 +106,3 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
   return(plot_gg)
   
 } # vlnPlotCompareMeans
-
