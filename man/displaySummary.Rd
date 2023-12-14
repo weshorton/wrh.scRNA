@@ -8,8 +8,10 @@ displaySummary(
   obj,
   subObj = NULL,
   name_v = NULL,
-  subCol_v = "mPop",
+  subCol_v = "sPop",
   batch_v,
+  cPops_v = F,
+  groupBy_v,
   summary_lsv = list(treat = "Treatment", pop = "mPop", combo = c("Treatment", "mPop")),
   outDir_v = NULL,
   print_v = T,
@@ -26,6 +28,10 @@ displaySummary(
 \item{subCol_v}{Column to use in conjunction with name_v to subset data to summarize.}
 
 \item{batch_v}{name of batch}
+
+\item{cPops_v}{logical indicating if the sub-populations are the "collapsed" pops or not. Used to get appropriate colors.}
+
+\item{groupBy_v}{name of column to group cells by in output.}
 
 \item{summary_lsv}{list of vectors of treatments to summarize. See details.}
 

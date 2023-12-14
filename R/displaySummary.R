@@ -1,4 +1,4 @@
-displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "mPop", batch_v,
+displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "sPop", batch_v, cPops_v = F, groupBy_v,
                            summary_lsv = list(treat = "Treatment", pop = "mPop", combo = c("Treatment", "mPop")), 
                            outDir_v = NULL, print_v = T, cutOff_v = cutOff_v) {
   #' Display Summary Info
@@ -9,6 +9,8 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "mPop",
   #' @param name_v population name. will remove "batch#", if present. See details.
   #' @param subCol_v Column to use in conjunction with name_v to subset data to summarize.
   #' @param batch_v name of batch
+  #' @param cPops_v logical indicating if the sub-populations are the "collapsed" pops or not. Used to get appropriate colors.
+  #' @param groupBy_v name of column to group cells by in output. 
   #' @param summary_lsv list of vectors of treatments to summarize. See details.
   #' @param outDir_v optional output directory to save plots and data
   #' @param print_v logical indicating to print tables and plots to console.
@@ -47,8 +49,12 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "mPop",
   if (name_v == 'full') {
     colorName_v <- "mPopColors_v"
   } else {
-    colorName_v <- paste0(subBatch_v, "_", name_v, "Colors_v")
-  }
+    if (cPops_v) {
+      colorName_v <- paste0(subBatch_v, "_", name_v, "2Colors_v")
+    } else {
+      colorName_v <- paste0(subBatch_v, "_", name_v, "Colors_v")
+    } # fi
+  } # fi
   
   clust_v <- eval(as.name(clustName_v)); clust_v <- clust_v[which(names(clust_v) == name_v)]
   umap_v <- eval(as.name(umapName_v)); umap_v <- umap_v[which(names(umap_v) == name_v)]
@@ -69,11 +75,16 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "mPop",
   cluster_gg <- DimPlot(subObj, reduction = umap_v, group.by = clust_v, pt.size = 0.1, label = T) + coord_equal() +
     ggtitle(paste0(batch_v, " ", name_v, " Clusters\n", gsub("seurat_clusters_", "", clustName_v)))
   
-  pop_gg <- DimPlot(subObj, reduction = umap_v, group.by = subCol_v, pt.size = 0.1, label = T) + coord_equal() +
+  ### Check colors
+  if (length(setdiff(names(colors_v), unique(subObj@meta.data[[groupBy_v]]))) > 0) {
+    names(colors_v) <- gsub("\\/", "-", gsub(" ", ".", names(colors_v)))
+  }
+  
+  pop_gg <- DimPlot(subObj, reduction = umap_v, group.by = groupBy_v, pt.size = 0.1, label = F, cols = colors_v) + coord_equal() +
     ggtitle(paste0(batch_v, " ", name_v, " Populations"))
   
   if (!is.null(outDir_v)) {
-    pdf(file = file.path(outDir_v, paste0(batch_v, "_", name_v, "_", subCol_v, "_umap.pdf")), onefile = T)
+    pdf(file = file.path(outDir_v, paste0(batch_v, "_", name_v, "_", groupBy_v, "_umap.pdf")), onefile = T, width = 10, height = 10)
     print(cluster_gg)
     print(pop_gg)
     dev.off()
