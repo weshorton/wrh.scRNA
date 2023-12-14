@@ -98,12 +98,24 @@
 ### BATCH 3 POPULATIONS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ###
 
+#' Batch3 Lymphoid Full Colors
+#' 
+#' Colors used on UMAPs for b3 lymphoid populations (with Neoplastic)
+#' 
+#' @format ## `b3_lymphoidFullColors_v`
+#' Named vector of length 12
+#' \describe{
+#'    \item{values}{Hex Color}
+#'    \item{names}{Sub Population Name}
+#' }
+"b3_lymphoidFullColors_v"
+
 #' Batch3 Lymphoid Colors
 #' 
 #' Colors used on UMAPs for b3 lymphoid populations
 #' 
 #' @format ## `b3_lymphoidColors_v`
-#' Named vector of length 12
+#' Named vector of length 11
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Sub Population Name}

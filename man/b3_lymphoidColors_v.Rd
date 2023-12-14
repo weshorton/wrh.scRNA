@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{b3_lymphoidColors_v}}{
 
-Named vector of length 12
+Named vector of length 11
 \describe{
 \item{values}{Hex Color}
 \item{names}{Sub Population Name}
