@@ -408,3 +408,16 @@
 #'    \item{names}{NO_1, DOWN_1, UP_1, NO_2, DOWN_2, UP_2}
 #'  }
 "twoGroupVolcanoColors_v"
+
+#' Original Data Lymphoid Colors
+#' 
+#' Colors used on UMAPs for b1+b2 lymphoid populations
+#' from original Ana/Rossin analysis
+#' 
+#' @format ## `orig_lymphoidColors_v`
+#' Named vector of length 13
+#' \describe{
+#'    \item{values}{Hex Color}
+#'    \item{names}{Sub Population Name}
+#' }
+"orig_lymphoidColors_v"
