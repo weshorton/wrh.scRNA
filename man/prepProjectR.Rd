@@ -8,6 +8,7 @@ prepProjectR(
   obj,
   assay_v = "SCT",
   slot_v = "data",
+  scale_v = T,
   filter_dt = NULL,
   filterCol_v = "gene_name"
 )
@@ -15,7 +16,11 @@ prepProjectR(
 \arguments{
 \item{obj}{seurat object}
 
-\item{assay_v}{name of assay to get data from}
+\item{assay_v}{name of assay to get data from. Default is 'SCT'}
+
+\item{slot_v}{name of assay slot to get data from. Default is 'data'}
+
+\item{scale_v}{logical. If slot_v = "data" and this is true, then will z-score the counts. This is default behavior}
 
 \item{filter_dt}{optional table containing at least one column of gene names that will be checked against genes in obj}
 
@@ -26,4 +31,9 @@ a data.frame of counts, filtered for provided genes.
 }
 \description{
 Exctract correct assay/slot counts and filter
+}
+\details{
+Most often used to extract the counts from the \code{data} slot of the seurat object, apply a z-score transformation
+on the genes, subset for genes in filter_dt, if present.
+If scale.data is provided, a 'full' output from SCTransform is recommended.
 }
