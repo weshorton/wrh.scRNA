@@ -21,12 +21,16 @@ getProjectRPlottingData <- function(obj, batch_v, pop_v, sigName_v = "sncScore",
     plot_df$Treatment <- factor(plot_df$Treatment, levels = rev(b3_treats_v))
   } else if (batch_v == "batch12") {
     plot_df$Treatment <- factor(plot_df$Treatment, levels = rev(b12_treats_v))
-  } # fi batch
+  } else if (batch_v == "orig") {
+    plot_df$Treatment <- factor(plot_df$Treatment, levels = rev(b12_treats_v))
+  }
   
   # Factor spops if not (lymphoid and myeloid should be) Warning! I'm allowing length(popCol_v) > 1, which works above b/c just using c()
   # to get colnames. If neoplastic, length(popCol_v) must equal 1, but it should always do so b/c we didn't ID the pops.
-  if (pop_v == "neoplastic") plot_df[[popCol_v]] <- factor(plot_df[[popCol_v]], 
-                                                           levels = unique(plot_df[[popCol_v]])[order(as.numeric(gsub("neo.c", "", unique(plot_df[[popCol_v]]))))])
+  if (pop_v == "neoplastic") {
+    plot_df[[popCol_v]] <- factor(plot_df[[popCol_v]], 
+                                  levels = unique(plot_df[[popCol_v]])[order(as.numeric(gsub("neo.c", "", unique(plot_df[[popCol_v]]))))])
+  }
   
   # Return
   return(plot_df)
