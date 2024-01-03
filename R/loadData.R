@@ -41,7 +41,7 @@ loadData <- function(markerDir_v = NULL, markerClass_v = "global", metaDir_v = N
     
     files_v <- grep(paste(pop_v, collapse = "|"), list.files(rdsDir_v, pattern = batch_v), value = T)
     out_ls[["seurat"]] <- sapply(files_v, function(x) readRDS(file.path(rdsDir_v, x)), USE.NAMES = T)
-    names(out_ls[["seurat"]]) <- gsub("\\.rds", "", names(out_ls[["seurat"]]))
+    names(out_ls[["seurat"]]) <- gsub("\\.rds", "", files_v)
   } # fi !is.null(rdsDir_v)
   
   ### Output
