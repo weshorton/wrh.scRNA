@@ -94,6 +94,18 @@
 #' }
 "b12_myeloidPopMap_dt"
 
+#' Batch12 Neoplastic Colors
+#' 
+#' Colors used on UMAPs for b12 neplastic populations 
+#' 
+#' @format ## `b12_neoplasticColors_v`
+#' Named vector of length 5
+#' \describe{
+#'    \item{values}{Hex Color}
+#'    \item{names}{Sub Population Name (neo.c#)}
+#' }
+"b12_neoplasticColors_v"
+
 ###
 ### BATCH 3 POPULATIONS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ###
@@ -186,6 +198,18 @@
 #' }
 "b3_myeloidPopMap_dt"
 
+#' Batch3 Neoplastic Colors
+#' 
+#' Colors used on UMAPs for b3 neplastic populations 
+#' 
+#' @format ## `b3_neoplasticColors_v`
+#' Named vector of length 13
+#' \describe{
+#'    \item{values}{Hex Color}
+#'    \item{names}{Sub Population Name (neo.c#)}
+#' }
+"b3_neoplasticColors_v"
+
 ###
 ### TREATMENT COLORS AND ASSIGNMENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ###
@@ -195,7 +219,7 @@
 #' Colors used on plots for treatments
 #' 
 #' @format ## `treatColors_v`
-#' Named vector of length 9
+#' Named vector of length 11
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Treatment Name}
@@ -207,9 +231,9 @@
 #' Treatment names
 #' 
 #' @format ## `b12_treats_v`
-#' vector of length 7
+#' vector of length 9
 #' \describe{
-#'    \item{values}{"4x", "3xR", "3xNR", "2x", "Ent", "PTX", "Unt"}
+#'    \item{values}{"3xR+4x", "4x", "3x", "3xR", "3xNR", "2x", "Ent", "PTX", "Unt"}
 #' }
 "b12_treats_v"
 
@@ -218,9 +242,9 @@
 #' Treatment names
 #' 
 #' @format ## `b3_treats_v`
-#' vector of length 8
+#' vector of length 10
 #' \describe{
-#'    \item{values}{"4x", "3xR", "3xNR", "2x", "Ent", "PTX", "NT", "d80"}
+#'    \item{values}{"3xR+4x", "4x", "3x", "3xR", "3xNR", "2x", "Ent", "PTX", "NT", "d80"}
 #' }
 "b3_treats_v"
 

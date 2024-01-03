@@ -7,9 +7,9 @@
 \format{
 \subsection{\code{b12_treats_v}}{
 
-vector of length 7
+vector of length 9
 \describe{
-\item{values}{"4x", "3xR", "3xNR", "2x", "Ent", "PTX", "Unt"}
+\item{values}{"3xR+4x", "4x", "3x", "3xR", "3xNR", "2x", "Ent", "PTX", "Unt"}
 }
 }
 }

@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{treatColors_v}}{
 
-Named vector of length 9
+Named vector of length 11
 \describe{
 \item{values}{Hex Color}
 \item{names}{Treatment Name}

@@ -7,8 +7,11 @@
 plotClusterProps(
   seurat_obj,
   clusters_v = "seurat_clusters",
-  ident_v,
-  legendName_v
+  ident_v = NULL,
+  legendName_v,
+  clustColors_v,
+  identColors_v = treatColors_v,
+  sortBySize_v = F
 )
 }
 \arguments{
@@ -25,6 +28,12 @@ plotClusterProps(
 }}
 
 \item{legendName_v}{name to put in legend to label ident_v}
+
+\item{clustColors_v}{named vector of colors that correspond to clusters_v column}
+
+\item{identColors_v}{named vector of colors that correspond to ident_v}
+
+\item{sortBySize_v}{logical, will sort by cluster size rather than factor levels}
 }
 \value{
 Returns patchwork of two ggplots of cluster data plots
