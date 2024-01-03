@@ -15,7 +15,7 @@ orderTreatments <- function(names_lsv, order_v, skip_v = "batch|lymphoid|myeloid
   out_lsv <- sapply(names_lsv, function(x) {
     if (FALSE %in% grepl(skip_v, x)) {
       missing_v <- setdiff(x, order_v)
-      x <- as.character(sort(factor(x, levels = treats_v)))
+      x <- as.character(sort(factor(x, levels = order_v)))
       if (length(missing_v) > 0) { 
         warning(sprintf("Input names had values not found in treatments.
                       Appending to front. Please check! Treatments: %s\n",
