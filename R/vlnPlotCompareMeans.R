@@ -14,6 +14,7 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
   #' @param popCol_v either 'sPop' or 'collapsePop'
   #' @param comp_dt data.table of comparisons to subset calculated stats for. If null, will do all. See details.
   #' @param colors_v named vector of hex codes. Names must be values of indVar_v
+  #' @param nrow_v number of rows to coerce output into.
   #' @details
   #' indVar_v is used to build a formula with measureVar_v: as.formula(paste0(measureVar_v, " ~ ", indVar_v))
   #' comp_dt has two columns: group1 and group2. The values must be valid values in data_dt[[indVar_v]]
@@ -72,7 +73,7 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
       subCM_df <- cm_df[cm_df[[groupBy_v]] == x,]
       subData_df <- data_df[data_df[[groupBy_v]] == x,]
       ### Y position
-      subCM_df$yPos <- sapply(seq_along(1:nrow(subCM_df)), function(x) yPosBase_v + (yPosBase_v*.1)*x)
+      if (nrow(subCM_df) > 0) subCM_df$yPos <- sapply(seq_along(1:nrow(subCM_df)), function(x) yPosBase_v + (yPosBase_v*.1)*x)
       ### Plot
       plot_gg <- ggplot2::ggplot(data = subData_df, aes(x = !!sym(indVar_v), y = !!sym(measureVar_v))) +
         geom_boxplot(aes(fill = !!sym(indVar_v)), width = 1) +

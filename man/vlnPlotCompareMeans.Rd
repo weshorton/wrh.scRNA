@@ -41,6 +41,8 @@ vlnPlotCompareMeans(
 \item{comp_dt}{data.table of comparisons to subset calculated stats for. If null, will do all. See details.}
 
 \item{colors_v}{named vector of hex codes. Names must be values of indVar_v}
+
+\item{nrow_v}{number of rows to coerce output into.}
 }
 \value{
 violin plot ggplot
