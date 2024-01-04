@@ -1,5 +1,5 @@
 vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measureVar_v, groupBy_v = NULL, method_v = "wilcox.test", 
-                                padjMethod_v = "holm", displayP_v = "padj", comp_dt = NULL, colors_v = NULL, nrow_v = 1) {
+                                padjMethod_v = "holm", displayP_v = "padj", popCol_v = "sPop", comp_dt = NULL, colors_v = NULL, nrow_v = 1) {
   #' Violin Plot Compare Means
   #' @description
   #' Make a violin plot of some metric and compare groups
@@ -11,6 +11,7 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
   #' @param method_v passed to stat::compare_means 'method' argument
   #' @param padjMethod_v passed to stat::compare_means 'p.adjust.method' argument
   #' @param displayP_v vector. If "padj", will display adjusted p-value. if numeric, will round p-value to that many digits.
+  #' @param popCol_v either 'sPop' or 'collapsePop'
   #' @param comp_dt data.table of comparisons to subset calculated stats for. If null, will do all. See details.
   #' @param colors_v named vector of hex codes. Names must be values of indVar_v
   #' @details
@@ -91,7 +92,7 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
           ggpubr::geom_signif(data = subCM_df, aes(xmin = group1, xmax = group2, annotations = round(p, digits = displayP_v), y_position = yPos), manual = T, textsize = 2)
       } # fi displayP_v
       ### Remove y-axis if not 
-      if (x != levels(data_df$sPop)[1]) {
+      if (x != levels(data_df[[popCol_v]])[1]) {
         plot_gg <- plot_gg + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank(), axis.line.y = element_blank())
       }
       return(plot_gg)}, simplify = F, USE.NAMES = T)

@@ -13,6 +13,7 @@ vlnPlotCompareMeans(
   method_v = "wilcox.test",
   padjMethod_v = "holm",
   displayP_v = "padj",
+  popCol_v = "sPop",
   comp_dt = NULL,
   colors_v = NULL,
   nrow_v = 1
@@ -34,6 +35,8 @@ vlnPlotCompareMeans(
 \item{padjMethod_v}{passed to stat::compare_means 'p.adjust.method' argument}
 
 \item{displayP_v}{vector. If "padj", will display adjusted p-value. if numeric, will round p-value to that many digits.}
+
+\item{popCol_v}{either 'sPop' or 'collapsePop'}
 
 \item{comp_dt}{data.table of comparisons to subset calculated stats for. If null, will do all. See details.}
 
