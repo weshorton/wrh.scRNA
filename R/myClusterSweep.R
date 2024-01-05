@@ -41,11 +41,25 @@ myClusterSweep <- function(seurat_obj,
   ### CALCULATIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ###
   
+  origNames_v <- names(seurat_obj)
+  origCols_v <- colnames(seurat_obj@meta.data)
+  
   ### Find neighbors using specified number of dimensions
   seurat_obj <- Seurat::FindNeighbors(seurat_obj, reduction = reduction_v, dims = 1:ndims_v, verbose = verbose_v)
   
+  newNames1_v <- names(seurat_obj)
+  newCols1_v <- colnames(seurat_obj@meta.data)
+  
   ### Find clusters using the specified resolutions
   seurat_obj <- Seurat::FindClusters(seurat_obj, resolution = res_v, verbose = verbose_v)
+  
+  newNames2_v <- names(seurat_obj)
+  newCols2_v <- colnames(seurat_obj@meta.data)
+  
+  ### Calculate UMAP
+  if (!reductionName_v %in% names(seurat_obj)) {
+    seurat_obj <- Seurat::RunUMAP(seurat_obj, dims = 1:ndims_v, reduction = reduction_v, reduction.name = reductionName_v, verbose = F)
+  }
   
   ### Compute QC metrics
   seuratClusterQC <- clusterQC(seurat_obj = seurat_obj, embedding_v = embedding_v, ndims_v = ndims_v, reductionName_v = reductionName_v, reduction_v = reduction_v)
@@ -178,16 +192,19 @@ clusterQC <- function(seurat_obj, embedding_v, ndims_v, reductionName_v, reducti
                                        pattern = paste0(Seurat::DefaultAssay(seurat_obj), '_snn_res.')))
     
     ### Make reduction name
-    currRedName_v <- paste0(reductionName_v, currRes_v)
+    #currRedName_v <- paste0(reductionName_v, currRes_v)
     
-    ### Calculate UMAP
-    seurat_obj <- Seurat::RunUMAP(seurat_obj, dims = 1:ndims_v, nn.name = currClusterName_v,
-                          reduction = reduction_v, reduction.name = currRedName_v, verbose = F)
+    ### Calculate UMAP - don't need to recalculate...
+    # seurat_obj <- Seurat::RunUMAP(seurat_obj, 
+    #                               dims = 1:ndims_v, 
+    #                               reduction = reduction_v, 
+    #                               reduction.name = reductionName_v, 
+    #                               verbose = F)
     
     ### Create DimPlot with clusters labelled.
     dim_ls[[i]] <- Seurat::DimPlot(seurat_obj,
                            group.by = currClusterName_v,
-                           reduction = currRedName_v,
+                           reduction = reductionName_v,
                            label = T, pt.size = 0.1) +
       coord_equal() +
       ggtitle(currClusterName_v)
@@ -241,4 +258,3 @@ clusterQC <- function(seurat_obj, embedding_v, ndims_v, reductionName_v, reducti
   return(out_ls)
   
 } # clusterQC
-
