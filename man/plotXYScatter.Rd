@@ -4,7 +4,15 @@
 \alias{plotXYScatter}
 \title{Plot XY Scatter}
 \usage{
-plotXYScatter(data_dt, x_v, y_v, title_v = NULL, cor_v = T)
+plotXYScatter(
+  data_dt,
+  x_v,
+  y_v,
+  title_v = NULL,
+  cor_v = T,
+  scale_v = NULL,
+  facet_v = NULL
+)
 }
 \arguments{
 \item{data_dt}{data.table to plot. Must have columns corresponding to x_v and y_v that are numeric}
@@ -16,6 +24,10 @@ plotXYScatter(data_dt, x_v, y_v, title_v = NULL, cor_v = T)
 \item{title_v}{optional plot title}
 
 \item{cor_v}{logical. Indicates whether or not to include regression line and correlation}
+
+\item{scale_v}{either NULL (no scale), "both", "x", or "y" indicating where to scale.}
+
+\item{facet_v}{either NULL (don't facet), or a column from data_dt to use as input to facet_wrap}
 }
 \value{
 ggplot object
