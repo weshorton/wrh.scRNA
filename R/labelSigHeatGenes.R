@@ -8,6 +8,7 @@ labelSigHeatGenes <- function(seurat_obj, genes_lsv, assay_v = "fullSCT") {
   #' @export
   
   ### Check equality of supplied genes (TRUE if equal, character if not)
+  ### I don't think this is the right check...?
   allEqual_v <- all.equal(genes_lsv$heat, genes_lsv$label)
   
   if (class(allEqual_v) == "logical") {
@@ -21,6 +22,7 @@ labelSigHeatGenes <- function(seurat_obj, genes_lsv, assay_v = "fullSCT") {
     
     ### Add asterisk for replacement and for output
     labeledGenes_v <- sapply(allGenes_v, function(x) ifelse(x %in% genes_lsv$label, paste0(x, "*"), x))
+    #labeledGenes_v <- sapply(allGenes_v, function(x) ifelse((x %in% genes_lsv$heat & x %in% genes_lsv$heat), paste0(x, "*"), x))
     outGenes_v <- sapply(genes_lsv$heat, function(x) ifelse(x %in% genes_lsv$label, paste0(x, "*"), x))
     
     ### Add to each slot (not sure how to loop this)
