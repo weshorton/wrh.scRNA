@@ -1,7 +1,7 @@
 volcanoWrangleMarkers <- function(data_dt, geneCol_v = "Gene", 
                                   lfcCol_v = "avg_log2FC", lfc_v = 0.25, 
                                   pvalCol_v = "p_val_adj", pval_v = 0.05,
-                                  labelGenes_v = NULL, labelAll_v = T, labelTop_v = 20
+                                  labelGenes_v = NULL, labelAll_v = T, labelTop_v = 20, labelDir_v = "both"
                                   ) {
   #' Wrangle Marker Data for Volcano Plot
   #' @description Add information for volcano plot
@@ -51,7 +51,7 @@ volcanoWrangleMarkers <- function(data_dt, geneCol_v = "Gene",
     } else {
       
       upGenes_v <- up_dt[1:min(up_dt[,.N], labelTop_v), get(geneCol_v)]
-      dnGenes_v <- up_dt[1:min(dn_dt[,.N], labelTop_v), get(geneCol_v)]
+      dnGenes_v <- dn_dt[1:min(dn_dt[,.N], labelTop_v), get(geneCol_v)]
       
     } # fi labelAll_v
     
@@ -60,8 +60,12 @@ volcanoWrangleMarkers <- function(data_dt, geneCol_v = "Gene",
   ### Add new column for labels. If in upGenes_v, dnGenes_v, or nonGenes_v, will get gene name
   ### if not, will be blank ('')
   data_dt$DElabel <- ""
-  data_dt[get(geneCol_v) %in% upGenes_v, DElabel := get(geneCol_v)]
-  data_dt[get(geneCol_v) %in% dnGenes_v, DElabel := get(geneCol_v)]
+  if (labelDir_v %in% c("up", "Up", "u", "U") | labelDir_v %in% c("both", "Both", "B", "b")) {
+    data_dt[get(geneCol_v) %in% upGenes_v, DElabel := get(geneCol_v)]
+  }
+  if (labelDir_v %in% c("down", "Down", "D", "d") | labelDir_v %in% c("both", "Both", "B", "b")) {
+    data_dt[get(geneCol_v) %in% dnGenes_v, DElabel := get(geneCol_v)]
+  }
   if (!is.null(labelGenes_v)) data_dt[get(geneCol_v) %in% nonGenes_v, DElabel := get(geneCol_v)]
   
   ### Make diffExp factor
