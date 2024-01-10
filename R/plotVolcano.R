@@ -1,9 +1,10 @@
-plotVolcano <- function(data_dt, splitVar_v = "assay", runNames_v, geneCol_v, lfc_v, pval_v, ident1_v, colorCol_v, title_v = NULL, verbose_v = F) {
+plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v, lfc_v, pval_v, ident1_v, colorCol_v, title_v = NULL, verbose_v = F,
+                        labelGenes_v = NULL, labelAll_v = F, labelTop_v = 20, labelDir_v = "both") {
   #' Plot Volcano
   #' @description
   #' Make a volcano plot of DEG results
   #' @param data_dt data.table of gene expression. Can be wrangled for volcano or not. Must have ident1_v and another ident.
-  #' @param splitVar_v name to call the variable that the data is split on. If provided. If null, no split.
+  #' @param splitVar_v name to call the variable that the data is split on. If provided. If null, no split. Have only used 'assay' so far.
   #' @param runNames_v values that splitVar_v is split on. If provided.
   #' @param geneCol_v name of column name containing genes. Should be Gene and passed from parent funtion
   #' @param lfc_v log-fold change to include in plot as cut-off
@@ -11,6 +12,10 @@ plotVolcano <- function(data_dt, splitVar_v = "assay", runNames_v, geneCol_v, lf
   #' @param colorCol_v column to use for colors. Should be either diffExp for standard, or paste0(splitVar_v, "DE") for comparison ones.
   #' @param title_v optional plot title.
   #' @param verbose_v logical indicating to print messages.
+  #' @param labelGenes_v passed to volcanoWrangleMarkers() optional set of genes to label (regardless of significance)
+  #' @param labelAll_v passed to volcanoWrangleMarkers() (logical indicating to plot all sig genes.)
+  #' @param labelTop_v passed to volcanoWrangleMarkers() (if labelAll_v == F, this will come into play and set number of sig genes to label.)
+  #' @param labelDir_v passed to volcanoWrangleMarkers() (can either be 'both', 'up', or 'down', indicating with DEG direction(s) to take top genes from)
   #' @details
   #' Make a volcano plot comparing the DEGs of two different groups. Can be one findmarker result, or can plot two sets of results using splitVar_v
   #' @return volcano plot
@@ -39,7 +44,8 @@ plotVolcano <- function(data_dt, splitVar_v = "assay", runNames_v, geneCol_v, lf
       
     } # fi doubleCols_v
     
-    data_dt <- wrh.scRNA::volcanoWrangleMarkers(data_dt = data_dt, lfc_v = lfc_v, pval_v = pval_v)
+    data_dt <- wrh.scRNA::volcanoWrangleMarkers(data_dt = data_dt, lfc_v = lfc_v, pval_v = pval_v,
+                                                labelGenes_v = labelGenes_v, labelAll_v = labelAll_v, labelTop_v = labelTop_v, labelDir_v = labelDir_v)
     
     if (!is.null(splitVar_v)) {
       data_dt[[paste0(splitVar_v, "DE")]] <- paste(data_dt[[splitVar_v]], data_dt$diffExp)
