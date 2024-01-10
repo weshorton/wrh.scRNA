@@ -39,7 +39,7 @@ loadData <- function(markerDir_v = NULL, markerClass_v = "global", metaDir_v = N
   ### Seurat objects
   if (!is.null(rdsDir_v)) {
     
-    files_v <- grep(paste(pop_v, collapse = "|"), list.files(rdsDir_v, pattern = batch_v), value = T)
+    files_v <- grep(paste(paste(pop_v, collapse = "|"), paste(simpleCap(pop_v), collapse = "|"), sep = "|"), list.files(rdsDir_v, pattern = batch_v), value = T)
     out_ls[["seurat"]] <- sapply(files_v, function(x) readRDS(file.path(rdsDir_v, x)), USE.NAMES = T)
     names(out_ls[["seurat"]]) <- gsub("\\.rds", "", files_v)
   } # fi !is.null(rdsDir_v)
