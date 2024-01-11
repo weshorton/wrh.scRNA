@@ -1,5 +1,6 @@
-plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v, lfc_v, pval_v, ident1_v, colorCol_v, title_v = NULL, verbose_v = F,
-                        labelGenes_v = NULL, labelAll_v = F, labelTop_v = 20, labelDir_v = "both") {
+plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v = "Gene", lfc_v = 0.5, pval_v = 0.05, 
+                        ident1_v, colorCol_v = "diffExp", title_v = NULL, verbose_v = F, labelGenes_v = NULL, 
+                        labelAll_v = F, labelTop_v = NULL, labelDir_v = "both") {
   #' Plot Volcano
   #' @description
   #' Make a volcano plot of DEG results
@@ -17,9 +18,19 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v, 
   #' @param labelTop_v passed to volcanoWrangleMarkers() (if labelAll_v == F, this will come into play and set number of sig genes to label.)
   #' @param labelDir_v passed to volcanoWrangleMarkers() (can either be 'both', 'up', or 'down', indicating with DEG direction(s) to take top genes from)
   #' @details
-  #' Make a volcano plot comparing the DEGs of two different groups. Can be one findmarker result, or can plot two sets of results using splitVar_v
+  #' Make a volcano plot comparing the DEGs of two different groups. Can be one findmarker result, or can plot two sets of results using splitVar_v.
+  #' The different labeling options are a little complex:
+  #' 1. labelAll_v takes precendence over everything. If this is set to T, then all sig genes will be labeled.
+  #' 1. labelTop_v is used if labelAll_v == F. This is a numeric value setting the top N significant genes to label.
+  #' 1. labelDir_v is used in conjunction with labelTop_v. This determines if the top N up-regulated, down-regulated, or both genes should be labeled.
+  #' 1. labelGenes_v can be used independently or in conjunction with labelTop_v. If both are set, both will be labeled. If you only want labelGenes_v to be labeled, then labelTop_v must be NULL
   #' @return volcano plot
   #' @export
+  
+  ### Volcano colors
+  oneGroupVolcanoColors_v <- c("NO" = "grey", "DOWN" = "blue", "UP" = "red")
+  twoGroupVolcanoColors_v <- c("NO_1" = "grey", "DOWN_1" = "blue", "UP_1" = "red", "NO_2" = "darkgrey", "DOWN_2" = "darkblue", "UP_2" = "darkred")
+  darkVolcanoColors_v <- c("NO" = "darkgrey", "DOWN" = "darkblue", "UP" = "darkred")
   
   ### Prefix/Suffixes to search for in column names
   ixes_v <- paste(unlist(sapply(runNames_v, function(y) paste(c(paste0(c("\\.", "_"), y), paste0(y, c("\\.", "_"))), collapse = "|"), simplify = F)), collapse = "|")
@@ -75,6 +86,18 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v, 
     geom_hline(yintercept=-log10(pval_v), col="black", linetype = "dashed") +
     scale_color_manual(values=colors_v, labels = c("NO", "DOWN", "UP")) +
     guides(color = guide_legend(title = paste0(ident1_v, " Dir")))
+  
+  ### Add gene set labels, if required
+  if (length(which(unique(data_dt$setLabel) != "")) > 0) {
+    
+    plot_gg <- plot_gg + 
+      ggnewscale::new_scale_colour() +
+      geom_label_repel(data = data_dt, inherit.aes = F, aes(x = avg_log2FC, y = -log10(p_val_adj), col = setColor, label = setLabel),
+                       max.overlaps = Inf, label.padding = 0.1) +
+      scale_colour_manual(values = darkVolcanoColors_v, labels = names(darkVolcanoColors_v)) +
+      guides(colour = guide_legend(title = "Gene Set"))
+  }
+  
   
   ### Add titile
   if (!is.null(title_v)) plot_gg <- plot_gg + ggtitle(title_v)

@@ -6,21 +6,25 @@
 \usage{
 plotVolcano(
   data_dt,
-  splitVar_v = "assay",
-  runNames_v,
-  geneCol_v,
-  lfc_v,
-  pval_v,
+  splitVar_v = NULL,
+  runNames_v = "",
+  geneCol_v = "Gene",
+  lfc_v = 0.5,
+  pval_v = 0.05,
   ident1_v,
-  colorCol_v,
+  colorCol_v = "diffExp",
   title_v = NULL,
-  verbose_v = F
+  verbose_v = F,
+  labelGenes_v = NULL,
+  labelAll_v = F,
+  labelTop_v = NULL,
+  labelDir_v = "both"
 )
 }
 \arguments{
 \item{data_dt}{data.table of gene expression. Can be wrangled for volcano or not. Must have ident1_v and another ident.}
 
-\item{splitVar_v}{name to call the variable that the data is split on. If provided. If null, no split.}
+\item{splitVar_v}{name to call the variable that the data is split on. If provided. If null, no split. Have only used 'assay' so far.}
 
 \item{runNames_v}{values that splitVar_v is split on. If provided.}
 
@@ -35,6 +39,14 @@ plotVolcano(
 \item{title_v}{optional plot title.}
 
 \item{verbose_v}{logical indicating to print messages.}
+
+\item{labelGenes_v}{passed to volcanoWrangleMarkers() optional set of genes to label (regardless of significance)}
+
+\item{labelAll_v}{passed to volcanoWrangleMarkers() (logical indicating to plot all sig genes.)}
+
+\item{labelTop_v}{passed to volcanoWrangleMarkers() (if labelAll_v == F, this will come into play and set number of sig genes to label.)}
+
+\item{labelDir_v}{passed to volcanoWrangleMarkers() (can either be 'both', 'up', or 'down', indicating with DEG direction(s) to take top genes from)}
 }
 \value{
 volcano plot
@@ -43,5 +55,12 @@ volcano plot
 Make a volcano plot of DEG results
 }
 \details{
-Make a volcano plot comparing the DEGs of two different groups. Can be one findmarker result, or can plot two sets of results using splitVar_v
+Make a volcano plot comparing the DEGs of two different groups. Can be one findmarker result, or can plot two sets of results using splitVar_v.
+The different labeling options are a little complex:
+\enumerate{
+\item labelAll_v takes precendence over everything. If this is set to T, then all sig genes will be labeled.
+\item labelTop_v is used if labelAll_v == F. This is a numeric value setting the top N significant genes to label.
+\item labelDir_v is used in conjunction with labelTop_v. This determines if the top N up-regulated, down-regulated, or both genes should be labeled.
+\item labelGenes_v can be used independently or in conjunction with labelTop_v. If both are set, both will be labeled. If you only want labelGenes_v to be labeled, then labelTop_v must be NULL
+}
 }

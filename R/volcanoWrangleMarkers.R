@@ -25,6 +25,9 @@ volcanoWrangleMarkers <- function(data_dt, geneCol_v = "Gene",
   #' @return original data_dt with updated metadata info for plotting
   #' @export
   
+  ### Set local variables
+  dirVarCheck_lsv <- list("up" = c("up", "Up", "u", "U"), "down" = c("down", "Down", "D", "d"), "both" = c("both", "Both", "B", "b"))
+  
   ### Make a new column called "diffExp" that binarizes direction of change
   data_dt$diffExp <- "NO"
   data_dt[get(lfcCol_v) > lfc_v & get(pvalCol_v) < pval_v, diffExp := "UP"]
@@ -35,41 +38,79 @@ volcanoWrangleMarkers <- function(data_dt, geneCol_v = "Gene",
   dn_dt <- data_dt[diffExp == "DOWN",][order(get(pvalCol_v))]
   
   ### Assign labels
-  if (!is.null(labelGenes_v)) {
+  if (labelAll_v) {
     
-    upGenes_v <- intersect(up_dt[[geneCol_v]], labelGenes_v)
-    dnGenes_v <- intersect(up_dt[[geneCol_v]], labelGenes_v)
-    nonGenes_v <- intersect(data_dt[diffExp == "NO",get(geneCol_v)], labelGenes_v)
+    upGenes_v <- up_dt[[geneCol_v]]
+    dnGenes_v <- dn_dt[[geneCol_v]]
+    labelUpGenes_v <- labelDnGenes_v <- labelNonGenes_v <- NULL
     
   } else {
     
-    if (labelAll_v) {
-      
-      upGenes_v <- up_dt[[geneCol_v]]
-      dnGenes_v <- dn_dt[[geneCol_v]]
-      
-    } else {
-      
-      upGenes_v <- up_dt[1:min(up_dt[,.N], labelTop_v), get(geneCol_v)]
-      dnGenes_v <- dn_dt[1:min(dn_dt[,.N], labelTop_v), get(geneCol_v)]
-      
-    } # fi labelAll_v
+    upGenes_v <- dnGenes_v <- NULL
+    labelUpGenes_v <- labelDnGenes_v <- labelNonGenes_v <- NULL
     
-  } # fi is.null(labelGenes_v)
+    if (!is.null(labelTop_v)) {
+      upGenes_v <- c(upGenes_v, up_dt[1:min(up_dt[,.N], labelTop_v), get(geneCol_v)])
+      dnGenes_v <- c(dnGenes_v, dn_dt[1:min(dn_dt[,.N], labelTop_v), get(geneCol_v)])
+    } # fi labelTop_v
+    
+    if (!is.null(labelGenes_v)) {
+      labelUpGenes_v <- intersect(up_dt[[geneCol_v]], labelGenes_v)
+      labelDnGenes_v <- intersect(up_dt[[geneCol_v]], labelGenes_v)
+      labelNonGenes_v <- intersect(data_dt[diffExp == "NO",get(geneCol_v)], labelGenes_v)
+    } # fi labelGenes_v
+    
+  } # fi labelAll_v
   
-  ### Add new column for labels. If in upGenes_v, dnGenes_v, or nonGenes_v, will get gene name
-  ### if not, will be blank ('')
+  ### Now have to figure out labels.
   data_dt$DElabel <- ""
-  if (labelDir_v %in% c("up", "Up", "u", "U") | labelDir_v %in% c("both", "Both", "B", "b")) {
-    data_dt[get(geneCol_v) %in% upGenes_v, DElabel := get(geneCol_v)]
-  }
-  if (labelDir_v %in% c("down", "Down", "D", "d") | labelDir_v %in% c("both", "Both", "B", "b")) {
-    data_dt[get(geneCol_v) %in% dnGenes_v, DElabel := get(geneCol_v)]
-  }
-  if (!is.null(labelGenes_v)) data_dt[get(geneCol_v) %in% nonGenes_v, DElabel := get(geneCol_v)]
+  
+  if (is.null(upGenes_v) & is.null(labelUpGenes_v)) {
+    
+    warning("Both upGenes_v and labelUpGenes_v are NULL, indicating:
+    
+            labelAll_v == F
+            labelTop_v == NULL
+            labelGenes_v == NULL\n\nat least one of these needs to be set.")
+    
+    return(data_dt)
+    
+  } else {
+    
+    if (!is.null(upGenes_v)) {
+      
+      if (labelDir_v %in% dirVarCheck_lsv$up | labelDir_v %in% dirVarCheck_lsv$both) {
+        data_dt[get(geneCol_v) %in% upGenes_v, DElabel := get(geneCol_v)]
+      } # fi up
+      
+      if (labelDir_v %in% dirVarCheck_lsv$dn | labelDir_v %in% dirVarCheck_lsv$both) {
+        data_dt[get(geneCol_v) %in% dnGenes_v, DElabel := get(geneCol_v)]
+      } # fi dn
+      
+      
+    } # fi !is.null(upGenes_v)
+    
+    if (!is.null(labelUpGenes_v)) {
+      
+      data_dt$setLabel <- ""
+      
+      if (labelDir_v %in% dirVarCheck_lsv$up | labelDir_v %in% dirVarCheck_lsv$both) {
+        data_dt[get(geneCol_v) %in% labelUpGenes_v, setLabel := get(geneCol_v)]
+      } # fi up
+      
+      if (labelDir_v %in% dirVarCheck_lsv$dn | labelDir_v %in% dirVarCheck_lsv$both) {
+        data_dt[get(geneCol_v) %in% labelDnGenes_v, setLabel := get(geneCol_v)]
+      } # fi dn
+      
+      data_dt[get(geneCol_v) %in% labelNonGenes_v, setLabel := get(geneCol_v)]
+      
+    } # fi !is.null(labelUpGenes_v)
+    
+  } # fi double NULL
   
   ### Make diffExp factor
   data_dt$diffExp <- factor(data_dt$diffExp, levels = c("NO", "DOWN", "UP"))
+  if (!is.null(labelUpGenes_v)) data_dt$setColor <- data_dt$diffExp
   
   ### Return
   return(data_dt)

@@ -13,7 +13,8 @@ volcanoWrangleMarkers(
   pval_v = 0.05,
   labelGenes_v = NULL,
   labelAll_v = T,
-  labelTop_v = 20
+  labelTop_v = 20,
+  labelDir_v = "both"
 )
 }
 \arguments{
