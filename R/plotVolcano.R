@@ -87,20 +87,29 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
     scale_color_manual(values=colors_v, labels = c("NO", "DOWN", "UP")) +
     guides(color = guide_legend(title = paste0(ident1_v, " Dir")))
   
+  ### Add titile
+  if (!is.null(title_v)) plot_gg <- plot_gg + ggtitle(title_v)
+  
   ### Add gene set labels, if required
-  if (length(which(unique(data_dt$setLabel) != "")) > 0) {
+  setLabels_v <- setdiff(unique(data_dt$setLabel), "")
+  if (length(setLabels_v) > 0) {
     
+    ### Update plot
     plot_gg <- plot_gg + 
       ggnewscale::new_scale_colour() +
       geom_label_repel(data = data_dt, inherit.aes = F, aes(x = avg_log2FC, y = -log10(p_val_adj), col = setColor, label = setLabel),
                        max.overlaps = Inf, label.padding = 0.1) +
       scale_colour_manual(values = darkVolcanoColors_v, labels = names(darkVolcanoColors_v)) +
       guides(colour = guide_legend(title = "Gene Set"))
+    
+    ### Determine Significance
+    sigSetLabels_v <- setdiff(as.character(data_dt[setLabel %in% setLabels_v, setColor]), "NO")
+    
+    ### Add label
+    plot_gg <- ggpubr::annotate_figure(p = plot_gg, 
+                                       bottom = text_grob(label = paste0("Found ", length(setLabels_v), " of ", length(labelGenes_v), 
+                                                                         " genes from list (", length(sigSetLabels_v), " significant)"), size = 8, hjust = -1))
   }
-  
-  
-  ### Add titile
-  if (!is.null(title_v)) plot_gg <- plot_gg + ggtitle(title_v)
   
   ### Return
   return(plot_gg)
