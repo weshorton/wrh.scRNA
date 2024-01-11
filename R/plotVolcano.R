@@ -108,7 +108,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
     ### Add label
     plot_gg <- ggpubr::annotate_figure(p = plot_gg, 
                                        bottom = text_grob(label = paste0("Found ", length(setLabels_v), " of ", length(labelGenes_v), 
-                                                                         " genes from list (", length(sigSetLabels_v), " significant)"), size = 8, hjust = -1))
+                                                                         " genes from list (", length(sigSetLabels_v), " significant)"), size = 8))
   }
   
   ### Return
