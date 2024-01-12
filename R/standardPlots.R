@@ -76,7 +76,37 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
     warning("ind_mPop column not found. Will not make plot.")
   } else {
     out_lsgg[["origMpop"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "ind_mPop", label = F, pt.size = pt.size_v) +
-      coord_equal() + ggtitle(paste0(name_v, " Embedding,\nindividual-batch Cell Classes"))
+      coord_equal() + ggtitle(paste0(name_v, "\nindividual-batch Cell Classes"))
+  }
+  
+  ### Color by full data populations
+  if (!"full_mPop" %in% colnames(seurat_obj@meta.data)) {
+    warning("full_mPop column not found. Will not make plot.")
+  } else {
+    out_lsgg[["fullMpop"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "full_mPop", label = F, pt.size = pt.size_v) +
+      coord_equal() + ggtitle(paste0(name_v, "\nFull Dataset Cell Classes"))
+  }
+  
+  ### Color by major populations
+  if (!"mPop" %in% colnames(seurat_obj@meta.data)) {
+    warning("mPop column not found. Will not make plot.")
+  } else {
+    out_lsgg[["mPop"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "mPop", label = F, pt.size = pt.size_v) +
+      coord_equal() + ggtitle(paste0(name_v, "\nMajor Population Cell Classes"))
+  }
+  
+  ### Color by sub-populations populations
+  if (!"sPop" %in% colnames(seurat_obj@meta.data)) {
+    warning("sPop column not found. Will not make plot.")
+  } else {
+    out_lsgg[["sPop"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "sPop", label = F, pt.size = pt.size_v) +
+      coord_equal() + ggtitle(paste0(name_v, "\nSub Population Cell Classes"))
+  }
+  
+  ### Color by sub-populations populations
+  if ("collapsePop" %in% colnames(seurat_obj@meta.data)) {
+    out_lsgg[["collapsePop"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "sPop", label = F, pt.size = pt.size_v) +
+      coord_equal() + ggtitle(paste0(name_v, "\nCollapse Population Cell Classes"))
   }
   
   if (featurePlots_v) {
@@ -127,6 +157,12 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
     } # fi
     
   } # fi featurePlots_v
+  
+  ### Add text grob of parameters
+  param_dt <- data.table("Parameter" = c("Reduction", "Cluster Column", "Resolution", "Name"),
+                         "Value" = c(reduction_v, clustCol_v, res_v, name_v))
+  param_gg <- ggplot2::ggplot() + ggplot2::annotate(geom = "table", x = 0, y = 0, label = list(param_dt)) + theme_void()
+  out_lsgg[["params"]] <- param_gg
   
   ### Output
   return(out_lsgg)
