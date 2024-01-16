@@ -11,7 +11,8 @@ leadingEdgeVolcano(
   treat_v,
   lfc_v = 0.5,
   pval_v = 0.05,
-  title_v = NULL
+  title_v = NULL,
+  labelSize_v = 1
 )
 }
 \arguments{
@@ -20,6 +21,16 @@ leadingEdgeVolcano(
 \item{gsea_res}{output of GSEA runFGSEA (must be wrangled...change this)}
 
 \item{pathway_v}{vector of the pathway name to make plot for}
+
+\item{treat_v}{see plotVolcano. Treatment to label legend with}
+
+\item{lfc_v}{log-fold-change cut-off}
+
+\item{pval_v}{adjusted p-value cut-off}
+
+\item{title_v}{plot title}
+
+\item{labelSize_v}{how much to increase label text by. Default is 1.}
 }
 \value{
 ggplot

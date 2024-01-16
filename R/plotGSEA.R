@@ -1,4 +1,5 @@
-plotGSEA <- function(data_dt, list_v, listName_v, title_v = NULL, pop_v, spop_v = NULL, treat_v, otherTreat_v, le_v = T, shortenNames_v = T, lfc_v = 0.5, pval_v = 0.05) {
+plotGSEA <- function(data_dt, list_v, listName_v, title_v = NULL, pop_v, spop_v = NULL, treat_v, otherTreat_v, 
+                     le_v = T, shortenNames_v = T, lfc_v = 0.5, pval_v = 0.05, labelSize_v = 1) {
   #' Run GSEA
   #' @description
     #' Run GSEA and output results. Optionally output plots
@@ -15,6 +16,7 @@ plotGSEA <- function(data_dt, list_v, listName_v, title_v = NULL, pop_v, spop_v 
   #' @param shortenNames_v logical indicating if gene set names should be shortened.
   #' @param lfc_v log fold change - passed through for leading edge gene filter
   #' @param pval_v adjusted p-value - used to filter significant pathways and also passed through for leading edge filter
+  #' @param labelSize_v how big to make leading edge volcano label text. Default is 1.
   #' @return not sure yet
   #' @export
   
@@ -88,7 +90,8 @@ plotGSEA <- function(data_dt, list_v, listName_v, title_v = NULL, pop_v, spop_v 
         
         path_v <- gsea_res$pathway
         leVolcano_lsgg <- sapply(path_v, function(x) {
-          leadingEdgeVolcano(data_dt = data_dt, gsea_res = gsea_res, pathway_v = x, treat_v = treat_v, lfc_v = lfc_v, pval_v = pval_v, title_v = title_v)
+          leadingEdgeVolcano(data_dt = data_dt, gsea_res = gsea_res, pathway_v = x, treat_v = treat_v, lfc_v = lfc_v, 
+                             pval_v = pval_v, title_v = title_v, labelSize_v = labelSize_v)
         }, simplify = F)
         
         out_ls[["le"]] <- leVolcano_lsgg

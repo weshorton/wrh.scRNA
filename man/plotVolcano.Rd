@@ -18,7 +18,8 @@ plotVolcano(
   labelGenes_v = NULL,
   labelAll_v = F,
   labelTop_v = NULL,
-  labelDir_v = "both"
+  labelDir_v = "both",
+  labelSize_v = 1
 )
 }
 \arguments{
@@ -47,6 +48,8 @@ plotVolcano(
 \item{labelTop_v}{passed to volcanoWrangleMarkers() (if labelAll_v == F, this will come into play and set number of sig genes to label.)}
 
 \item{labelDir_v}{passed to volcanoWrangleMarkers() (can either be 'both', 'up', or 'down', indicating with DEG direction(s) to take top genes from)}
+
+\item{labelSize_v}{value to increase text size of labels on plot}
 }
 \value{
 volcano plot

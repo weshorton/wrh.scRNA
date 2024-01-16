@@ -1,6 +1,6 @@
 plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v = "Gene", lfc_v = 0.5, pval_v = 0.05, 
                         ident1_v, colorCol_v = "diffExp", title_v = NULL, verbose_v = F, labelGenes_v = NULL, 
-                        labelAll_v = F, labelTop_v = NULL, labelDir_v = "both") {
+                        labelAll_v = F, labelTop_v = NULL, labelDir_v = "both", labelSize_v = 1) {
   #' Plot Volcano
   #' @description
   #' Make a volcano plot of DEG results
@@ -17,6 +17,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   #' @param labelAll_v passed to volcanoWrangleMarkers() (logical indicating to plot all sig genes.)
   #' @param labelTop_v passed to volcanoWrangleMarkers() (if labelAll_v == F, this will come into play and set number of sig genes to label.)
   #' @param labelDir_v passed to volcanoWrangleMarkers() (can either be 'both', 'up', or 'down', indicating with DEG direction(s) to take top genes from)
+  #' @param labelSize_v value to increase text size of labels on plot
   #' @details
   #' Make a volcano plot comparing the DEGs of two different groups. Can be one findmarker result, or can plot two sets of results using splitVar_v.
   #' The different labeling options are a little complex:
@@ -81,7 +82,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   plot_gg <- ggplot2::ggplot(data = data_dt, aes(x = avg_log2FC, y = -log10(p_val_adj), col = !!sym(colorCol_v), label = DElabel)) +
     geom_point() + my_theme() +
     theme(legend.position = "right") +
-    geom_label_repel(show.legend = F, max.overlaps = Inf, label.padding = 0.1) +
+    geom_label_repel(size = labelSize_v, show.legend = F, max.overlaps = Inf, label.padding = 0.1) +
     geom_vline(xintercept=c(-lfc_v, lfc_v), col="black", linetype = "dashed") +
     geom_hline(yintercept=-log10(pval_v), col="black", linetype = "dashed") +
     scale_color_manual(values=colors_v, labels = c("NO", "DOWN", "UP")) +

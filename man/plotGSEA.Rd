@@ -16,7 +16,8 @@ plotGSEA(
   le_v = T,
   shortenNames_v = T,
   lfc_v = 0.5,
-  pval_v = 0.05
+  pval_v = 0.05,
+  labelSize_v = 1
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ plotGSEA(
 \item{lfc_v}{log fold change - passed through for leading edge gene filter}
 
 \item{pval_v}{adjusted p-value - used to filter significant pathways and also passed through for leading edge filter}
+
+\item{labelSize_v}{how big to make leading edge volcano label text. Default is 1.}
 
 \item{plot_v}{logical indicating if plots should be made/saved or just the results calculated.}
 }
