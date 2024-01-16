@@ -1,4 +1,4 @@
-plotXYScatter <- function(data_dt, x_v, y_v, title_v = NULL, cor_v = T, scale_v = NULL, facet_v = NULL) {
+plotXYScatter <- function(data_dt, x_v, y_v, title_v = NULL, cor_v = T, scale_v = NULL, facet_v = NULL, color_v = NULL) {
   #' Plot XY Scatter
   #' @description
   #' Plot XY scatter to compare two variables. 
@@ -10,6 +10,7 @@ plotXYScatter <- function(data_dt, x_v, y_v, title_v = NULL, cor_v = T, scale_v 
   #' @param cor_v logical. Indicates whether or not to include regression line and correlation
   #' @param scale_v either NULL (no scale), "both", "x", or "y" indicating where to scale.
   #' @param facet_v either NULL (don't facet), or a column from data_dt to use as input to facet_wrap
+  #' @param color_v either NULL (don't split by color) or column form data_dt to color by
   #' @details
   #' Create a standard ggplot xy-scatterplot using the provided parameters.
   #' No option to facet right now, best to pair with ggarrange()
@@ -47,6 +48,11 @@ plotXYScatter <- function(data_dt, x_v, y_v, title_v = NULL, cor_v = T, scale_v 
   ### Facet
   if (!is.null(facet_v)) {
     plot_gg <- plot_gg + facet_wrap(as.formula(paste0("~", facet_v)))
+  }
+  
+  ### Color
+  if (!is.null(color_v)) {
+    plot_gg <- plot_gg + aes(color = !!sym(color_v))
   }
   
   ### Add correlation

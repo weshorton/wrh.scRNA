@@ -11,7 +11,8 @@ plotXYScatter(
   title_v = NULL,
   cor_v = T,
   scale_v = NULL,
-  facet_v = NULL
+  facet_v = NULL,
+  color_v = NULL
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ plotXYScatter(
 \item{scale_v}{either NULL (no scale), "both", "x", or "y" indicating where to scale.}
 
 \item{facet_v}{either NULL (don't facet), or a column from data_dt to use as input to facet_wrap}
+
+\item{color_v}{either NULL (don't split by color) or column form data_dt to color by}
 }
 \value{
 ggplot object
