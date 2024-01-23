@@ -1,6 +1,7 @@
-displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "sPop", batch_v, cPops_v = F, groupBy_v,
+displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "sPop", batch_v, cPops_v = F, popCol_v = "mPop",
+                           groupBy_v = list("Population", "Treatment", "Cluster"), alpha_v = 0.5,
                            summary_lsv = list(treat = "Treatment", pop = "mPop", combo = c("Treatment", "mPop")), 
-                           outDir_v = NULL, print_v = T, cutOff_v = cutOff_v) {
+                           outDir_v = NULL, outName_v = NULL, print_v = T, displayOrder_v = "decreasing", cutOff_v = cutOff_v) {
   #' Display Summary Info
   #' @description
     #' Display summary tables and umaps of provided object.
@@ -10,10 +11,14 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "sPop",
   #' @param subCol_v Column to use in conjunction with name_v to subset data to summarize.
   #' @param batch_v name of batch
   #' @param cPops_v logical indicating if the sub-populations are the "collapsed" pops or not. Used to get appropriate colors.
-  #' @param groupBy_v name of column to group cells by in output. 
+  #' @param popCol_v column name for population annotations
+  #' @param groupBy_v vector containing any or all of 'Population', 'Treatment', and 'Cluster', indicating which UMAPs to make.
+  #' @param alpha_v alpha parameter only used for by-treatment plot.
   #' @param summary_lsv list of vectors of treatments to summarize. See details.
   #' @param outDir_v optional output directory to save plots and data
+  #' @param outName_v optional name for output file.
   #' @param print_v logical indicating to print tables and plots to console.
+  #' @param displayOrder_v either 'decreasing' to indicate that identity with most number of cells goes on the bottom, or 'factor' to go by factor levels.
   #' @param cutOff_v numeric value indicating minimum number of cells needed in each group.
   #' @details
     #' This function calls getSummaryTables(), formats those tables, and makes umaps
@@ -32,7 +37,12 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "sPop",
   #' 2. print plots to console.
   #' @export
   
-  ### Handle name stuff
+  ###
+  ### Wrangle ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ###
+  
+  ### Get colors, treatments, cluster name, umap name, and subset object
+  
   name_v <- gsub("^.*_", "", name_v)
   subBatch_v <- gsub("atch", "", batch_v)
   if (name_v == 'full') {
@@ -43,7 +53,6 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "sPop",
     subset_v <- simpleCap(name_v)
   }
   
-  ### Get package data
   clustName_v <- paste0(subBatch_v, "_clusterNames_v")
   umapName_v <- paste0(subBatch_v, "_umapNames_v")
   if (name_v == 'full') {
@@ -65,34 +74,68 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "sPop",
     colors_v <- eval(as.name(colorName_v))
   }
   
-  ### Call summary fxn
-  summary_lsdt <- getSummaryTables(seurat_obj = obj, subset_v = subset_v, subCol_v = subCol_v,
-                                   summary_lsv = summary_lsv)
+  treats_v <- intersect(eval(as.name(paste0(subBatch_v, "_treats_v"))), unique(obj$Treatment))
+  if (class(obj@meta.data$Treatment) != "factor") obj$Treatment <- factor(obj$Treatment, levels = treats_v)
   
-  ### Make plots
+  if (displayOrder_v == "decreasing") {
+    counts_dt <- as.data.table(table(obj$Treatment)); setorder(counts_dt, N)
+    order_v <- counts_dt$V1
+    # obj$displayTreat <- as.character(obj$Treatment)
+    # obj$displayTreat <- factor(obj$displayTreat, levels = order_v)
+  } else if (displayOrder_v == "factor") {
+    # obj$displayTreat <- obj$Treatment
+    order_v <- treats_v
+  } else {
+    stop(sprintf("Either 'factor' or 'decreasing' must be supplied for displayTreat_v. Provided: %s\n", displayOrder_v))
+  } # fi displayOrder_v
+  
   if (is.null(subObj)) subObj <- obj
   
-  cluster_gg <- DimPlot(subObj, reduction = umap_v, group.by = clust_v, pt.size = 0.1, label = T) + coord_equal() +
-    ggtitle(paste0(batch_v, " ", name_v, " Clusters\n", gsub("seurat_clusters_", "", clustName_v)))
-  
-  ### Check colors
-  if (length(setdiff(names(colors_v), unique(subObj@meta.data[[groupBy_v]]))) > 0) {
+  if (length(setdiff(names(colors_v), unique(subObj@meta.data[[popCol_v]]))) > 0) {
     names(colors_v) <- gsub("\\/", "-", gsub(" ", ".", names(colors_v)))
   }
   
-  pop_gg <- DimPlot(subObj, reduction = umap_v, group.by = groupBy_v, pt.size = 0.1, label = F, cols = colors_v) + coord_equal() +
-    ggtitle(paste0(batch_v, " ", name_v, " Populations"))
+  ###
+  ### Output ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ###
+  
+  ### Call summary fxn
+  summary_lsdt <- getSummaryTables(obj = obj, subset_v = subset_v, subCol_v = subCol_v,
+                                   summary_lsv = summary_lsv)
+  
+  ### Make plots
+  plots_lsgg <- list()
+  
+  if ("Population" %in% groupBy_v) {
+    plots_lsgg[["Population"]] <- DimPlot(subObj, reduction = umap_v, group.by = popCol_v, pt.size = 0.2, label = F, cols = colors_v) + coord_equal() +
+      ggtitle(paste0(batch_v, " ", name_v, " Populations")) + 
+      umapFigureTheme()
+      
+  } # fi pop
+  
+  obj$Treatment <- factor(as.character(obj$Treatment), levels = rev(treats_v))
+  
+  if ("Treatment" %in% groupBy_v) {
+    plots_lsgg[["Treatment"]] <- DimPlot(subObj, reduction = umap_v, group.by = "Treatment", pt.size = 0.2, order = order_v, label = F, cols = wrh.scRNA::treatColors_v, alpha = alpha_v) + coord_equal() +
+      ggtitle(paste0(batch_v, " ", name_v, " Populations")) +
+      umapFigureTheme()
+  } # fi treat
+  
+  if ("Cluster" %in% groupBy_v) {
+    plots_lsgg[["Cluster"]] <- DimPlot(subObj, reduction = umap_v, group.by = clust_v, pt.size = 0.2, label = T) + coord_equal() +
+      ggtitle(paste0(batch_v, " ", name_v, " Clusters\n", gsub("seurat_clusters_", "", clustName_v))) +
+      umapFigureTheme()
+  } # fi clust
   
   if (!is.null(outDir_v)) {
-    pdf(file = file.path(outDir_v, paste0(batch_v, "_", name_v, "_", groupBy_v, "_umap.pdf")), onefile = T, width = 10, height = 10)
-    print(cluster_gg)
-    print(pop_gg)
+    if (is.null(outName_v)) { outName_v <- paste0(batch_v, "_", name_v, "_umap.pdf")}
+    pdf(file = file.path(outDir_v, outName_v), onefile = T, width = 10, height = 10)
+    invisible(sapply(plots_lsgg, print))
     dev.off()
   } # fi outDir
   
   if (print_v) {
-    print(cluster_gg)
-    print(pop_gg)
+    invisible(sapply(plots_lsgg, print))
   } # fi print
   
   ### Make Tables

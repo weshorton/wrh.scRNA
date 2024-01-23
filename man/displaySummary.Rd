@@ -11,10 +11,14 @@ displaySummary(
   subCol_v = "sPop",
   batch_v,
   cPops_v = F,
-  groupBy_v,
+  popCol_v = "mPop",
+  groupBy_v = list("Population", "Treatment", "Cluster"),
+  alpha_v = 0.5,
   summary_lsv = list(treat = "Treatment", pop = "mPop", combo = c("Treatment", "mPop")),
   outDir_v = NULL,
+  outName_v = NULL,
   print_v = T,
+  displayOrder_v = "decreasing",
   cutOff_v = cutOff_v
 )
 }
@@ -31,13 +35,21 @@ displaySummary(
 
 \item{cPops_v}{logical indicating if the sub-populations are the "collapsed" pops or not. Used to get appropriate colors.}
 
-\item{groupBy_v}{name of column to group cells by in output.}
+\item{popCol_v}{column name for population annotations}
+
+\item{groupBy_v}{vector containing any or all of 'Population', 'Treatment', and 'Cluster', indicating which UMAPs to make.}
+
+\item{alpha_v}{alpha parameter only used for by-treatment plot.}
 
 \item{summary_lsv}{list of vectors of treatments to summarize. See details.}
 
 \item{outDir_v}{optional output directory to save plots and data}
 
+\item{outName_v}{optional name for output file.}
+
 \item{print_v}{logical indicating to print tables and plots to console.}
+
+\item{displayOrder_v}{either 'decreasing' to indicate that identity with most number of cells goes on the bottom, or 'factor' to go by factor levels.}
 
 \item{cutOff_v}{numeric value indicating minimum number of cells needed in each group.}
 }

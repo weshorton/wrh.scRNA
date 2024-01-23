@@ -1,10 +1,10 @@
-getSummaryTables <- function(seurat_obj, subset_v = NULL, subCol_v = "mPop",
+getSummaryTables <- function(obj, subset_v = NULL, subCol_v = "mPop",
                              summary_lsv = list("treat" = "Treatment",
                                                 "pop" = "mPop",
                                                 "combo" = c("Treatment", "mPop"))) {
   #' Get Tables
   #' @description Get summary tables of selected columns
-  #' @param seurat_obj seurat object to summarize. Must have specified columns
+  #' @param obj seurat object to summarize. Must have specified columns
   #' @param subset_v subset data on provided value
   #' @param subCol_v specify which column to subset using subset_v
   #' @param summary_lsv list of vectors of columns to summarize.
@@ -14,7 +14,7 @@ getSummaryTables <- function(seurat_obj, subset_v = NULL, subCol_v = "mPop",
   #' @export
   
   ### Extract meta data
-  meta_dt <- as.data.table(seurat_obj@meta.data)
+  meta_dt <- as.data.table(obj@meta.data)
   
   ### Subset if desired
   if (!is.null(subset_v)) meta_dt <- meta_dt[get(subCol_v) %in% subset_v,]
@@ -68,12 +68,12 @@ getSummaryTables <- function(seurat_obj, subset_v = NULL, subCol_v = "mPop",
     
     ### Combo
     if ("combo" %in% names(summary_lsv)) {
-      combo <- sapply(batches_v, function(x) {
+      combo_ls <- sapply(batches_v, function(x) {
         convertDFT(t(as.data.frame.matrix(table(meta_dt[batchID == x, mget(summary_lsv$combo)]))), newName_v = "Pop")
-      })
+      }, simplify = F)
       merge_dt <- convertDFT(t(as.data.frame.matrix(table(meta_dt[,mget(summary_lsv$combo)]))), newName_v = "Pop")
-      combo[["Total"]] <- merge_dt
-      out_ls[["combo"]] <- combo
+      combo_ls[["Total"]] <- merge_dt
+      out_ls[["combo"]] <- combo_ls
     }
     
   } # if (length(batches))

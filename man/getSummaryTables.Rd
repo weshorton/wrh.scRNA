@@ -5,14 +5,14 @@
 \title{Get Tables}
 \usage{
 getSummaryTables(
-  seurat_obj,
+  obj,
   subset_v = NULL,
   subCol_v = "mPop",
   summary_lsv = list(treat = "Treatment", pop = "mPop", combo = c("Treatment", "mPop"))
 )
 }
 \arguments{
-\item{seurat_obj}{seurat object to summarize. Must have specified columns}
+\item{obj}{seurat object to summarize. Must have specified columns}
 
 \item{subset_v}{subset data on provided value}
 
