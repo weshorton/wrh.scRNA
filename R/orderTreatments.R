@@ -9,7 +9,7 @@ orderTreatments <- function(names_lsv, order_v, skip_v = "batch|lymphoid|myeloid
   #' @export
   
   ### Handle class
-  if (!all.equal(class(names_lsv), "list")) names_lsv <- list(names_lsv)
+  if (!is.logical(all.equal(class(names_lsv), "list"))) names_lsv <- list(names_lsv)
   
   ### Order
   out_lsv <- sapply(names_lsv, function(x) {
