@@ -4,7 +4,12 @@
 \alias{readGlobalMarkers}
 \title{Read Global Markers}
 \usage{
-readGlobalMarkers(inDir_v, dirs_v, grep_v = "2x|3xNR|3xR|4x|d80|Ent|NT|PTX")
+readGlobalMarkers(
+  inDir_v,
+  dirs_v,
+  grep_v = "2x|3xNR|3xR|4x|d80|Ent|NT|PTX|3x|3xR\\\\+4x|Unt",
+  toRead_v = NULL
+)
 }
 \arguments{
 \item{inDir_v}{path to the main data directory that contains dirs_v}
@@ -12,6 +17,8 @@ readGlobalMarkers(inDir_v, dirs_v, grep_v = "2x|3xNR|3xR|4x|d80|Ent|NT|PTX")
 \item{dirs_v}{vector of directories to read data from. Should be batch3_lymphoid, batch3_myeloid, batch3_neoplastic (or batch12)}
 
 \item{grep_v}{character string to extract names. Should be "2x|3xNR|3xR|4x|d80|Ent|NT|PTX"}
+
+\item{toRead_v}{used to grep which files to read in.}
 }
 \value{
 list of length(dirs_v), each element is a list whose length is the number of treatments run, and each of those

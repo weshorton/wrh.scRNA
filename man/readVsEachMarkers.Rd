@@ -4,7 +4,13 @@
 \alias{readVsEachMarkers}
 \title{Read VS Each Markers}
 \usage{
-readVsEachMarkers(inDir_v, dirs_v, grep_v = "2x|3xNR|3xR|4x|d80|Ent|NT|PTX")
+readVsEachMarkers(
+  inDir_v,
+  dirs_v,
+  grep_v = "2x|3xNR|3xR|4x|d80|Ent|NT|PTX|3x|Unt",
+  toRead_v = NULL,
+  toReadSpop_v = NULL
+)
 }
 \arguments{
 \item{inDir_v}{path to the main data directory that contains dirs_v}
@@ -12,6 +18,10 @@ readVsEachMarkers(inDir_v, dirs_v, grep_v = "2x|3xNR|3xR|4x|d80|Ent|NT|PTX")
 \item{dirs_v}{vector of directories to read data from. Should be batch3_lymphoid, batch3_myeloid, batch3_neoplastic (or batch12)}
 
 \item{grep_v}{character string to extract names. Should be "2x|3xNR|3xR|4x|d80|Ent|NT|PTX"}
+
+\item{toRead_v}{used to grep which files to read in within an spop directory}
+
+\item{toReadSpop_v}{used to grep which spop directories to read in}
 }
 \value{
 list of length(dirs_v), each element is a list whose length is the number of treatments run, and each of those

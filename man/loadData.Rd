@@ -10,7 +10,8 @@ loadData(
   metaDir_v = NULL,
   rdsDir_v = NULL,
   batch_v,
-  pop_v
+  pop_v,
+  toRead_v = "_2x_|_3xNR_|_3xR_|_4x_|_d80_|_Ent_|_NT_|_PTX_|_3x_|_3xR\\\\+4x|_Unt_"
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ loadData(
 \item{batch_v}{batch name that identifies files to read in}
 
 \item{pop_v}{population names that identify files to read in.}
+
+\item{toRead_v}{used to grep what to input.}
 }
 \value{
 list with marker results, metadata, and seurat objects. Read in objects with provided directories. If dir == NULL, not read in.
