@@ -113,12 +113,17 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, subCol_v = "sPop",
       
   } # fi pop
   
-  obj$Treatment <- factor(as.character(obj$Treatment), levels = rev(treats_v))
-  
   if ("Treatment" %in% groupBy_v) {
-    plots_lsgg[["Treatment"]] <- DimPlot(subObj, reduction = umap_v, group.by = "Treatment", pt.size = 0.2, order = order_v, label = F, cols = wrh.scRNA::treatColors_v, alpha = alpha_v) + coord_equal() +
+    treats_gg <- DimPlot(subObj, reduction = umap_v, group.by = "Treatment", pt.size = 0.2, order = order_v, label = F, cols = wrh.scRNA::treatColors_v, alpha = alpha_v) + coord_equal() +
       ggtitle(paste0(batch_v, " ", name_v, " Populations")) +
-      umapFigureTheme()
+      umapFigureTheme() + theme(legend.position = "none")
+    
+    newLegend_gg <- g_legend(DimPlot(subObj, reduction = umap_v, group.by = "Treatment", pt.size = 0.2, cols = wrh.scRNA::treatColors_v) + umapFigureTheme())
+    
+    outTreats_gg <- ggpubr::ggarrange(plotlist = list(treats_gg, newLegend_gg), ncol = 2, nrow = 1, widths = c(4,1))
+    
+    plots_lsgg[["Treatment"]] <- outTreats_gg
+    
   } # fi treat
   
   if ("Cluster" %in% groupBy_v) {
