@@ -410,7 +410,7 @@
 #' named vector of colors of length 3
 #' \describe{
 #'    \item{values}{grey, blue, red}
-#'    \item{names}(NO, DOWN, UP)
+#'    \item{names}{NO, DOWN, UP}
 #'  }
 "oneGroupVolcanoColors_v"
 
