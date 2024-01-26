@@ -30,7 +30,7 @@ getSummaryTables <- function(obj, subset_v = NULL, subCol_v = "mPop",
     ### Treatments
     if ("treat" %in% names(summary_lsv)) {
       treat <- as.data.table(table(as.character(meta_dt[[summary_lsv$treat]]))); colnames(treat) <- c("Treat", "nCells")
-      treat <- rbind(treat, list("Total", sum(treat$nCells)))
+      #treat <- rbind(treat, list("Total", sum(treat$nCells)))
       out_ls[["treat"]] <- treat
     } # fi
     
@@ -54,7 +54,7 @@ getSummaryTables <- function(obj, subset_v = NULL, subCol_v = "mPop",
     
     ### Treatments
     if ("treat" %in% names(summary_lsv)) {
-      treat <- convertDFT(as.data.frame.matrix(table(meta_dt[,mget(c(summary_lsv$treat, "batchID"))])), newName_v = "Treatment")
+      treat <- convertDFT(as.data.frame.matrix(table(meta_dt[,mget(c(summary_lsv$treat, "batchID"))])), newName_v = "Treat")
       treat[,Total := rowSums(.SD), .SDcols = batches_v]
       out_ls[["treat"]] <- treat
     }

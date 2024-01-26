@@ -8,18 +8,21 @@ displaySummary(
   obj,
   subObj = NULL,
   name_v = NULL,
-  subCol_v = "sPop",
   batch_v,
-  cPops_v = F,
-  popCol_v = "mPop",
-  groupBy_v = list("Population", "Treatment", "Cluster"),
-  alpha_v = 0.5,
-  summary_lsv = list(treat = "Treatment", pop = "mPop", combo = c("Treatment", "mPop")),
   outDir_v = NULL,
-  outName_v = NULL,
-  print_v = T,
+  popCol_v = "mPop",
+  treatCol_v = "Treatment",
+  subCol_v = "sPop",
+  cPops_v = F,
+  summary_lsv = list(treat = "Treatment", pop = "mPop", combo = c("Treatment", "mPop")),
+  plots_lsv = list(umap = c("Population", "Treatment", "Cluster", "byTreat"), bar =
+    c("Population", "Treatment", "TreatPop", "PopTreat", "byTreat"), stackBar =
+    c("TreatPop", "PopTreat"), facetUMAP = c("TreatPop")),
   displayOrder_v = "decreasing",
-  cutOff_v = cutOff_v
+  cutOff_v = cutOff_v,
+  alpha_v = 0.5,
+  print_v = T,
+  save_v = T
 )
 }
 \arguments{
@@ -29,29 +32,31 @@ displaySummary(
 
 \item{name_v}{population name. will remove "batch#", if present. See details.}
 
-\item{subCol_v}{Column to use in conjunction with name_v to subset data to summarize.}
-
 \item{batch_v}{name of batch}
-
-\item{cPops_v}{logical indicating if the sub-populations are the "collapsed" pops or not. Used to get appropriate colors.}
-
-\item{popCol_v}{column name for population annotations}
-
-\item{groupBy_v}{vector containing any or all of 'Population', 'Treatment', and 'Cluster', indicating which UMAPs to make.}
-
-\item{alpha_v}{alpha parameter only used for by-treatment plot.}
-
-\item{summary_lsv}{list of vectors of treatments to summarize. See details.}
 
 \item{outDir_v}{optional output directory to save plots and data}
 
-\item{outName_v}{optional name for output file.}
+\item{popCol_v}{column name for population annotations}
 
-\item{print_v}{logical indicating to print tables and plots to console.}
+\item{treatCol_v}{column name for treatments}
+
+\item{subCol_v}{Column to use in conjunction with name_v to subset data to summarize.}
+
+\item{cPops_v}{logical indicating if the sub-populations are the "collapsed" pops or not. Used to get appropriate colors.}
+
+\item{summary_lsv}{list of vectors of treatments to summarize. See details.}
+
+\item{plots_lsv}{list of vectors of plots to make. See details.}
 
 \item{displayOrder_v}{either 'decreasing' to indicate that identity with most number of cells goes on the bottom, or 'factor' to go by factor levels.}
 
 \item{cutOff_v}{numeric value indicating minimum number of cells needed in each group.}
+
+\item{alpha_v}{alpha parameter only used for by-treatment plot.}
+
+\item{print_v}{logical indicating to print tables and plots to console.}
+
+\item{save_v}{logical indicating to save plots and data to outDir_v}
 }
 \value{
 returns list of summary tables as well as two optional outputs:
@@ -65,14 +70,47 @@ and/or
 Display summary tables and umaps of provided object.
 }
 \details{
-This function calls getSummaryTables(), formats those tables, and makes umaps
-of seurat clusters and population identities.
+This function creates a general summmary report for major/minor populations:
+\enumerate{
+\item Formatted cell count tables from getSummaryTables()
+\item BarCharts of cell counts
+\item UMAP plots colored by specified metadata
+}
 
+Tables:
 summary_lsv determines how the data are summarized. It is a named list where
-each element's name is user defined and should describe what the output is summarizing.
+each element's name is user-defined (eventually) and should describe what the output is summarizing.
 Refer to the defaults for help. The values of each element correspond to the column or
 columns that will be subset from obj@meta.data in order to generate that summary.
 
 The default will summarize Treatment alone, major population alone, and treat x pop
 together. Right now can only handle 'treat', 'pop' and 'combo'
+
+Plots:
+plots_lsv determines which classes of plots, and which versions of those classes to make.
+So far, the following are supported (shown in format "listElementName" = c("possible", "values"))
+\enumerate{
+\item 'umap' = c("Population", "Treatment", "Cluster")
+}
+\itemize{
+\item 'Population' plot is colored using provided popCol_v
+\item 'Treatment' plot is colored using provided treatCol_v
+\item 'Cluster' plot is colored using the seurat_clusters value stored in corresponding wrh.scRNA data object.
+}
+\enumerate{
+\item 'bar' = c("Population", "Treatment", "TreatPop", "PopTreat")
+}
+\itemize{
+\item Population, Treatment, and Cluster all treated the same
+\item TreatPop: facet by treatCol_v, color by popCol_v
+\item PopTreat: facet by popCol_v, color by TreatCol_v
+\item TreatPop and PopTreat both require 'combo' to be selected for summary_lsv.
+\item byTreat requires combo. makes one plot per treatment (same results as the treatpop facet, but not in facet form)
+}
+\enumerate{
+\item 'facetUMAP' = c("TreatPop")
+}
+\itemize{
+\item Treatment_Population: facet by treatCol_v, color by popCol_v
+}
 }
