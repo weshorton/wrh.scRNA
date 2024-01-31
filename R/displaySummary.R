@@ -122,6 +122,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
     warning("Assigning population level order. Should only happen for neoplastic.\n")
     levels_v <- unique(subObj@meta.data[[popCol_v]])
     levels_v <- levels_v[order(as.numeric(gsub("neo\\.c", "", levels_v)))]
+    subObj@meta.data[[popCol_v]] <- factor(subObj@meta.data[[popCol_v]], levels = levels_v)
   } else {
     levels_v <- levels(subObj@meta.data[[popCol_v]])
   } # fi
@@ -149,7 +150,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
     summary_lsdt$combo$Pop <- factor(summary_lsdt$combo$Pop, levels = levels_v)
     setorder(summary_lsdt$combo)
     cols_v <- setdiff(colnames(summary_lsdt$combo), "Pop")
-    summary_lsdt$combo <- summary_lsdt$combo[,mget(c("Pop", cols_v[match(treats_v, cols_v)]))]
+    summary_lsdt$combo <- summary_lsdt$combo[,mget(c("Pop", cols_v[match(rev(treats_v), cols_v)]))]
   }
   
   if (save_v) {
@@ -196,6 +197,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
     if ('TreatPop' %in% barToRun_v) {
       if (!'combo' %in% names(summary_lsdt)) stop("Missing summary table for TreatPop barplot.\n")
       melt_dt <- melt(summary_lsdt$combo, id.vars = "Pop")
+      #melt_dt$variable <- factor(as.character(melt_dt$variable), levels = rev(treats_v)) # want treatment reverse
       temp <- ggplot(data = melt_dt, aes(x = Pop, y = value, fill = Pop)) +
         geom_bar(stat = 'identity') + ggtitle("Cells per Population (by Treatment)") + facet_wrap("~variable", ncol = 2) +
         scale_fill_manual(values = colors_v, breaks = names(colors_v)) + umapFigureTheme() + 
@@ -262,10 +264,10 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
     
     if (!'combo' %in% names(summary_lsv)) stop("Missing summary table for stacked barplots")
     
-    stackedToRun <- plots_lsv$stackBar
+    stackedToRun_v <- plots_lsv$stackBar
     stackedBar_lsgg <- list()
     
-    if ('TreatPop' %in% stackedToRun) {
+    if ('TreatPop' %in% stackedToRun_v) {
       count_dt <- myT(summary_lsdt$combo, newName_v = "Treatment"); prop_dt <- copy(count_dt)
       prop_dt[, Total := rowSums(.SD), .SDcols = setdiff(colnames(prop_dt), "Treatment")]
       cols_v <- setdiff(colnames(prop_dt), c("Treatment", "Total"))
@@ -292,7 +294,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
   
     } # fi TreatPop
     
-    if ('PopTreat' %in% stackedToRun) {
+    if ('PopTreat' %in% stackedToRun_v) {
       count_dt <- summary_lsdt$combo; prop_dt <- copy(count_dt)
       prop_dt[, Total := rowSums(.SD), .SDcols = setdiff(colnames(prop_dt), "Pop")]
       cols_v <- setdiff(colnames(prop_dt), c("Pop", "Total"))
@@ -389,10 +391,6 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
         return(dim_gg)}, simplify = F, USE.NAMES = T)
     } # fi byTreat
     
-  
-    
-    
-    
     if (print_v) {
       invisible(sapply(umap_lsgg, print))
     } # fi print
@@ -424,12 +422,12 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
     
     if ("TreatPop" %in% facetToRun_v) {
       
-      subObj@meta.data[[treatCol_v]] <- factor(as.character(subObj@meta.data[[treatCol_v]]), levels = treats_v)
+      subObj@meta.data[[treatCol_v]] <- factor(as.character(subObj@meta.data[[treatCol_v]]), levels = rev(treats_v))
       
-      facetUMAP_lsgg[["TreatPop"]] <- DimPlot(subObj, reduction = umap_v, group.by = popCol_v, split.by = treatCol_v, pt.size = 0.4, label = F, order = rev(names(colors_v)), cols = colors_v, ncol = 2) +
+      facetUMAP_lsgg[["TreatPop"]] <- DimPlot(subObj, reduction = umap_v, group.by = popCol_v, split.by = treatCol_v, pt.size = 0.4, label = F, cols = colors_v, ncol = 2) +
         ggtitle(paste0(batch_v, " ", name_v, " Populations")) + #umapFigureTheme() +
-        theme(legend.position = "bottom") + 
-        guides(color=guide_legend(override.aes = list(size = 6), ncol=2))
+        theme(legend.position = "right") + 
+        guides(color=guide_legend(override.aes = list(size = 6), ncol=1))
       
     } # fi treatPop
     
@@ -438,7 +436,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
     } # fi print
     
     if (save_v) {
-      pdf(file = file.path(outDir_v, paste0(batch_v, "_", name_v, "_facetUMAP.pdf")), onefile = T, height = 12)
+      pdf(file = file.path(outDir_v, paste0(batch_v, "_", name_v, "_facetUMAP.pdf")), onefile = T, height = 12, width = 8)
       invisible(sapply(facetUMAP_lsgg, print))
       dev.off()
     } # fi save
