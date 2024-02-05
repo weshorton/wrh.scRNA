@@ -14,6 +14,9 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
   #' @return list of ggplot objects
   #' @export
   
+  ### To Do - this requires ggpmisc package, can't remember how to do that correctly rn, so just calling it here.
+  library(ggpmisc)
+  
   ### Empty list to hold plots
   out_lsgg <- list()
   
@@ -43,7 +46,7 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
                                     split.by = "Treatment", label = F, pt.size = pt.size_v, ncol = 2) +
       coord_equal() + theme(legend.position = "bottom") +
       ggtitle(paste0(name_v, " clusters; res - ", res_v))
-  }
+  } # fi treat
   
   ### Batch plots
   if (!"batchID" %in% colnames(seurat_obj@meta.data)) {
@@ -60,7 +63,7 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
                                     split.by = "batchID", label = F, pt.size = pt.size_v) +
       coord_equal() + theme(legend.position = "bottom") +
       ggtitle(paste0(name_v, " clusters; res - ", res_v))
-  }
+  } # fi batch
   
   ### TCR/BCR
   if (!"tbcr" %in% colnames(seurat_obj@meta.data)) {
@@ -95,7 +98,7 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
       coord_equal() + ggtitle(paste0(name_v, "\nMajor Population Cell Classes"))
   }
   
-  ### Color by sub-populations populations
+  ### Color by sub-populations 
   if (!"sPop" %in% colnames(seurat_obj@meta.data)) {
     warning("sPop column not found. Will not make plot.")
   } else {
@@ -103,10 +106,15 @@ standardPlots <- function(seurat_obj, reduction_v, clustCol_v, res_v, name_v, pt
       coord_equal() + ggtitle(paste0(name_v, "\nSub Population Cell Classes"))
   }
   
-  ### Color by sub-populations populations
+  ### Color by collapsed sub-populations, if present
   if ("collapsePop" %in% colnames(seurat_obj@meta.data)) {
-    out_lsgg[["collapsePop"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "sPop", label = F, pt.size = pt.size_v) +
+    out_lsgg[["collapsePop"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "collapsePop", label = F, pt.size = pt.size_v) +
       coord_equal() + ggtitle(paste0(name_v, "\nCollapse Population Cell Classes"))
+  }
+  
+  if ("full_collapsePop" %in% colnames(seurat_obj@meta.data)) {
+    out_lsgg[["full_collapsePop"]] <- Seurat::DimPlot(seurat_obj, reduction = reduction_v, group.by = "full_collapsePop", label = F, pt.size = pt.size_v) +
+      coord_equal() + ggtitle(paste0(name_v, "\nFull Data Collapse Population Cell Classes"))
   }
   
   if (featurePlots_v) {
