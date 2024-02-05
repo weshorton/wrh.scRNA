@@ -4,7 +4,14 @@
 \alias{wrangleCollapsePops}
 \title{Wrangle Collapse Populations}
 \usage{
-wrangleCollapsePops(obj, name_v, batch_v, col_v = "sPop", newCol_v = NULL)
+wrangleCollapsePops(
+  obj,
+  name_v,
+  batch_v,
+  col_v = "sPop",
+  newCol_v = NULL,
+  refCol_v = "sPop"
+)
 }
 \arguments{
 \item{obj}{seurat object}
@@ -16,6 +23,8 @@ wrangleCollapsePops(obj, name_v, batch_v, col_v = "sPop", newCol_v = NULL)
 \item{col_v}{what column of meta.data are we updating? sPop is only one so far.}
 
 \item{newCol_v}{name of column to put collapsed populations in. Default NULL will replace values in col_v}
+
+\item{refCol_v}{name of column to use as reference in map_dt. Should always be sPop I think.}
 }
 \value{
 Either: (1) same exact seurat object, but col_v is now updated with collapsed populations
