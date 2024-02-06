@@ -93,16 +93,20 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   
   ### Add gene set labels, if required
   setLabels_v <- setdiff(unique(data_dt$setLabel), "")
-  if (length(setLabels_v) > 0) {
+  if (length(labelGenes_v) > 0) {
     
-    ### Update plot
-    plot_gg <- plot_gg + 
-      ggnewscale::new_scale_colour() +
-      geom_label_repel(data = data_dt, inherit.aes = F, aes(x = avg_log2FC, y = -log10(p_val_adj), col = setColor, label = setLabel),
-                       max.overlaps = Inf, label.padding = 0.1) +
-      scale_colour_manual(values = darkVolcanoColors_v, labels = names(darkVolcanoColors_v)) +
-      guides(colour = guide_legend(title = "Gene Set"))
-    
+    if (length(setLabels_v) > 0) {
+      
+      ### Update plot
+      plot_gg <- plot_gg + 
+        ggnewscale::new_scale_colour() +
+        geom_label_repel(data = data_dt, inherit.aes = F, aes(x = avg_log2FC, y = -log10(p_val_adj), col = setColor, label = setLabel),
+                         max.overlaps = Inf, label.padding = 0.1, size = labelSize_v) +
+        scale_colour_manual(values = darkVolcanoColors_v, labels = names(darkVolcanoColors_v)) +
+        guides(colour = guide_legend(title = "Gene Set"))
+      
+    } # fi
+      
     ### Determine Significance
     sigSetLabels_v <- setdiff(as.character(data_dt[setLabel %in% setLabels_v, setColor]), "NO")
     
@@ -110,7 +114,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
     plot_gg <- ggpubr::annotate_figure(p = plot_gg, 
                                        bottom = text_grob(label = paste0("Found ", length(setLabels_v), " of ", length(labelGenes_v), 
                                                                          " genes from list (", length(sigSetLabels_v), " significant)"), size = 8))
-  }
+} # fi
   
   ### Return
   return(plot_gg)
