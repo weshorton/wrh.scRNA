@@ -36,25 +36,12 @@
 #' Colors used on UMAPs for b2 myeloid populations
 #' 
 #' @format ## `atlas_b2_myeloidColors_v`
-#' Named vector of length 6
-#' \describe{
-#'    \item{values}{Hex Color}
-#'    \item{names}{Sub Population Name}
-#' }
-"atlas_b2_myeloidColors_v"
-
-#' Batch2 Myeloid Colors 2
-#' 
-#' Colors used on UMAPs for b2 myeloid populations 
-#' when collapsing like sub-pops.
-#' 
-#' @format ## `atlas_b2_myeloidColors2_v`
 #' Named vector of length 7
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Sub Population Name}
 #' }
-"atlas_b2_myeloidColors2_v"
+"atlas_b2_myeloidColors_v"
 
 #' Batch2 Neoplastic Colors
 #' 
@@ -149,6 +136,6 @@
 #' Named list of length 3
 #' \describe{
 #'    \item{values}{vector of gene names}
-#'    \itme{names}{name of gene list}
+#'    \item{names}{name of gene list}
 #' }
 "atlasGeneLists_lsv"

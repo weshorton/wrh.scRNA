@@ -10,7 +10,7 @@
 Named list of length 3
 \describe{
 \item{values}{vector of gene names}
-\itme{names}{name of gene list}
+\item{names}{name of gene list}
 }
 }
 }
