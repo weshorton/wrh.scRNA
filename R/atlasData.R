@@ -63,7 +63,7 @@
 #' Colors used on UMAPs for b3 lymphoid populations
 #' 
 #' @format ## `atlas_b3_lymphoidColors_v`
-#' Named vector of length 5
+#' Named vector of length 6
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Sub Population Name}
@@ -76,7 +76,7 @@
 #' Colors used on UMAPs for b3 myeloid populations
 #' 
 #' @format ## `atlas_b3_myeloidColors_v`
-#' Named vector of length 6
+#' Named vector of length 7
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Sub Population Name}

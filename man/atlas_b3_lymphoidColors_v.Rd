@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{atlas_b3_lymphoidColors_v}}{
 
-Named vector of length 5
+Named vector of length 6
 \describe{
 \item{values}{Hex Color}
 \item{names}{Sub Population Name}
