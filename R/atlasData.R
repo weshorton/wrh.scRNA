@@ -11,25 +11,12 @@
 #' Colors used on UMAPs for b2 lymphoid populations
 #' 
 #' @format ## `atlas_b2_lymphoidColors_v`
-#' Named vector of length 5
+#' Named vector of length 7
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Sub Population Name}
 #' }
 "atlas_b2_lymphoidColors_v"
-
-#' Batch2 Lymphoid Colors 2
-#' 
-#' Colors used on UMAPs for b2 lymphoid populations 
-#' second option.
-#' 
-#' @format ## `atlas_b2_lymphoidColors2_v`
-#' Named vector of length 5
-#' \describe{
-#'    \item{values}{Hex Color}
-#'    \item{names}{Sub Population Name}
-#' }
-"atlas_b2_lymphoidColors2_v"
 
 #' Batch2 Myeloid Colors
 #' 
