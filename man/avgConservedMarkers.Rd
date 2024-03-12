@@ -18,7 +18,7 @@ avgConservedMarkers(
 \item{extraCols_v}{any columns that aren't in default FCM() output. Default here is gene_biotype which is added when I merge output with annotations.}
 }
 \value{
-data.table with same number of rows as conserved_dt, but only 'Gene', 'avg_padj', 'avg_log2FC'
+data.table with same number of rows as conserved_dt, but only 'Gene', 'max_pval', 'minimump_p_val', 'avg_padj' (calculated in script), and 'avg_log2FC' (calculated in script)
 }
 \description{
 take the output of FindConservedMarkers and average the log2FC and adj p-value of all the comparisons

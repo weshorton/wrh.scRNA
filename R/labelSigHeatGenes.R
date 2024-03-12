@@ -19,32 +19,34 @@ labelSigHeatGenes <- function(seurat_obj, genes_lsv, assay_v = "fullSCT") {
     
     ### Get genes
     allGenes_v <- seurat_obj@assays[[assay_v]]@counts@Dimnames[[1]]
+    scaleGenes_v <- rownames(seurat_obj@assays[[assay_v]]@scale.data)
     
     ### Add asterisk for replacement and for output
     labeledGenes_v <- sapply(allGenes_v, function(x) ifelse(x %in% genes_lsv$label, paste0(x, "*"), x))
+    scaleLabeledGenes_v <- sapply(scaleGenes_v, function(x) ifelse(x %in% genes_lsv$label, paste0(x, "*"), x))
     #labeledGenes_v <- sapply(allGenes_v, function(x) ifelse((x %in% genes_lsv$heat & x %in% genes_lsv$heat), paste0(x, "*"), x))
     outGenes_v <- sapply(genes_lsv$heat, function(x) ifelse(x %in% genes_lsv$label, paste0(x, "*"), x))
     
     ### Add to each slot (not sure how to loop this)
     ### Counts
-    if (!all.equal(seurat_obj@assays[[assay_v]]@counts@Dimnames[[1]], allGenes_v)) {
+    if (!is.logical(all.equal(seurat_obj@assays[[assay_v]]@counts@Dimnames[[1]], allGenes_v))) {
       stop("Count slot doesn't match")
     } else {
       seurat_obj@assays[[assay_v]]@counts@Dimnames[[1]] <- labeledGenes_v
     } # fi
     
     ### data
-    if (!all.equal(seurat_obj@assays[[assay_v]]@data@Dimnames[[1]], allGenes_v)) {
+    if (!is.logical(all.equal(seurat_obj@assays[[assay_v]]@data@Dimnames[[1]], allGenes_v))) {
       stop("Data slot doesn't match")
     } else {
       seurat_obj@assays[[assay_v]]@data@Dimnames[[1]] <- labeledGenes_v
     } # fi
     
     ### scale.data
-    if (!all.equal(rownames(seurat_obj@assays[[assay_v]]@scale.data), allGenes_v)) {
+    if (!is.logical(all.equal(rownames(seurat_obj@assays[[assay_v]]@scale.data), scaleGenes_v))) {
       stop("Scale data slot doesn't match")
     } else {
-      rownames(seurat_obj@assays[[assay_v]]@scale.data) <- labeledGenes_v
+      rownames(seurat_obj@assays[[assay_v]]@scale.data) <- scaleLabeledGenes_v
     } # fi
     
     out_ls <- list("seurat" = seurat_obj, "genes" = unname(outGenes_v))
