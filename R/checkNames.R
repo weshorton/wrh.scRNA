@@ -7,7 +7,8 @@ checkNames <- function(obj, deg) {
   
   ### Get object names
   if ("collapsePop" %in% colnames(obj@meta.data)) {
-    objNames_v <- union(unique(obj$sPop), unique(obj$collapsePop))
+    # objNames_v <- union(unique(obj$sPop), unique(obj$collapsePop))
+    objNames_v <- unique(obj$collapsePop)
   } else {
     objNames_v <- unique(obj$sPop)
   } # fi
