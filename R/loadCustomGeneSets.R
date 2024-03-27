@@ -25,8 +25,12 @@ loadCustomGeneSets <- function(file_v, keep_v = NULL, omit_v = NULL) {
   ### function, except for the MHC genes.
   geneSets_lsdt <- sapply(names(geneSets_lsdt), function(xx) {
     x <- geneSets_lsdt[[xx]]
-    if (xx != "MHC") { x$Gene <- simpleCap(tolower(x$GENE)) } else { x$Gene <- x$GENE } 
-    return(x)
+    if ("Gene" %in% colnames(x)) {
+      return(x)
+    } else {
+      if (xx != "MHC") { x$Gene <- simpleCap(tolower(x$GENE)) } else { x$Gene <- x$GENE } 
+      return(x)
+    }
   })
   
   ### Return
