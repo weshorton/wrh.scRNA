@@ -16,6 +16,7 @@ plotVolcano(
   title_v = NULL,
   verbose_v = F,
   labelGenes_v = NULL,
+  hideNonSigLabels_v = F,
   labelAll_v = F,
   labelTop_v = NULL,
   labelDir_v = "both",
@@ -41,7 +42,9 @@ plotVolcano(
 
 \item{verbose_v}{logical indicating to print messages.}
 
-\item{labelGenes_v}{passed to volcanoWrangleMarkers() optional set of genes to label (regardless of significance)}
+\item{labelGenes_v}{passed to volcanoWrangleMarkers() optional set of genes to label (optionally, regardless of significance)}
+
+\item{hideNonSigLabels_v}{option to hide any genes in labelGenes_v that aren't significant. Default is to show all.}
 
 \item{labelAll_v}{passed to volcanoWrangleMarkers() (logical indicating to plot all sig genes.)}
 

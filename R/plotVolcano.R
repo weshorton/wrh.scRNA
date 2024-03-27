@@ -1,5 +1,5 @@
 plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v = "Gene", lfc_v = 0.5, pval_v = 0.05, 
-                        ident1_v, colorCol_v = "diffExp", title_v = NULL, verbose_v = F, labelGenes_v = NULL, 
+                        ident1_v, colorCol_v = "diffExp", title_v = NULL, verbose_v = F, labelGenes_v = NULL, hideNonSigLabels_v = F,
                         labelAll_v = F, labelTop_v = NULL, labelDir_v = "both", labelSize_v = 1) {
   #' Plot Volcano
   #' @description
@@ -13,7 +13,8 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   #' @param colorCol_v column to use for colors. Should be either diffExp for standard, or paste0(splitVar_v, "DE") for comparison ones.
   #' @param title_v optional plot title.
   #' @param verbose_v logical indicating to print messages.
-  #' @param labelGenes_v passed to volcanoWrangleMarkers() optional set of genes to label (regardless of significance)
+  #' @param labelGenes_v passed to volcanoWrangleMarkers() optional set of genes to label (optionally, regardless of significance)
+  #' @param hideNonSigLabels_v option to hide any genes in labelGenes_v that aren't significant. Default is to show all.
   #' @param labelAll_v passed to volcanoWrangleMarkers() (logical indicating to plot all sig genes.)
   #' @param labelTop_v passed to volcanoWrangleMarkers() (if labelAll_v == F, this will come into play and set number of sig genes to label.)
   #' @param labelDir_v passed to volcanoWrangleMarkers() (can either be 'both', 'up', or 'down', indicating with DEG direction(s) to take top genes from)
@@ -93,6 +94,12 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   
   ### Add gene set labels, if required
   setLabels_v <- setdiff(unique(data_dt$setLabel), "")
+  nLabelsFound_v <- length(setLabels_v)
+  sigSetLabels_v <- setLabels_v[which(as.character(data_dt[setLabel %in% setLabels_v, setColor]) != "NO")]
+  notSigSetLabels_v <- setLabels_v[which(as.character(data_dt[setLabel %in% setLabels_v, setColor]) == "NO")]
+  if (hideNonSigLabels_v) {
+    data_dt[Gene %in% notSigSetLabels_v, setLabel := ""]
+  }
   if (length(labelGenes_v) > 0) {
     
     if (length(setLabels_v) > 0) {
@@ -108,13 +115,13 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
     } # fi
       
     ### Determine Significance
-    nSigSetLabels_v <- length(which(as.character(data_dt[setLabel %in% setLabels_v, setColor]) != "NO"))
+    #nSigSetLabels_v <- length(which(as.character(data_dt[setLabel %in% setLabels_v, setColor]) != "NO"))
     
     ### Add label
     plot_gg <- ggpubr::annotate_figure(p = plot_gg, 
-                                       bottom = text_grob(label = paste0("Found ", length(setLabels_v), " of ", length(labelGenes_v), 
-                                                                         " genes from list (", nSigSetLabels_v, " significant)"), size = 8))
-} # fi
+                                       bottom = text_grob(label = paste0("Found ", nLabelsFound_v, " of ", length(labelGenes_v), 
+                                                                         " genes from list (", length(sigSetLabels_v), " significant)"), size = 8))
+  } # fi
   
   ### Return
   return(plot_gg)
