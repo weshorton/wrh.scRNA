@@ -108,7 +108,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
     } # fi
       
     ### Determine Significance
-    sigSetLabels_v <- setdiff(as.character(data_dt[setLabel %in% setLabels_v, setColor]), "NO")
+    nSigSetLabels_v <- length(which(as.character(data_dt[setLabel %in% setLabels_v, setColor]) != "NO"))
     
     ### Add label
     plot_gg <- ggpubr::annotate_figure(p = plot_gg, 
