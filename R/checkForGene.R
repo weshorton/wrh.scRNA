@@ -30,13 +30,16 @@ checkForGene <- function(deg_lslslslsdt, gene_v, pval_v = NULL) {
         
         if (is.data.table(deg_lsdt)) {
           
-          if (is.null(pval_v)) {
-            subDEG_dt <- deg_lsdt[Gene == gene_v & p_val_adj < pval_v,]
+          padjCol_v <- ifelse("p_val_adj" %in% colnames(deg_lsdt), "p_val_adj", ifelse("padj" %in% colnames(deg_lsdt), "padj", stop("Must have 'padj' or 'p_val_adj' in data.table")))
+          pvalCol_v <- ifelse("p_val" %in% colnames(deg_lsdt), "p_val", ifelse("pval" %in% colnames(deg_lsdt), "pval", stop("Must have 'pval' or 'p_val' in data.table")))
+          
+          if (!is.null(pval_v)) {
+            subDEG_dt <- deg_lsdt[Gene == gene_v & get(padjCol_v) < pval_v,]
           } else {
             subDEG_dt <- deg_lsdt[Gene == gene_v,]
           }
           if (nrow(subDEG_dt) > 0) {
-            row_v <- c(currI_v, currJ_v, currK_v, subDEG_dt$avg_log2FC, subDEG_dt$p_val, subDEG_dt$p_val_adj)
+            row_v <- c(currI_v, currJ_v, currK_v, subDEG_dt$avg_log2FC, subDEG_dt[[pvalCol_v]], subDEG_dt[[padjCol_v]])
             sigResults_mat <- rbind(sigResults_mat, row_v)
           } # fi
           
@@ -46,13 +49,17 @@ checkForGene <- function(deg_lslslslsdt, gene_v, pval_v = NULL) {
             
             currL_v <- names(deg_lsdt)[l]
             deg_dt <- deg_lsdt[[currL_v]]
+            
+            padjCol_v <- ifelse("p_val_adj" %in% colnames(deg_dt), "p_val_adj", ifelse("padj" %in% colnames(deg_dt), "padj", stop("Must have 'padj' or 'p_val_adj' in data.table")))
+            pvalCol_v <- ifelse("p_val" %in% colnames(deg_dt), "p_val", ifelse("pval" %in% colnames(deg_dt), "pval", stop("Must have 'pval' or 'p_val' in data.table")))
+            
             if (is.null(pval_v)) {
               subDEG_dt <- deg_dt[Gene == gene_v]
             } else {
-              subDEG_dt <- deg_dt[Gene == gene_v & p_val_adj < pval_v]
+              subDEG_dt <- deg_dt[Gene == gene_v & get(padjCol_v) < pval_v]
             }
             if (nrow(subDEG_dt) > 0) {
-              row_v <- c(currI_v, currJ_v, currK_v, currL_v, subDEG_dt$avg_log2FC, subDEG_dt$p_val, subDEG_dt$p_val_adj)
+              row_v <- c(currI_v, currJ_v, currK_v, currL_v, subDEG_dt$avg_log2FC, subDEG_dt[[pvalCol_v]], subDEG_dt[[padjCol_v]])
               sigResults_mat <- rbind(sigResults_mat, row_v)
             } # fi
             
