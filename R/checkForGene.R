@@ -36,7 +36,7 @@ checkForGene <- function(deg_lslslslsdt, gene_v, pval_v = NULL) {
             subDEG_dt <- deg_lsdt[Gene == gene_v,]
           }
           if (nrow(subDEG_dt) > 0) {
-            row_v <- c(currI_v, currJ_v, currK_v, subDEG_dt$avg_log2FC, subDEG_dt$p_val_adj)
+            row_v <- c(currI_v, currJ_v, currK_v, subDEG_dt$avg_log2FC, subDEG_dt$p_val, subDEG_dt$p_val_adj)
             sigResults_mat <- rbind(sigResults_mat, row_v)
           } # fi
           
@@ -52,7 +52,7 @@ checkForGene <- function(deg_lslslslsdt, gene_v, pval_v = NULL) {
               subDEG_dt <- deg_dt[Gene == gene_v & p_val_adj < pval_v]
             }
             if (nrow(subDEG_dt) > 0) {
-              row_v <- c(currI_v, currJ_v, currK_v, currL_v, subDEG_dt$avg_log2FC, subDEG_dt$p_val_adj)
+              row_v <- c(currI_v, currJ_v, currK_v, currL_v, subDEG_dt$avg_log2FC, subDEG_dt$p_val, subDEG_dt$p_val_adj)
               sigResults_mat <- rbind(sigResults_mat, row_v)
             } # fi
             
@@ -63,13 +63,17 @@ checkForGene <- function(deg_lslslslsdt, gene_v, pval_v = NULL) {
   } # for i
   
   if (!is.null(sigResults_mat)) {
-    if (ncol(sigResults_mat) == 6) {
-      colnames(sigResults_mat) <- c("Object", "Cluster", "Treat1", "Treat2", "l2fc", "padj")
+    if (ncol(sigResults_mat) == 7) {
+      colnames(sigResults_mat) <- c("Object", "Cluster", "Treat1", "Treat2", "l2fc", "pval", "padj")
     } else {
-      colnames(sigResults_mat) <- c("Object", "Treat1", "Treat2", "l2fc", "padj")
+      colnames(sigResults_mat) <- c("Object", "Treat1", "Treat2", "l2fc", "pval", "padj")
     }
+    sigResults_dt <- as.data.table(sigResults_mat)
+    for (col_v in c("l2fc", "pval", "padj")) sigResults_dt[, (col_v) := as.numeric(get(col_v))]
+  } else {
+    sigResults_dt <- NULL
   }
   
-  return(as.data.table(sigResults_mat))
+  return(sigResults_dt)
   
 }
