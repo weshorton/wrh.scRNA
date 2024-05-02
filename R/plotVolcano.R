@@ -83,7 +83,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   plot_gg <- ggplot2::ggplot(data = data_dt, aes(x = avg_log2FC, y = -log10(p_val_adj), col = !!sym(colorCol_v), label = DElabel)) +
     geom_point() + my_theme() +
     theme(legend.position = "right") +
-    geom_label_repel(size = labelSize_v, show.legend = F, max.overlaps = Inf, label.padding = 0.1) +
+    ggrepel::geom_label_repel(size = labelSize_v, show.legend = F, max.overlaps = Inf, label.padding = 0.1) +
     geom_vline(xintercept=c(-lfc_v, lfc_v), col="black", linetype = "dashed") +
     geom_hline(yintercept=-log10(pval_v), col="black", linetype = "dashed") +
     scale_color_manual(values=colors_v, labels = c("NO", "DOWN", "UP")) +
@@ -107,7 +107,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
       ### Update plot
       plot_gg <- plot_gg + 
         ggnewscale::new_scale_colour() +
-        geom_label_repel(data = data_dt, inherit.aes = F, aes(x = avg_log2FC, y = -log10(p_val_adj), col = setColor, label = setLabel),
+        ggrepel::geom_label_repel(data = data_dt, inherit.aes = F, aes(x = avg_log2FC, y = -log10(p_val_adj), col = setColor, label = setLabel),
                          max.overlaps = Inf, label.padding = 0.1, size = labelSize_v) +
         scale_colour_manual(values = darkVolcanoColors_v, labels = names(darkVolcanoColors_v)) +
         guides(colour = guide_legend(title = "Gene Set"))
