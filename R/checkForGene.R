@@ -15,6 +15,7 @@ checkForGene <- function(deg_lslslslsdt, gene_v, pval_v = NULL) {
     
     currI_v <- names(deg_lslslslsdt)[i]
     deg_lslslsdt <- deg_lslslslsdt[[currI_v]]
+    if (length(deg_lslslsdt) == 0) next
     
     for (j in 1:length(deg_lslslsdt)) {
       
