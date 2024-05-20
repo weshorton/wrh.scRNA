@@ -68,7 +68,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   
   ### Get colors
   if (colorCol_v == "diffExp") {
-    colors_v <- wrh.scRNA::oneGroupVolcanoColors_v
+    colors_v <- rev(wrh.scRNA::oneGroupVolcanoColors_v)
     labels_v <- names(colors_v)
   } else if (is.null(splitVar_v)) {
     stop("Colors column is not diffExp, but splitVar_v is NULL.\n")
