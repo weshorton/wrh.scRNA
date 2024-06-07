@@ -21,9 +21,13 @@ plotHits <- function(obj, deg_lsdt, genes_v, pop_v, name_v) {
   ###
   
   volcano_lsgg <- sapply(names(deg_lsdt), function(x) {
-    wrh.scRNA::plotVolcano(data_dt = deg_lsdt[[x]], ident1_v = gsub("_.*", "", x),
-                           title_v = paste0(name_v, " Genes on\n", pop_v, " - ", gsub("_", " vs. ", x), " DEG"),
-                           labelGenes_v = genes_v, labelSize_v = 5)
+    if (!is.null(deg_lsdt[[x]])) {
+      wrh.scRNA::plotVolcano(data_dt = deg_lsdt[[x]], ident1_v = gsub("_.*", "", x),
+                             title_v = paste0(name_v, " Genes on\n", pop_v, " - ", gsub("_", " vs. ", x), " DEG"),
+                             labelGenes_v = genes_v, labelSize_v = 5)
+    } else {
+      return(NULL)
+    }
   }, simplify = F, USE.NAMES = T)
   
   ###
