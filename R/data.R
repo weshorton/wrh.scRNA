@@ -445,3 +445,55 @@
 #'    \item{names}{Sub Population Name}
 #' }
 "orig_lymphoidColors_v"
+
+###
+### GENE LISTS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+###
+
+#' Population Marker List
+#' 
+#' List of markers used to identify sub-populations
+#' 1. tumor - 9 genes
+#' 1. Caf - 14 genes
+#' 1. MyoEpi - 17 genes
+#' 1. Endo - 9 genes
+#' 1. Mono - 5 genes
+#' 1. DC - 7 genes
+#' 1. TAMs - 9 genes
+#' 1. MDSC - 9 genes
+#' 1. Tcells - 10 genes
+#' 1. Bcells - 4 genes
+#' 1. NK - 4 genes
+#' 
+#' @format ## `markers_lsv`
+#' Named list of length 11
+#' \describe{
+#'    \item{values}{vector of gene names}
+#'    \item{names}{name of gene lists}
+#' }
+#' 
+"markers_lsv"
+
+#' Population Marker List Columns
+#' 
+#' List containing number of columns for feature plot output for each marker set.
+#' 
+#' @format ## `markerCols_lsv`
+#' Named list of length 11
+#' \describe{
+#'    \item{values}{number of columns to use}
+#'    \itme{names}{name of gene lists}
+#' }  
+"markerCols_lsv"
+
+#' Dot Plot Markers
+#' 
+#' Vector containing unique genes from markers_lsv for dotplot output
+#' 
+#' @format ## `dotMarkers_v`
+#' Named vector of length 97
+#' \describe{
+#'    \item{values}{gene names}
+#'    \itme{names}{population that gene corresponds to}
+#' }
+"dotMarkers_v"
