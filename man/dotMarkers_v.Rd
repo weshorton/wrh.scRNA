@@ -10,7 +10,7 @@
 Named vector of length 97
 \describe{
 \item{values}{gene names}
-\itme{names}{population that gene corresponds to}
+\item{names}{population that gene corresponds to}
 }
 }
 }

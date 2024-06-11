@@ -482,7 +482,7 @@
 #' Named list of length 11
 #' \describe{
 #'    \item{values}{number of columns to use}
-#'    \itme{names}{name of gene lists}
+#'    \item{names}{name of gene lists}
 #' }  
 "markerCols_lsv"
 
@@ -494,6 +494,6 @@
 #' Named vector of length 97
 #' \describe{
 #'    \item{values}{gene names}
-#'    \itme{names}{population that gene corresponds to}
+#'    \item{names}{population that gene corresponds to}
 #' }
 "dotMarkers_v"

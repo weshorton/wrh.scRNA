@@ -10,7 +10,7 @@
 Named list of length 11
 \describe{
 \item{values}{number of columns to use}
-\itme{names}{name of gene lists}
+\item{names}{name of gene lists}
 }
 }
 }
