@@ -4,7 +4,7 @@
 \alias{plotHits}
 \title{Plot Hits}
 \usage{
-plotHits(obj, deg_lsdt, genes_v, pop_v, name_v)
+plotHits(obj, deg_lsdt, genes_v, pop_v, name_v, new_v = T)
 }
 \arguments{
 \item{obj}{seurat object}
@@ -16,6 +16,8 @@ plotHits(obj, deg_lsdt, genes_v, pop_v, name_v)
 \item{pop_v}{name of the population (e.g. "TAMs" or "b12 TAMs"). Not used for searching so can be anything.}
 
 \item{name_v}{name of genes_v for the plot}
+
+\item{new_v}{logical. indicating if running with new markdowns or the original.}
 }
 \value{
 list of lists. First list level is the plot type (volcano, violin, feature), while the second level
@@ -30,4 +32,6 @@ is the specific DEG table associated with Treat1 vs Treat2 comparison.
 obj should be subset to have the same cells that are tested in the Treat1 vs Treat2 comparison.
 genes_v is a vector of one or more genes that will be displayed in the plots.
 name_v is a name that describes the gene(s) in genes_v
+Not sure why, but function works weirdly depending on which markdown uses it. If running original (viewB12hits or viewB3hits), use new_v = F
+otherwise use new_v = T. It changes how the feature plot by treatment is made.
 }
