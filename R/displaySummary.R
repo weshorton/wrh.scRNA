@@ -75,7 +75,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
   clust_v <- eval(as.name(clustName_v)); clust_v <- clust_v[which(names(clust_v) == name_v)]
   umap_v <- eval(as.name(umapName_v)); umap_v <- umap_v[which(names(umap_v) == name_v)]
   
-  if (name_v == 'full') {
+  if (name_v %in% c('batch12', 'batch3')) {
     colorName_v <- "mPopColors_v"
   } else {
     if (cPops_v) {
@@ -203,11 +203,9 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
         scale_fill_manual(values = colors_v, breaks = names(colors_v)) + umapFigureTheme() + 
         labs(y = "Cell Count")
       
-      #if (grepl("[Ll]ymphoid|[Mm]yeloid", name_v)) {
         temp <- temp + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
           theme(legend.position = "bottom") + 
           guides(fill=guide_legend(ncol=2))
-      #} # fi grep
       
       bar_lsgg[['TreatPop']] <- temp
     } # fi treatpop
@@ -316,7 +314,8 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
           scale_fill_manual(values = treatColors_v, breaks = names(treatColors_v)) +
           ggtitle(paste0("Treatment ", x, "\nPer Population")) + umapFigureTheme() +
           labs(y = gsub("s%", "", x), fill = "Treatment") + 
-          theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) 
+          angle_x()
+          #theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) 
         return(y)}, simplify = F, USE.NAMES = T)
       
       popTreatStacked_gg <- ggpubr::ggarrange(plotlist = tempStackedBar_lsgg, ncol = 2, common.legend = T, legend = "bottom") +
