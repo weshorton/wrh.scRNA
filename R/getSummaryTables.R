@@ -2,15 +2,17 @@ getSummaryTables <- function(obj, subset_v = NULL, subCol_v = "mPop",
                              summary_lsv = list("treat" = "Treatment",
                                                 "pop" = "mPop",
                                                 "combo" = c("Treatment", "mPop"))) {
-  #' Get Tables
+  #' Get Tables of Cell Counts
   #' @description Get summary tables of selected columns
-  #' @param obj seurat object to summarize. Must have specified columns
-  #' @param subset_v subset data on provided value
+  #' @param obj seurat object to summarize. Must have the specified columns
+  #' @param subset_v subset data by matching provided value with entries in subCol_v (e.g. myeloid, neoplastic)
   #' @param subCol_v specify which column to subset using subset_v
   #' @param summary_lsv list of vectors of columns to summarize.
-  #' @description Currently make 3 different tables: treatment, population, and treatment x population
-  #' Treatment should almost always be 'treat = Treatment'; population should be 'mPop' if subset_v = NULL and
-  #' 'sPop' if not (or sPop2 or another version); treatment x population must agree with the others.
+  #' @details Currently make 3 different tables: treatment, population, and treatment x population.  
+  #' Treatment should almost always be 'treat = Treatment'.  
+  #' Population should be pop='mPop' if subset_v = NULL and sPop' if not (or sPop2 or another version).  
+  #' treatment x population (combo) must agree with the others.  
+  #' 
   #' @export
   
   ### Extract meta data

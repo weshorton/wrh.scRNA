@@ -2,7 +2,7 @@
 % Please edit documentation in R/getSummaryTables.R
 \name{getSummaryTables}
 \alias{getSummaryTables}
-\title{Get Tables}
+\title{Get Tables of Cell Counts}
 \usage{
 getSummaryTables(
   obj,
@@ -12,9 +12,9 @@ getSummaryTables(
 )
 }
 \arguments{
-\item{obj}{seurat object to summarize. Must have specified columns}
+\item{obj}{seurat object to summarize. Must have the specified columns}
 
-\item{subset_v}{subset data on provided value}
+\item{subset_v}{subset data by matching provided value with entries in subCol_v (e.g. myeloid, neoplastic)}
 
 \item{subCol_v}{specify which column to subset using subset_v}
 
@@ -22,8 +22,10 @@ getSummaryTables(
 }
 \description{
 Get summary tables of selected columns
-
-Currently make 3 different tables: treatment, population, and treatment x population
-Treatment should almost always be 'treat = Treatment'; population should be 'mPop' if subset_v = NULL and
-'sPop' if not (or sPop2 or another version); treatment x population must agree with the others.
+}
+\details{
+Currently make 3 different tables: treatment, population, and treatment x population.
+Treatment should almost always be 'treat = Treatment'.
+Population should be pop='mPop' if subset_v = NULL and sPop' if not (or sPop2 or another version).
+treatment x population (combo) must agree with the others.
 }
