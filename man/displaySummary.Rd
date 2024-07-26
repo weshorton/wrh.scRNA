@@ -19,7 +19,7 @@ displaySummary(
     c("Population", "Treatment", "TreatPop", "PopTreat", "byTreat"), stackBar =
     c("TreatPop", "PopTreat"), facetUMAP = c("TreatPop")),
   displayOrder_v = "decreasing",
-  cutOff_v = cutOff_v,
+  cutOff_v = 5,
   alpha_v = 0.5,
   print_v = T,
   save_v = T

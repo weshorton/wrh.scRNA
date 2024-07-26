@@ -5,7 +5,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
                                             "bar" = c("Population", "Treatment", "TreatPop", "PopTreat", "byTreat"),
                                             "stackBar" = c("TreatPop", "PopTreat"),
                                             "facetUMAP" = c("TreatPop")),
-                           displayOrder_v = "decreasing", cutOff_v = cutOff_v, alpha_v = 0.5, print_v = T, save_v = T) {
+                           displayOrder_v = "decreasing", cutOff_v = 5, alpha_v = 0.5, print_v = T, save_v = T) {
   #' Display Summary Info
   #' @description
     #' Display summary tables and umaps of provided object.
@@ -153,7 +153,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
     summary_lsdt$combo <- summary_lsdt$combo[,mget(c("Pop", cols_v[match(rev(treats_v), cols_v)]))]
   }
   
-  if (save_v) {
+  if (save_v & !is.null(outDir_v)) {
     wrh.rUtils::writeCSVorExcel(summary_lsdt,
                                 file_v = file.path(outDir_v, paste0(batch_v, "_", name_v, "_cellCounts.xlsx")))
   }
@@ -234,7 +234,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
       invisible(sapply(bar_lsgg, print))
     } # fi print
     
-    if (save_v) {
+    if (save_v & !is.null(outDir_v)) {
       pdf(file = file.path(outDir_v, paste0(batch_v, "_", name_v, "_cellCountBar.pdf")), onefile = T, height = 10, width = 10)
       invisible(sapply(bar_lsgg[grep("Population|Treatment", names(bar_lsgg))], print))
       dev.off()
@@ -327,7 +327,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
       invisible(sapply(stackedBar_lsgg, print))
     } # fi print
     
-    if (save_v) {
+    if (save_v & !is.null(outDir_v)) {
       pdf(file = file.path(outDir_v, paste0(batch_v, "_", name_v, "_cellCountStackedBar.pdf")), onefile = T, width = 16, height = 10)
       invisible(sapply(stackedBar_lsgg, print))
       dev.off()
@@ -394,7 +394,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
       invisible(sapply(umap_lsgg, print))
     } # fi print
     
-    if (save_v) {
+    if (save_v & !is.null(outDir_v)) {
       pdf(file = file.path(outDir_v, paste0(batch_v, "_", name_v, "_umap.pdf")), onefile = T, width = 10, height = 10)
       invisible(sapply(umap_lsgg, print))
       dev.off()
@@ -434,7 +434,7 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
       invisible(sapply(facetUMAP_lsgg, print))
     } # fi print
     
-    if (save_v) {
+    if (save_v & !is.null(outDir_v)) {
       pdf(file = file.path(outDir_v, paste0(batch_v, "_", name_v, "_facetUMAP.pdf")), onefile = T, height = 12, width = 8)
       invisible(sapply(facetUMAP_lsgg, print))
       dev.off()
