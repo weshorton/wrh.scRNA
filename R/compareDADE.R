@@ -79,8 +79,8 @@ compareDADE <- function(atacDAG_ls, baseDEG_ls, pop_v, treat1_v = "4x", treat2_v
                          "Pop" = rep(pop_v, sum(sapply(share_lslsv, length))))
   
   ### Results output
-  rnaRes_dt <- deg_dt[Gene %in% c(upShare_v, downShare_v),]
-  atacRes_dt <- dag_dt[Gene %in% c(upShare_v, downShare_v),]
+  rnaRes_dt <- deg_dt[Gene %in% c(upShare_v, downShare_v),]; setorder(rnaRes_dt, "p_val_adj")
+  atacRes_dt <- dag_dt[Gene %in% c(upShare_v, downShare_v),]; setorder(atacRes_dt, "p_val_adj")
   
   ### Merge results
   cols_v <- c("Gene", "avg_log2FC", "p_val_adj")
