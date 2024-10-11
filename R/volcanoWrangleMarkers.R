@@ -58,6 +58,12 @@ volcanoWrangleMarkers <- function(data_dt, geneCol_v = "Gene",
       labelUpGenes_v <- intersect(up_dt[[geneCol_v]], labelGenes_v)
       labelDnGenes_v <- intersect(dn_dt[[geneCol_v]], labelGenes_v)
       labelNonGenes_v <- intersect(data_dt[diffExp == "NO",get(geneCol_v)], labelGenes_v)
+      
+      ### Remove from label top
+      if (!is.null(labelTop_v)) {
+        upGenes_v <- setdiff(upGenes_v, labelUpGenes_v)
+        dnGenes_v <- setdiff(dnGenes_v, labelDnGenes_v)
+      } # fi labelTop_v
     } # fi labelGenes_v
     
   } # fi labelAll_v
