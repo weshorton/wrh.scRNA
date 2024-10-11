@@ -10,7 +10,10 @@ plotVolcano(
   runNames_v = "",
   geneCol_v = "Gene",
   lfc_v = 0.5,
+  lfcCol_v = "avg_log2FC",
   pval_v = 0.05,
+  pvalCol_v = "p_val_adj",
+  force_v = 1,
   ident1_v,
   colorCol_v = "diffExp",
   title_v = NULL,
@@ -34,7 +37,13 @@ plotVolcano(
 
 \item{lfc_v}{log-fold change to include in plot as cut-off}
 
+\item{lfcCol_v}{name of column containing log fold change values. Default is avg_log2FC}
+
 \item{pval_v}{adjusted p-value to include in plot as cut-off}
+
+\item{pvalCol_v}{name of column contianing adjusted pvalues. Default is p_val_adj}
+
+\item{force_v}{fed to force argument in geom_label_repel to push labels apart}
 
 \item{colorCol_v}{column to use for colors. Should be either diffExp for standard, or paste0(splitVar_v, "DE") for comparison ones.}
 

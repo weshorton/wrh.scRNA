@@ -1,4 +1,5 @@
-plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v = "Gene", lfc_v = 0.5, pval_v = 0.05, 
+plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v = "Gene", 
+                        lfc_v = 0.5, lfcCol_v = "avg_log2FC", pval_v = 0.05, pvalCol_v = "p_val_adj", force_v = 1,
                         ident1_v, colorCol_v = "diffExp", title_v = NULL, verbose_v = F, labelGenes_v = NULL, hideNonSigLabels_v = F,
                         labelAll_v = F, labelTop_v = NULL, labelDir_v = "both", labelSize_v = 1) {
   #' Plot Volcano
@@ -9,7 +10,10 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   #' @param runNames_v values that splitVar_v is split on. If provided.
   #' @param geneCol_v name of column name containing genes. Should be Gene and passed from parent funtion
   #' @param lfc_v log-fold change to include in plot as cut-off
+  #' @param lfcCol_v name of column containing log fold change values. Default is avg_log2FC
   #' @param pval_v adjusted p-value to include in plot as cut-off
+  #' @param pvalCol_v name of column contianing adjusted pvalues. Default is p_val_adj
+  #' @param force_v fed to force argument in geom_label_repel to push labels apart
   #' @param colorCol_v column to use for colors. Should be either diffExp for standard, or paste0(splitVar_v, "DE") for comparison ones.
   #' @param title_v optional plot title.
   #' @param verbose_v logical indicating to print messages.
@@ -57,7 +61,8 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
       
     } # fi doubleCols_v
     
-    data_dt <- wrh.scRNA::volcanoWrangleMarkers(data_dt = data_dt, lfc_v = lfc_v, pval_v = pval_v,
+    data_dt <- wrh.scRNA::volcanoWrangleMarkers(data_dt = data_dt, lfc_v = lfc_v, pval_v = pval_v, 
+                                                geneCol_v = geneCol_v, lfcCol_v = lfcCol_v, pvalCol_v = pvalCol_v,
                                                 labelGenes_v = labelGenes_v, labelAll_v = labelAll_v, labelTop_v = labelTop_v, labelDir_v = labelDir_v)
     
     if (!is.null(splitVar_v)) {
@@ -83,7 +88,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   plot_gg <- ggplot2::ggplot(data = data_dt, aes(x = avg_log2FC, y = -log10(p_val_adj), col = !!sym(colorCol_v), label = DElabel)) +
     geom_point() + my_theme() +
     theme(legend.position = "right") +
-    ggrepel::geom_label_repel(size = labelSize_v, show.legend = F, max.overlaps = Inf, label.padding = 0.1) +
+    ggrepel::geom_label_repel(size = labelSize_v, show.legend = F, max.overlaps = Inf, label.padding = 0.1, force = force_v) +
     geom_vline(xintercept=c(-lfc_v, lfc_v), col="black", linetype = "dashed") +
     geom_hline(yintercept=-log10(pval_v), col="black", linetype = "dashed") +
     scale_color_manual(values=colors_v, labels = c("NO", "DOWN", "UP")) +
