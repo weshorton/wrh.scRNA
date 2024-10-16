@@ -1,5 +1,5 @@
 vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measureVar_v, groupBy_v = NULL, method_v = "wilcox.test", 
-                                padjMethod_v = "holm", displayP_v = "padj", popCol_v = "sPop", comp_dt = NULL, colors_v = NULL, nrow_v = 1) {
+                                padjMethod_v = "holm", displayP_v = "padj", popCol_v = "sPop", comp_dt = NULL, colors_v = NULL, nrow_v = 1, labelSize_v = 5) {
   #' Violin Plot Compare Means
   #' @description
   #' Make a violin plot of some metric and compare groups
@@ -15,6 +15,7 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
   #' @param comp_dt data.table of comparisons to subset calculated stats for. If null, will do all. See details.
   #' @param colors_v named vector of hex codes. Names must be values of indVar_v
   #' @param nrow_v number of rows to coerce output into.
+  #' @param labelSize_v size of compare means results
   #' @details
   #' indVar_v is used to build a formula with measureVar_v: as.formula(paste0(measureVar_v, " ~ ", indVar_v))
   #' comp_dt has two columns: group1 and group2. The values must be valid values in data_dt[[indVar_v]]
@@ -40,29 +41,31 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
   yPosBase_v <- plotInfo_ls$yPosBase
   ylim_v <- plotInfo_ls$ylim
   
+  if (ylim_v[2] < max(cm_df$yPos)) ylim_v[2] <- max(cm_df$yPos)
+  
   ### Make base plot
   if (is.null(groupBy_v)) {
     
     plot_gg <- ggplot2::ggplot(data = data_df, aes(x = !!sym(indVar_v), y = !!sym(measureVar_v))) +
-      geom_boxplot(aes(fill = !!sym(indVar_v)), width = 1) +
+      geom_boxplot(aes(fill = !!sym(indVar_v)), width = 0.9) +
       scale_y_continuous(limits = ylim_v) +
       scale_fill_manual(values = colors_v, breaks = names(colors_v)) +
       wrh.rUtils::my_theme() + wrh.rUtils::angle_x() +
       theme(legend.position = "bottom", axis.text = element_text(size=20), axis.title.y = element_text(size = 20), plot.title = element_text(size=16),
             axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
       ylab(measureVar_v) + ggtitle(name_v) +
-      stat_compare_means(label = c("p.format"), size = 3, label.x = 2)
+      stat_compare_means(label = c("p.format"), size = labelSize_v, label.x = 2)
     
     ### Add stats
     if (displayP_v == "padj") {
       plot_gg <- plot_gg +
-        ggsignif::geom_signif(data = cm_df, inherit.aes = F, mapping = aes(xmin = group1, xmax = group2, annotations = p.adj, y_position = yPos), manual = T, textsize = 2)
+        ggsignif::geom_signif(data = cm_df, inherit.aes = F, mapping = aes(xmin = group1, xmax = group2, annotations = p.adj, y_position = yPos), manual = T, textsize = labelSize_v)
     } else if (displayP_v == "none") {
       plot_gg <- plot_gg
     } else if (is.logical(all.equal(class(displayP_v), "numeric"))) {
       plot_gg <- plot_gg +
         ggpubr::geom_signif(data = cm_df, inherit.aes = F, mapping = aes(xmin = group1, xmax = group2, 
-                                                                         annotations = round(p, digits = displayP_v), y_position = yPos), manual = T, textsize = 2)
+                                                                         annotations = round(p, digits = displayP_v), y_position = yPos), manual = T, textsize = labelSize_v)
     } # fi displayP_v
     
   } else {

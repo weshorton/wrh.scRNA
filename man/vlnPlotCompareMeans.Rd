@@ -16,7 +16,8 @@ vlnPlotCompareMeans(
   popCol_v = "sPop",
   comp_dt = NULL,
   colors_v = NULL,
-  nrow_v = 1
+  nrow_v = 1,
+  labelSize_v = 5
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ vlnPlotCompareMeans(
 \item{colors_v}{named vector of hex codes. Names must be values of indVar_v}
 
 \item{nrow_v}{number of rows to coerce output into.}
+
+\item{labelSize_v}{size of compare means results}
 }
 \value{
 violin plot ggplot
