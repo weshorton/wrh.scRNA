@@ -13,7 +13,7 @@ calcViolinStatPositions <- function(plot_df, measureVar_v, cm_df, levels_v, yOff
   
   # X position
   g1x_v <- as.numeric(factor(cm_df$group1, levels = levels_v))
-  g2x_v <- as.numeric(factor(cm_df$group1, levels = levels_v))
+  g2x_v <- as.numeric(factor(cm_df$group2, levels = levels_v))
   cm_df$xPos <- g1x_v + (g2x_v-g1x_v)/2
   
   # Y position
