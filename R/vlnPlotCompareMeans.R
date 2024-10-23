@@ -1,4 +1,4 @@
-vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measureVar_v, groupBy_v = NULL, method_v = "wilcox.test", 
+vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measureVar_v, groupBy_v = NULL, method_v = "wilcox.test", sigOnly_v = F, labelTop_v = NULL,
                                 padjMethod_v = "holm", displayP_v = "padj", popCol_v = "sPop", comp_dt = NULL, colors_v = NULL, nrow_v = 1, labelSize_v = 5) {
   #' Violin Plot Compare Means
   #' @description
@@ -9,6 +9,8 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
   #' @param measureVar_v column name of column in data_dt that contains the metric to be plotted
   #' @param groupBy_v optional value to facet plots by
   #' @param method_v passed to stat::compare_means 'method' argument
+  #' @param sigOnly_v logical indicating if signifianct (padj < 0.05) comparisons only should be plotted
+  #' @param labelTop_v numeric vector used to limit (or extend) number of comparisons labeled. See details.
   #' @param padjMethod_v passed to stat::compare_means 'p.adjust.method' argument
   #' @param displayP_v vector. If "padj", will display adjusted p-value. if numeric, will round p-value to that many digits.
   #' @param popCol_v either 'sPop' or 'collapsePop'
@@ -17,16 +19,51 @@ vlnPlotCompareMeans <- function(data_df, name_v, indVar_v = "Treatment", measure
   #' @param nrow_v number of rows to coerce output into.
   #' @param labelSize_v size of compare means results
   #' @details
-  #' indVar_v is used to build a formula with measureVar_v: as.formula(paste0(measureVar_v, " ~ ", indVar_v))
-  #' comp_dt has two columns: group1 and group2. The values must be valid values in data_dt[[indVar_v]]
-  #' if groupBy_v is null, just one plot, if not, make one plot per unique value in group by and arrange with ggarrange
+  #' indVar_v is used to build a formula with measureVar_v: as.formula(paste0(measureVar_v, " ~ ", indVar_v))  
+  #' 
+  #' comp_dt has two columns: group1 and group2. The values must be valid values in data_dt[[indVar_v]]  
+  #' 
+  #' if groupBy_v is null, just one plot, if not, make one plot per unique value in group by and arrange with ggarrange   
+  #' 
+  
   #' @return violin plot ggplot
   #' @export
+  #' 
+  
+  ### Old details stuff that I don't think I want. New way is to never truncate with labelTop_v
+  # If sigOnly_v == T and there are no significant comparisons, if labelTop_v is set, the top N comparisons will be labeled instead
+  # If sigOnly_v == T and there are multiple significant comparisons, if labelTop_v is set and is LESS than the number of significant comparisons, they will be truncated
+  # If sigOnly_v == F and labelTop_v is set, the full table will be truncated for the top N
   
   ### Build a formula and run compare means
   formula_v <- as.formula(paste0(measureVar_v, " ~ ", indVar_v))
-  cm_df <- compare_means(formula = formula_v, data = data_df, group.by = groupBy_v, method = method_v, p.adjust.method = padjMethod_v)
+  cm_df <- as.data.table(compare_means(formula = formula_v, data = data_df, group.by = groupBy_v, method = method_v, p.adjust.method = padjMethod_v))
+  setorder(cm_df, p.adj)
+  
+  ### Merge with custom
   if (!is.null(comp_dt)) cm_df <- merge(cm_df, comp_dt, by = c("group1", "group2"), sort = F)
+  
+  ### Subset for sig, if desired
+  if (sigOnly_v) {
+    
+    ### Subset for significant genes
+    sig_df<- cm_df[cm_df$p.adj < 0.05,]
+    
+    ### If labelTop is set, pad sig_df as needed
+    if (!is.null(labelTop_v)) {
+      if (nrow(sig_df) < labelTop_v) {
+        sig_df <- rbind(sig_df, cm_df[1:(labelTop_v-nrow(sig_df))])
+      }
+    }
+    
+    cm_df <- sig_df
+  } # fi sig Only
+  
+  ### Subset for label top
+  if (!is.null(labelTop_v) & !sigOnly_v) {
+    cm_df <- cm_df[1:labelTop_v]
+  }
+    
   
   ### Handle colors
   if (is.null(colors_v)) {

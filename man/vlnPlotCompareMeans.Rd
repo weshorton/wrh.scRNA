@@ -11,6 +11,8 @@ vlnPlotCompareMeans(
   measureVar_v,
   groupBy_v = NULL,
   method_v = "wilcox.test",
+  sigOnly_v = F,
+  labelTop_v = NULL,
   padjMethod_v = "holm",
   displayP_v = "padj",
   popCol_v = "sPop",
@@ -32,6 +34,10 @@ vlnPlotCompareMeans(
 \item{groupBy_v}{optional value to facet plots by}
 
 \item{method_v}{passed to stat::compare_means 'method' argument}
+
+\item{sigOnly_v}{logical indicating if signifianct (padj < 0.05) comparisons only should be plotted}
+
+\item{labelTop_v}{numeric vector used to limit (or extend) number of comparisons labeled. See details.}
 
 \item{padjMethod_v}{passed to stat::compare_means 'p.adjust.method' argument}
 
@@ -55,6 +61,8 @@ Make a violin plot of some metric and compare groups
 }
 \details{
 indVar_v is used to build a formula with measureVar_v: as.formula(paste0(measureVar_v, " ~ ", indVar_v))
+
 comp_dt has two columns: group1 and group2. The values must be valid values in data_dt[\link{indVar_v}]
+
 if groupBy_v is null, just one plot, if not, make one plot per unique value in group by and arrange with ggarrange
 }
