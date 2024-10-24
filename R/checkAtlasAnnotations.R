@@ -1,4 +1,4 @@
-checkAtlasAnnotations <- function(clusterMarkers_dt, popMap_dt, popMarkerChecks_v, topGenes_v = 15) {
+checkAtlasAnnotations <- function(clusterMarkers_dt, popMap_dt, popMarkerChecks_v, topClusterGenes_v = 50, topVolcGenes_v = 15) {
   #' Check Atlas Annotation
   #' @description
   #' Check each seurat cluster and cell type identity in Eric's public annotations
@@ -6,6 +6,7 @@ checkAtlasAnnotations <- function(clusterMarkers_dt, popMap_dt, popMarkerChecks_
   #' @param clusterMarkers_dt data.table containing FindAllMarkers results.
   #' @param popMap_dt data.table mapping seurat clusters to cell types
   #' @param popMarkerChecks_v named vector of genes associated with various populations
+  #' @param topClusterGenes_v numeric indicating the number of genes to use to search for the pop marker checks in. Starting with the highest LFC. Default is 50, NULL to use all.
   #' @param topGenes_v numeric indicating how many of the top genes to label in the volcano (fed to plotVolcano() labelTop_v argumennt)
   #' @return list of volcano plots of hits and data.table with intersections
   #' @export
@@ -23,8 +24,15 @@ checkAtlasAnnotations <- function(clusterMarkers_dt, popMap_dt, popMarkerChecks_
     colnames(currClusterMarkers_dt)[colnames(currClusterMarkers_dt) == "gene"] <- "Gene"
     setorder(currClusterMarkers_dt, -avg_log2FC)
     
+    ### Subset list to check against
+    if (is.null(topClusterGenes_v)) {
+      checkList_v <- currClusterMarkers_dt$Gene
+    } else {
+      checkList_v <- currClusterMarkers_dt$Gene[1:topClusterGenes_v]
+    }
+    
     ### Get intersection
-    currIntersect_v <- popMarkerChecks_v[popMarkerChecks_v %in% currClusterMarkers_dt$Gene]
+    currIntersect_v <- popMarkerChecks_v[popMarkerChecks_v %in% checkList_v]
     intersect_lsv[[paste0("c", currCluster_v)]] <- c(currPop_v, currIntersect_v)
     
     ### Summarize intersection

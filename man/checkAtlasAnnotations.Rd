@@ -8,7 +8,8 @@ checkAtlasAnnotations(
   clusterMarkers_dt,
   popMap_dt,
   popMarkerChecks_v,
-  topGenes_v = 15
+  topClusterGenes_v = 50,
+  topVolcGenes_v = 15
 )
 }
 \arguments{
@@ -17,6 +18,8 @@ checkAtlasAnnotations(
 \item{popMap_dt}{data.table mapping seurat clusters to cell types}
 
 \item{popMarkerChecks_v}{named vector of genes associated with various populations}
+
+\item{topClusterGenes_v}{numeric indicating the number of genes to use to search for the pop marker checks in. Starting with the highest LFC. Default is 50, NULL to use all.}
 
 \item{topGenes_v}{numeric indicating how many of the top genes to label in the volcano (fed to plotVolcano() labelTop_v argumennt)}
 }
