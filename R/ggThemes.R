@@ -33,3 +33,15 @@ waterfallFigureTheme <- function() {
           legend.title = element_text(size = 40))
   
 } # umapFigureTheme
+
+dotPlotTheme <- function() {
+  #' scRNA Dot Plot Theme
+  #' @description Customized theme for dotplots. Specific grid and border lines
+  #' @export
+  
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(colour = "gray",linetype = "dashed", linewidth=0.35), 
+        panel.border = element_rect(colour = "black", fill=NA, linewidth=2)) + 
+    theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
+  
+} # dotPlotTheme
