@@ -5,6 +5,7 @@
 setwd("/Users/hortowe/my_tool_repos/wrh.scRNA")
 library(colorspace)
 library(data.table)
+library(AnnotationHub)
 
 ###
 ### scRNAseq Major populations ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -251,4 +252,27 @@ usethis::use_data(markers_lsv, overwrite = T)
 usethis::use_data(markerCols_lsv, overwrite = T)
 usethis::use_data(dotMarkers_v, overwrite = T)
 
+###
+### Cell Cycle Genes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+###
 
+### Load genes and view
+cell_cycle_genes <- read.csv(text = RCurl::getURL("https://raw.githubusercontent.com/hbc/tinyatlas/refs/heads/master/cell_cycle/Mus_musculus.csv"))
+
+### Get ensembl data
+### Grab gene name - gene ID mapping from ensembl
+ah <- AnnotationHub()                                                         # Connect to hub
+ahDb <- query(ah, pattern = c("Mus musculus", "EnsDb"), ignore.case = TRUE)   # Grab mouse db
+id <- ahDb %>% mcols() %>% rownames() %>% tail(n = 1)                         # Get latest annotations
+edb <- ah[[id, force=T]]                                                      # Download db
+annotations <- genes(edb, return.type = "data.frame")                         # Get genes
+annotations <- annotations %>%                                                # Select annotations
+  dplyr::select(gene_id, gene_name, seq_name, gene_biotype, description)
+
+### Combine with cell-cycle marker IDs and split
+cell_cycle_markers <- dplyr::left_join(cell_cycle_genes, annotations, by = c("geneID" = "gene_id"))
+s_genes <- cell_cycle_markers %>% dplyr::filter(phase == "S") %>% dplyr::pull("gene_name")
+g2m_genes <- cell_cycle_markers %>% dplyr::filter(phase == "G2/M") %>% dplyr::pull("gene_name")
+
+usethis::use_data(s_genes, overwrite = T)
+usethis::use_data(g2m_genes, overwrite = T)
