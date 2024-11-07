@@ -1,11 +1,22 @@
-displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v = NULL,
-                           popCol_v = "mPop", treatCol_v = "Treatment", subCol_v = "sPop", cPops_v = F,
+displaySummary <- function(obj, 
+                           subObj = NULL, 
+                           name_v = NULL, 
+                           batch_v, 
+                           outDir_v = NULL,
+                           popCol_v = "mPop", 
+                           treatCol_v = "Treatment", 
+                           subCol_v = "sPop", 
+                           cPops_v = F,
                            summary_lsv = list(treat = "Treatment", pop = "mPop", combo = c("Treatment", "mPop")), 
                            plots_lsv = list("umap" = c("Population", "Treatment", "Cluster", "byTreat"),
                                             "bar" = c("Population", "Treatment", "TreatPop", "PopTreat", "byTreat"),
                                             "stackBar" = c("TreatPop", "PopTreat"),
                                             "facetUMAP" = c("TreatPop")),
-                           displayOrder_v = "decreasing", cutOff_v = 5, alpha_v = 0.5, print_v = T, save_v = T) {
+                           displayOrder_v = "decreasing", 
+                           cutOff_v = 5, 
+                           alpha_v = 0.5, 
+                           print_v = T, 
+                           save_v = T) {
   #' Display Summary Info
   #' @description
     #' Display summary tables and umaps of provided object.
@@ -72,8 +83,10 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
   subBatch_v <- gsub("atch", "", batch_v)
   clustName_v <- paste0(subBatch_v, "_clusterNames_v")
   umapName_v <- paste0(subBatch_v, "_umapNames_v")
+  resName_v <- paste0(subBatch_v, "_res_v")
   clust_v <- eval(as.name(clustName_v)); clust_v <- clust_v[which(names(clust_v) == name_v)]
   umap_v <- eval(as.name(umapName_v)); umap_v <- umap_v[which(names(umap_v) == name_v)]
+  res_v <- eval(as.name(resName_v)); res_v <- res_v[which(names(res_v) == name_v)]
   
   if (name_v %in% c('batch12', 'batch3')) {
     colorName_v <- "mPopColors_v"
@@ -114,48 +127,16 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
   ###
   
   ### Call summary fxn
-  summary_lsdt <- getSummaryTables(obj = subObj, subset_v = NULL, subCol_v = subCol_v,
-                                   summary_lsv = summary_lsv)
-  
-  ### Handle character population
-  if (is(subObj@meta.data[[popCol_v]], "character")) {
-    warning("Assigning population level order. Should only happen for neoplastic.\n")
-    levels_v <- unique(subObj@meta.data[[popCol_v]])
-    levels_v <- levels_v[order(as.numeric(gsub("neo\\.c", "", levels_v)))]
-    subObj@meta.data[[popCol_v]] <- factor(subObj@meta.data[[popCol_v]], levels = levels_v)
-  } else {
-    levels_v <- levels(subObj@meta.data[[popCol_v]])
-  } # fi
-
-  ### Make sure they're in order. Add this to getSummaryTables?
-  if ('treat' %in% names(summary_lsdt)) {
-    summary_lsdt$treat$Treat <- factor(summary_lsdt$treat$Treat, levels = rev(treats_v))
-    setorder(summary_lsdt$treat)
-    if (!"nCells" %in% colnames(summary_lsdt$treat) & "Total" %in% colnames(summary_lsdt$treat)) {
-      colnames(summary_lsdt$treat)[colnames(summary_lsdt$treat) == "Total"] <- "nCells"
-    }
-  }
-  if ('pop' %in% names(summary_lsdt)) {
-    summary_lsdt$pop$Pop <- factor(summary_lsdt$pop$Pop, levels = levels_v)
-    setorder(summary_lsdt$pop)
-    if (!"nCells" %in% colnames(summary_lsdt$pop) & "Total" %in% colnames(summary_lsdt$pop)) {
-      colnames(summary_lsdt$pop)[colnames(summary_lsdt$pop) == "Total"] <- "nCells"
-    }
-  }
-  
-  ### getSummaryTables outputs individual batch summaries if multiple batches
-  ### don't want this rn, so removing it.
-  if ('combo' %in% names(summary_lsdt)) {
-    if (is.logical(all.equal(class(summary_lsdt$combo), "list"))) summary_lsdt$combo <- summary_lsdt$combo$Total
-    summary_lsdt$combo$Pop <- factor(summary_lsdt$combo$Pop, levels = levels_v)
-    setorder(summary_lsdt$combo)
-    cols_v <- setdiff(colnames(summary_lsdt$combo), "Pop")
-    summary_lsdt$combo <- summary_lsdt$combo[,mget(c("Pop", cols_v[match(rev(treats_v), cols_v)]))]
-  }
+  summary_lsdt <- getSummaryTables(obj = subObj, subset_v = NULL, subCol_v = subCol_v, popCol_v = popCol_v,
+                                   treatCol_v = treatCol_v, summary_lsv = summary_lsv)
   
   if (save_v & !is.null(outDir_v)) {
     wrh.rUtils::writeCSVorExcel(summary_lsdt,
                                 file_v = file.path(outDir_v, paste0(batch_v, "_", name_v, "_cellCounts.xlsx")))
+  }
+  
+  if (subBatch_v == "b12") {
+    summary_lsdt$combo <- summary_lsdt$combo$Total
   }
   
   ###
@@ -340,6 +321,15 @@ displaySummary <- function(obj, subObj = NULL, name_v = NULL, batch_v, outDir_v 
   ###
   ### Standard UMAPs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ###
+
+  ### Maybe try to use standardPlots sometime, but not right now.  
+  # if ('umap' | 'facetUMAP' %in% names(plots_lsv)) {
+  #   
+  #   tmpStdPlots_lsgg <- standardPlots(seurat_obj = subObj, reduction_v = umap_v, clustCol_v = clust_v, res_v = res_v, name_v = name_v,
+  #                                     pt.size_v = 0.5, featurePlots_v = T, maxQ_v = "q90")
+  #   
+  #   umap_lsgg <- list()
+  #   umap_lsgg[["Population"]] <- tmpStdPlots_lsgg$clusters
   
   if ('umap' %in% names(plots_lsv)) {
     
