@@ -8,15 +8,21 @@ getSummaryTables(
   obj,
   subset_v = NULL,
   subCol_v = "mPop",
+  treatCol_v = "Treatment",
+  popCol_v = "mPop",
   summary_lsv = list(treat = "Treatment", pop = "mPop", combo = c("Treatment", "mPop"))
 )
 }
 \arguments{
 \item{obj}{seurat object to summarize. Must have the specified columns}
 
-\item{subset_v}{subset data by matching provided value with entries in subCol_v (e.g. myeloid, neoplastic)}
+\item{subset_v}{subset data by matching provided value with entries in subCol_v (e.g. myeloid, neoplastic}
 
 \item{subCol_v}{specify which column to subset using subset_v}
+
+\item{treatCol_v}{column specifying where treatment is recorded in meta.data}
+
+\item{popCol_v}{column name for population annotations}
 
 \item{summary_lsv}{list of vectors of columns to summarize.}
 }
