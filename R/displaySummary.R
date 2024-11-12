@@ -131,9 +131,21 @@ displaySummary <- function(obj,
                                    treatCol_v = treatCol_v, summary_lsv = summary_lsv)
   
   if (save_v & !is.null(outDir_v)) {
-    wrh.rUtils::writeCSVorExcel(summary_lsdt,
+    tmp_lsdt <- summary_lsdt
+    if (subBatch_v == "b12") {
+      cols_v <- colnames(tmp_lsdt$combo$Total)
+      tmp_lsdt$combo <- sapply(names(tmp_lsdt$combo), function(x) {
+        xx <- tmp_lsdt$combo[[x]]
+        xx$Batch <- x
+        for (c_v in cols_v) { if (!c_v %in% colnames(xx)) xx[[c_v]] <- NA}
+        xx <- xx[,mget(c(cols_v, "Batch"))]
+        return(xx)
+      }, simplify = F, USE.NAMES = T)
+      tmp_lsdt$combo <- do.call(rbind, tmp_lsdt$combo)
+    } # fi subBatch
+    wrh.rUtils::writeCSVorExcel(tmp_lsdt,
                                 file_v = file.path(outDir_v, paste0(batch_v, "_", name_v, "_cellCounts.xlsx")))
-  }
+  } # fi save
   
   if (subBatch_v == "b12") {
     summary_lsdt$combo <- summary_lsdt$combo$Total
