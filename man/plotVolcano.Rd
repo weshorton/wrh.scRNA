@@ -9,11 +9,14 @@ plotVolcano(
   splitVar_v = NULL,
   runNames_v = "",
   geneCol_v = "Gene",
+  theme_v = "my",
+  mult_v = 1,
   lfc_v = 0.5,
   lfcCol_v = "avg_log2FC",
   pval_v = 0.05,
   pvalCol_v = "p_val_adj",
   force_v = 1,
+  thinAxis_v = T,
   ident1_v,
   colorCol_v = "diffExp",
   title_v = NULL,
@@ -44,6 +47,8 @@ plotVolcano(
 \item{pvalCol_v}{name of column contianing adjusted pvalues. Default is p_val_adj}
 
 \item{force_v}{fed to force argument in geom_label_repel to push labels apart}
+
+\item{thinAxis_v}{logical indicating to override theme and make axes thin}
 
 \item{colorCol_v}{column to use for colors. Should be either diffExp for standard, or paste0(splitVar_v, "DE") for comparison ones.}
 

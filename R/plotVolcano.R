@@ -1,5 +1,5 @@
-plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v = "Gene", 
-                        lfc_v = 0.5, lfcCol_v = "avg_log2FC", pval_v = 0.05, pvalCol_v = "p_val_adj", force_v = 1,
+plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v = "Gene", theme_v = "my", mult_v = 1,
+                        lfc_v = 0.5, lfcCol_v = "avg_log2FC", pval_v = 0.05, pvalCol_v = "p_val_adj", force_v = 1, thinAxis_v = T,
                         ident1_v, colorCol_v = "diffExp", title_v = NULL, verbose_v = F, labelGenes_v = NULL, hideNonSigLabels_v = F,
                         labelAll_v = F, labelTop_v = NULL, labelDir_v = "both", labelSize_v = 1) {
   #' Plot Volcano
@@ -14,6 +14,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   #' @param pval_v adjusted p-value to include in plot as cut-off
   #' @param pvalCol_v name of column contianing adjusted pvalues. Default is p_val_adj
   #' @param force_v fed to force argument in geom_label_repel to push labels apart
+  #' @param thinAxis_v logical indicating to override theme and make axes thin
   #' @param colorCol_v column to use for colors. Should be either diffExp for standard, or paste0(splitVar_v, "DE") for comparison ones.
   #' @param title_v optional plot title.
   #' @param verbose_v logical indicating to print messages.
@@ -40,6 +41,17 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   
   ### Prefix/Suffixes to search for in column names
   ixes_v <- paste(unlist(sapply(runNames_v, function(y) paste(c(paste0(c("\\.", "_"), y), paste0(y, c("\\.", "_"))), collapse = "|"), simplify = F)), collapse = "|")
+  
+  ### Handle theme
+  if (theme_v == "my") {
+    theme_v <- my_theme()
+  } else if (theme_v == "big") {
+    theme_v <- big_label()
+  } else if (theme_v == "umap") {
+    theme_v <- umapFigureTheme()
+  } else if (theme_v == "massive") {
+    theme_v <- massive_label(multiplier_v = mult_v)
+  }
   
   ### Determine if data is wrangled and wide or long
   if (!("diffExp" %in% colnames(data_dt))) {
@@ -86,7 +98,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   
   ### Make plot
   plot_gg <- ggplot2::ggplot(data = data_dt, aes(x = avg_log2FC, y = -log10(p_val_adj), col = !!sym(colorCol_v), label = DElabel)) +
-    geom_point() + my_theme() +
+    geom_point() + theme_v +
     theme(legend.position = "right") +
     ggrepel::geom_label_repel(size = labelSize_v, show.legend = F, max.overlaps = Inf, label.padding = 0.1, force = force_v) +
     geom_vline(xintercept=c(-lfc_v, lfc_v), col="black", linetype = "dashed") +
@@ -122,6 +134,11 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
         
       ### Determine Significance
       #nSigSetLabels_v <- length(which(as.character(data_dt[setLabel %in% setLabels_v, setColor]) != "NO"))
+      
+      ### Change theme, if required
+      if (thinAxis_v) {
+        plot_gg <- plot_gg + theme(axis.line = element_line(linewidth = .25), axis.ticks = element_line(linewidth = .25))
+      }
       
       ### Add label
       plot_gg <- ggpubr::annotate_figure(p = plot_gg, 
