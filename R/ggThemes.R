@@ -45,3 +45,20 @@ dotPlotTheme <- function() {
     theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
   
 } # dotPlotTheme
+
+
+figureDotTheme <- function() {
+  #' scRNA Figure Dot Theme
+  #' @description
+    #' Customized theme for dotplots
+  
+  #wrh.rUtils::big_label() +
+    wrh.rUtils::angle_x() +
+    theme(line = element_line(linewidth = 0)) +
+    theme(rect = element_rect(linewidth = 0.0)) +
+    theme(panel.border = element_rect(linewidth = 0.0)) +
+    theme(axis.line = element_line(linewidth = 0.0)) +
+    theme(legend.position="bottom", legend.box = "vertical")
+    
+} # figureDotTheme
+
