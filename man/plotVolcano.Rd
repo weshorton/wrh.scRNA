@@ -26,7 +26,8 @@ plotVolcano(
   labelAll_v = F,
   labelTop_v = NULL,
   labelDir_v = "both",
-  labelSize_v = 1
+  labelSize_v = 1,
+  labelBox_v = F
 )
 }
 \arguments{
@@ -67,6 +68,8 @@ plotVolcano(
 \item{labelDir_v}{passed to volcanoWrangleMarkers() (can either be 'both', 'up', or 'down', indicating with DEG direction(s) to take top genes from)}
 
 \item{labelSize_v}{value to increase text size of labels on plot}
+
+\item{labelBox_v}{logical indicating to draw the boxes around the label or not}
 }
 \value{
 volcano plot

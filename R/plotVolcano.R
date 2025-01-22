@@ -1,7 +1,7 @@
 plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v = "Gene", theme_v = "my", mult_v = 1,
                         lfc_v = 0.5, lfcCol_v = "avg_log2FC", pval_v = 0.05, pvalCol_v = "p_val_adj", force_v = 1, thinAxis_v = T,
                         ident1_v, colorCol_v = "diffExp", title_v = NULL, verbose_v = F, labelGenes_v = NULL, hideNonSigLabels_v = F,
-                        labelAll_v = F, labelTop_v = NULL, labelDir_v = "both", labelSize_v = 1) {
+                        labelAll_v = F, labelTop_v = NULL, labelDir_v = "both", labelSize_v = 1, labelBox_v = F) {
   #' Plot Volcano
   #' @description
   #' Make a volcano plot of DEG results
@@ -24,6 +24,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
   #' @param labelTop_v passed to volcanoWrangleMarkers() (if labelAll_v == F, this will come into play and set number of sig genes to label.)
   #' @param labelDir_v passed to volcanoWrangleMarkers() (can either be 'both', 'up', or 'down', indicating with DEG direction(s) to take top genes from)
   #' @param labelSize_v value to increase text size of labels on plot
+  #' @param labelBox_v logical indicating to draw the boxes around the label or not
   #' @details
   #' Make a volcano plot comparing the DEGs of two different groups. Can be one findmarker result, or can plot two sets of results using splitVar_v.
   #' The different labeling options are a little complex:
@@ -96,11 +97,19 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
     stop(sprintf("Colors column must be diffExp or paste0(splitVar_v, 'DE'). %s provided.\n", colorCol_v))
   }
   
+  ## Get label box
+  if (labelBox_v) {
+    boxLabelSize_v <- 0.25
+  } else {
+    boxLabelSize_v <- NA
+  } # fi
+  
   ### Make plot
   plot_gg <- ggplot2::ggplot(data = data_dt, aes(x = avg_log2FC, y = -log10(p_val_adj), col = !!sym(colorCol_v), label = DElabel)) +
     geom_point() + theme_v +
     theme(legend.position = "right") +
-    ggrepel::geom_label_repel(size = labelSize_v, show.legend = F, max.overlaps = Inf, label.padding = 0.1, force = force_v) +
+    ggrepel::geom_label_repel(size = labelSize_v, show.legend = F, max.overlaps = Inf, label.padding = 0.1, 
+                              force = force_v, label.size = boxLabelSize_v) +
     geom_vline(xintercept=c(-lfc_v, lfc_v), col="black", linetype = "dashed") +
     geom_hline(yintercept=-log10(pval_v), col="black", linetype = "dashed") +
     scale_color_manual(values=colors_v, labels = c("NO", "DOWN", "UP")) +
@@ -126,7 +135,7 @@ plotVolcano <- function(data_dt, splitVar_v = NULL, runNames_v = '', geneCol_v =
         plot_gg <- plot_gg + 
           ggnewscale::new_scale_colour() +
           ggrepel::geom_label_repel(data = data_dt, inherit.aes = F, aes(x = avg_log2FC, y = -log10(p_val_adj), col = setColor, label = setLabel),
-                           max.overlaps = Inf, label.padding = 0.1, size = labelSize_v) +
+                           max.overlaps = Inf, label.padding = 0.1, size = labelSize_v, label.size = boxLabelSize_v) +
           scale_colour_manual(values = darkVolcanoColors_v, labels = names(darkVolcanoColors_v)) +
           guides(colour = guide_legend(title = "Gene Set"))
         
