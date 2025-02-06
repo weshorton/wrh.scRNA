@@ -27,7 +27,9 @@ plotVolcano(
   labelTop_v = NULL,
   labelDir_v = "both",
   labelSize_v = 1,
-  labelBox_v = F
+  labelBox_v = F,
+  labelPadding_v = 0,
+  maxOverlaps_v = Inf
 )
 }
 \arguments{
@@ -70,6 +72,10 @@ plotVolcano(
 \item{labelSize_v}{value to increase text size of labels on plot}
 
 \item{labelBox_v}{logical indicating to draw the boxes around the label or not}
+
+\item{labelPadding_v}{passed to geom_label_repel label.padding argument. Their default is 0.25, so increase if labels are too overlapping}
+
+\item{maxOverlaps_v}{passed to geom_label_repel. I usually use Info to show all labels, can change this to remove some labels, but then they won't match with title/label.}
 }
 \value{
 volcano plot
