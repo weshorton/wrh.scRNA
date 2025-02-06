@@ -13,6 +13,9 @@ runFGSEA <- function(data_df, geneCol_v = "Gene", rankCol_v = "avg_log2FC", path
   #' @return data.frame with gsea results
   #' @export
   
+  ### Make sure sorted by rank col
+  setorderv(data_df, rankCol_v, order = -1)
+  
   ### Grab ranks and name them with genes
   rank <- data_df[[rankCol_v]]
   names(rank) <- data_df[[geneCol_v]]
@@ -21,7 +24,7 @@ runFGSEA <- function(data_df, geneCol_v = "Gene", rankCol_v = "avg_log2FC", path
   set.seed(seed_v)
   fgsea_res <- fgsea::fgsea(pathways = pathways_v,
                      stats = rank,
-                     minSize = 15,
+                     minSize = minSize_v,
                      maxSize = 500)
   
   ### Wrangle output
