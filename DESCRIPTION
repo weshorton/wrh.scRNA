@@ -18,7 +18,6 @@ Imports:
     ggplot2,
     ggrepel,
     grDevices,
-    lisi,
     patchwork,
     pheatmap,
     RColorBrewer,
