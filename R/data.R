@@ -110,17 +110,17 @@
 ### BATCH 3 POPULATIONS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ###
 
-#' Batch3 Lymphoid Full Colors
-#' 
-#' Colors used on UMAPs for b3 lymphoid populations (with Neoplastic)
-#' 
-#' @format ## `b3_lymphoidFullColors_v`
-#' Named vector of length 12
-#' \describe{
-#'    \item{values}{Hex Color}
-#'    \item{names}{Sub Population Name}
-#' }
-"b3_lymphoidFullColors_v"
+# #' Batch3 Lymphoid Full Colors
+# #' 
+# #' Colors used on UMAPs for b3 lymphoid populations (with Neoplastic)
+# #' 
+# #' @format ## `b3_lymphoidFullColors_v`
+# #' Named vector of length 12
+# #' \describe{
+# #'    \item{values}{Hex Color}
+# #'    \item{names}{Sub Population Name}
+# #' }
+# "b3_lymphoidFullColors_v"
 
 #' Batch3 Lymphoid Colors
 #' 
@@ -433,18 +433,18 @@
 #'  }
 "twoGroupVolcanoColors_v"
 
-#' Original Data Lymphoid Colors
-#' 
-#' Colors used on UMAPs for b1+b2 lymphoid populations
-#' from original Ana/Rossin analysis
-#' 
-#' @format ## `orig_lymphoidColors_v`
-#' Named vector of length 13
-#' \describe{
-#'    \item{values}{Hex Color}
-#'    \item{names}{Sub Population Name}
-#' }
-"orig_lymphoidColors_v"
+# #' Original Data Lymphoid Colors
+# #' 
+# #' Colors used on UMAPs for b1+b2 lymphoid populations
+# #' from original Ana/Rossin analysis
+# #' 
+# #' @format ## `orig_lymphoidColors_v`
+# #' Named vector of length 13
+# #' \describe{
+# #'    \item{values}{Hex Color}
+# #'    \item{names}{Sub Population Name}
+# #' }
+# "orig_lymphoidColors_v"
 
 ###
 ### GENE LISTS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -497,3 +497,41 @@
 #'    \item{names}{population that gene corresponds to}
 #' }
 "dotMarkers_v"
+
+###
+### GENE LISTS FOR FIGURES  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+###
+
+#' Major Population Genes
+#' 
+#' Vector containing genes used for major population designations
+#' 
+#' @format ## `majorPopGenes_v`
+#' Vector of length 23
+#' \describe{
+#'    \item{values}{gene names}
+#' }
+"majorPopGenes_v"
+
+#' Lymphoid Minor Population Genes
+#' 
+#' Vector containing genes used for lymphoid minor population designations
+#' 
+#' @format ## `lymphoidMinorPopGenes_v`
+#' Vector of length 14
+#' \describe{
+#'    \item{values}{gene names}
+#' }
+"lymphoidMinorPopGenes_v"
+
+#' Myeloid Minor Population Genes
+#' 
+#' Vector containing genes used for myeloid minor population designations
+#' 
+#' @format ## `myeloidMinorPopGenes_v`
+#' Vector of length 19
+#' \describe{
+#'    \item{values}{gene names}
+#' }
+"myeloidMinorPopGenes_v"
+

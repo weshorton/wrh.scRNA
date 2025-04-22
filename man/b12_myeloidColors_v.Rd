@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{b12_myeloidColors_v}}{
 
-Named vector of length 7
+Named vector of length 6
 \describe{
 \item{values}{Hex Color}
 \item{names}{Sub Population Name}
