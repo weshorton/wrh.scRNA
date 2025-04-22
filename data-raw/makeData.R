@@ -7,13 +7,13 @@ library(colorspace)
 library(data.table)
 library(AnnotationHub)
 
+### Colors are mainly from Tol Discrete and ditto package
+
 ###
 ### scRNAseq Major populations ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ###
 
-mPopColors_v <- c(sequential_hcl(5, "Heat 2")[3], qualitative_hcl(5, "Set 3")[5],
-                  sequential_hcl(5, "Plasma")[2], sequential_hcl(5, "TealGrn")[1],
-                  sequential_hcl(5, "Viridis")[4], sequential_hcl(5, "Viridis")[5])
+mPopColors_v <- c("#D1BBD7", "#882E72", "#5289C7", "#90C987", "#F7F056", "#F1932D")
 names(mPopColors_v) <- c("CAF", "Endothelial", "Myoepithelial", "Lymphoid/NK",
                          "Myeloid", "Neoplastic")
 
@@ -24,33 +24,32 @@ usethis::use_data(mPopColors_v, overwrite = T)
 ###
 
 ### B12 Lymphoid
-b12_lymphoidColors_v <- c(RColorBrewer::brewer.pal(11, "Set3"))
-
-names(b12_lymphoidColors_v) <- c("CD8 T Resident Memory Cells", "NK Cells", "CD4 Tregs", "Memory B Cells", "Effector T Cells",
+b12_lymphoidBadColors_v <- c(RColorBrewer::brewer.pal(11, "Set3"))
+names(b12_lymphoidBadColors_v) <- c("CD8 T Resident Memory Cells", "NK Cells", "CD4 Tregs", "Memory B Cells", "Effector T Cells",
                                  "Cytotoxic CD8 T Resident Memory Cells", "Proliferating Cytotoxic T Cells", "Cytotoxic CD8 T Cells",
                                  "PD1/CXCR6/ICOS-activated Memory T Cells", "Th2 Cells", "Plasma Cells")
 
 ### B12 Lymphoid Collapsed
-b12_lymphoid2Colors_v <- b12_lymphoidColors_v[c(2,4,5,1,3,11)]
-names(b12_lymphoid2Colors_v) <- c("NK Cells", "Memory B Cells", "TCells", "CD8", "CD4", "Plasma Cells")
+b12_lymphoidColors_v <- c("#AE76A3", "#1965B0", "#7BAFDE", "#CAE0AB", "#F6C141", "#E8601C")
+names(b12_lymphoidColors_v) <- c("NK cells", "B cells", "T cells", "CD8", "CD4", "APC")
 
 ### B12 Lymphoid Pop Map
 b12_lymphoidPopMap_dt <- data.table("sPop" = c("CD4 Tregs", "Th2 Cells", "CD8 T Resident Memory Cells", "Cytotoxic CD8 T Resident Memory Cells", "Cytotoxic CD8 T Cells",
                                                "Memory B Cells", "NK Cells", "Plasma Cells", "Effector T Cells", "Proliferating Cytotoxic T Cells",
                                                "PD1/CXCR6/ICOS-activated Memory T Cells"),
-                                    "collapsePop" = c("CD4", "CD4", "CD8", "CD8", "CD8", "Memory B Cells", "NK Cells", "Plasma Cells", "TCells", "TCells", "TCells"))
+                                    "collapsePop" = c("CD4", "CD4", "CD8", "CD8", "CD8", "B cells", "NK cells", "APC", "T cells", "T cells", "T cells"))
 setkey(b12_lymphoidPopMap_dt, "collapsePop")
 
 
 ### B12 Myeloid
-b12_myeloidColors_v <- RColorBrewer::brewer.pal(7, "Dark2")
-names(b12_myeloidColors_v) <- c("Non-classical monocytes", "Recruited monocytes",
+b12_myeloidBadColors_v <- RColorBrewer::brewer.pal(7, "Dark2")
+names(b12_myeloidBadColors_v) <- c("Non-classical monocytes", "Recruited monocytes",
                                 "Immunosuppressive myeloid", "Inflammatory monocytes",
                                 "TAMs", "cDC1s", "Migratory DCs")
 
 ### B12 Myeloid Collapsed
-b12_myeloid2Colors_v <- b12_myeloidColors_v[c(4,3,1,6,2,5)]
-names(b12_myeloid2Colors_v) <- c("Inflammatory monocytes", "Immunosuppressive myeloid", "Non-classical monocytes", 
+b12_myeloidColors_v <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+names(b12_myeloidColors_v) <- c("Inflammatory monocytes", "Immunosuppressive myeloid", "Non-classical monocytes", 
                                  "DCs", "Recruited monocytes", "TAMs")
 
 ### B12 Myeloid Pop Map
@@ -59,15 +58,16 @@ b12_myeloidPopMap_dt <- data.table("sPop" = c("cDC1s", "Migratory DCs", "Immunos
 setkey(b12_myeloidPopMap_dt, "collapsePop")
 
 ### B12 Neoplastic
-b12_neoplasticColors_v <- c("neo.c0" = "#1B9E77", "neo.c1" = "#D95F02", "neo.c2" = "#7570B3", "neo.c3" = "#E7298A", "neo.c4" = "#66A61E")
+b12_neoplasticColors_v <- c("#AE76A3", "#1965B0", "#7BAFDE", "#CAE0AB", "#F6C141", "#E8601C")
+names(b12_neoplasticColors_v) <- paste0("neo.c", 0:4)
 
 ### Save all B12
+usethis::use_data(b12_lymphoidBadColors_v, overwrite = T)
 usethis::use_data(b12_lymphoidColors_v, overwrite = T)
-usethis::use_data(b12_lymphoid2Colors_v, overwrite = T)
 usethis::use_data(b12_lymphoidPopMap_dt, overwrite = T)
 
+usethis::use_data(b12_myeloidBadColors_v, overwrite = T)
 usethis::use_data(b12_myeloidColors_v, overwrite = T)
-usethis::use_data(b12_myeloid2Colors_v, overwrite = T)
 usethis::use_data(b12_myeloidPopMap_dt, overwrite = T)
 
 usethis::use_data(b12_neoplasticColors_v, overwrite = T)
@@ -77,20 +77,15 @@ usethis::use_data(b12_neoplasticColors_v, overwrite = T)
 ###
 
 ### B3 Lymphoid
-b3_lymphoidColors_v <- c(RColorBrewer::brewer.pal(11, "Set3"), RColorBrewer::brewer.pal(7, "Greys")[7])
-names(b3_lymphoidColors_v) <- c("CD8 T cells", "Cytotoxic CD8 Trm", "PD1/CXCR6/ICOS-activated Trm (A)",
+b3_lymphoidBadColors_v <- c(RColorBrewer::brewer.pal(11, "Set3"), RColorBrewer::brewer.pal(7, "Greys")[7])
+names(b3_lymphoidBadColors_v) <- c("CD8 T cells", "Cytotoxic CD8 Trm", "PD1/CXCR6/ICOS-activated Trm (A)",
                                 "CD4 Tregs", "CD4 Memory T cells", "B cells", "Dysfunctional T cells",
                                 "CD8 Memory T cells", "CD4 Trm", "Proliferating Cytotoxic CD8 T cells",
                                 "PD1/CXCR6/ICOS-activated Trm (B)", "Neoplastic")
 
 ### B3 Lymphoid Collapsed
-b3_lymphoid2Colors_v <- b3_lymphoidColors_v[c(1,3,6,7,4)]
-names(b3_lymphoid2Colors_v) <- c("CD8", "PD1/CXCR6/ICOS-activated Trm", "B cells", "Dysfunctional T cells", "CD4")
-
-### B3 Lymphoid Full
-b3_lymphoidFullColors_v <- c("CD8 T cells" = "#8DD3C7", "Cytotoxic CD8 Trm" =  "#FFFFB3", "PD1/CXCR6/ICOS-activated Trm (A)" = "#BEBADA", "CD4 Tregs" = "#FB8072", 
-                             "CD4 Memory T cells" = "#80B1D3", "B cells" = "#FDB462", "Dysfunctional T cells" = "#B3DE69", "CD8 Memory T cells" = "#FCCDE5", "CD4 Trm" = "#D9D9D9", 
-                             "Proliferating Cytotoxic CD8 T cells" = "#BC80BD", "PD1/CXCR6/ICOS-activated Trm (B)" = "#CCEBC5", "Neoplastic" = "#252525")
+b3_lymphoidColors_v <- c("#AE76A3", "#1965B0", "#7BAFDE", "#CAE0AB", "#F6C141")
+names(b3_lymphoidColors_v) <- c("CD8", "PD1/CXCR6/ICOS-activated Trm", "B cells", "Dysfunctional T cells", "CD4")
 
 ### B3 Lymphoid Pop Map
 b3_lymphoidPopMap_dt <- data.table("sPop" = c("B cells", "CD4 Tregs", "CD4 Memory T cells", "CD4 Trm", "CD8 T cells", "Cytotoxic CD8 Trm", "CD8 Memory T cells",
@@ -101,15 +96,15 @@ setkey(b3_lymphoidPopMap_dt, "collapsePop")
 ### B3 Myeloid
 set3_v <- RColorBrewer::brewer.pal(12, "Set3")
 set1_v <- RColorBrewer::brewer.pal(9, "Set1")
-b3_myeloidColors_v <- c(set3_v[1], set1_v[1], set3_v[c(2:3,5:8,4)], set1_v[c(2,3)])
-names(b3_myeloidColors_v) <- c("Non-classical Monocytes", "Immunosuppressive Myeloid",
+b3_myeloidBadColors_v <- c(set3_v[1], set1_v[1], set3_v[c(2:3,5:8,4)], set1_v[c(2,3)])
+names(b3_myeloidBadColors_v) <- c("Non-classical Monocytes", "Immunosuppressive Myeloid",
                                "Recruited Monocytes", "Inflammatory Monocytes", "Lyve1 Fcgr3 TAMs",
                                "M2-like TAMs", "M1-like TAMs", "Proliferating TAMs", "Resident Macrophages",
                                "cDC1", "DCs")
 
 ### B3 Myeloid collapsed
-b3_myeloid2Colors_v <- b3_myeloidColors_v[c(9,3,4,6,2,10,1)]
-names(b3_myeloid2Colors_v) <- c("Resident Macrophages", "Recruited Monocytes", "Inflammatory Monocytes", 
+b3_myeloidColors_v <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#AD7700")
+names(b3_myeloidColors_v) <- c("Resident Macrophages", "Recruited Monocytes", "Inflammatory Monocytes", 
                                 "TAMs", "Immunosuppressive Myeloid", "comboDCs", "Non-classical Monocytes")
 
 ### B3 Myeloid Pop Map
@@ -119,17 +114,16 @@ b3_myeloidPopMap_dt <- data.table("sPop" = c("Immunosuppressive Myeloid", "Infla
                                                     rep("TAMs", 4), rep("comboDCs", 2)))
 
 ### B3 Neoplastic
-b3_neoplasticColors_v <- c("neo.c0" = "#1B9E77", "neo.c1" = "#D95F02", "neo.c2" = "#7570B3", "neo.c3" = "#E7298A", "neo.c4" = "#66A61E", "neo.c5" = "#E6AB02", "neo.c6" = "#A6761D", 
-                           "neo.c7" = "#666666", "neo.c8" = "#8DD3C7", "neo.c9" = "#FFFFB3", "neo.c10" = "#BEBADA", "neo.c11" = "#FB8072", "neo.c12" = "#80B1D3")
+b3_neoplasticColors_v <- c("#D1BBD7", "#AE76A3", "#882E72", "#1965B0", "#5289C7", "#7BAFDE", "#90C987", "#CAE0AB", "#F7F056", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
+names(b3_neoplasticColors_v) <- paste0("neo.c", 0:12)
 
 ### Save all B3
+usethis::use_data(b3_lymphoidBadColors_v, overwrite = T)
 usethis::use_data(b3_lymphoidColors_v, overwrite = T)
-usethis::use_data(b3_lymphoid2Colors_v, overwrite = T)
-usethis::use_data(b3_lymphoidFullColors_v, overwrite = T)
 usethis::use_data(b3_lymphoidPopMap_dt, overwrite = T)
 
+usethis::use_data(b3_myeloidBadColors_v, overwrite = T)
 usethis::use_data(b3_myeloidColors_v, overwrite = T)
-usethis::use_data(b3_myeloid2Colors_v, overwrite = T)
 usethis::use_data(b3_myeloidPopMap_dt, overwrite = T)
 
 usethis::use_data(b3_neoplasticColors_v, overwrite = T)
@@ -139,8 +133,8 @@ usethis::use_data(b3_neoplasticColors_v, overwrite = T)
 ###
 
 treatColors_v <- c("d80" = "#868686", "Unt" = "#000000", "NT" = "#000000", "PTX" = "#F8EC1F", "Ent" = "#488CCB", "2x" = "#EE3224", "3xNR" = "#E09AC4", "3xR" = "#732B90", "4x" = "#F7931E")
-b12_treats_v <- c("3xR+4x", "4x", "3x", "3xR", "3xNR", "2x", "Ent", "PTX", "Unt")
-b3_treats_v <- c("3xR+4x", "4x", "3x", "3xR", "3xNR", "2x", "Ent", "PTX", "NT", "d80")
+b12_treats_v <- c("4x", "3x", "3xR", "3xNR", "2x", "Ent", "PTX", "Unt")
+b3_treats_v <- c("4x", "3x", "3xR", "3xNR", "2x", "Ent", "PTX", "NT", "d80")
 
 usethis::use_data(treatColors_v, overwrite = T)
 usethis::use_data(b12_treats_v, overwrite = T)
@@ -151,7 +145,8 @@ usethis::use_data(b3_treats_v, overwrite = T)
 ###
 
 ### B12
-b12_clusterNames_v <- c("batch12" = "seurat_clusters_d41_res0.6", "lymphoid" = "seurat_clusters_d42_res0.4", "myeloid" = "seurat_clusters_d19_res0.1", "neoplastic" = "seurat_clusters_d15_res0.1")
+b12_clusterNames_v <- c("batch12" = "seurat_clusters_d41_res0.6", "lymphoid" = "seurat_clusters_d42_res0.4", 
+                        "myeloid" = "seurat_clusters_d19_res0.1", "neoplastic" = "seurat_clusters_d15_res0.1")
 b12_umapNames_v <- sapply(b12_clusterNames_v, function(x) gsub("d", "umap", grep("d", unlist(strsplit(x, split = "_")), value = T)))
 b12_res_v <- sapply(b12_clusterNames_v, function(x) as.numeric(gsub("r\\.|res", "", grep("r\\.|res", unlist(strsplit(x, split = "_")), value = T))))
 
@@ -196,13 +191,6 @@ fullAbbrTreatmentMap_dt <- merge(fullAbbrTreatmentMap_dt, data.table("Treatment"
                                  by = "Treatment", all = T, sort = F)
 
 usethis::use_data(fullAbbrTreatmentMap_dt, overwrite = T)
-
-### Original lymphoid colors
-orig_lymphoidColors_v <- c("CD8 T cells" = "#8DD3C7",  "NK KLrd1+ Klrc2+" = "#FFFFB3", "Unknown" = "darkgrey", "CD4 Tregs" = "#BEBADA", 
-                           "Memory B cells" = "#FB8072", "CD4 Th2" = "#80B1D3", "T cells" = "#FDB462",  "CD4 T cells" = "#B3DE69", "CD8 Tcm" = "#FCCDE5", 
-                           "CD8 Trm" = "#D9D9D9", "CD4 Tcm" = "#BC80BD", "Plasmablasts" = "#CCEBC5",  "Nk Klrd1+" = "gold")
-
-usethis::use_data(orig_lymphoidColors_v, overwrite = T)
 
 ### Plot Colors
 fpCols_v = c("#2C7BB6", "#00A6CA","#00CCBC","#90EB9D","#FFFF8C","#F9D057","#F29E2E","#E76818","#D7191C") # feature

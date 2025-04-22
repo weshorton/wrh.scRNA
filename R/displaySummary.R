@@ -90,11 +90,13 @@ displaySummary <- function(obj,
   
   if (name_v %in% c('batch12', 'batch3')) {
     colorName_v <- "mPopColors_v"
+  } else if (name_v == "neoplastic") {
+    colorName_v <- paste0(subBatch_v, "_", name_v, "Colors_v")
   } else {
     if (cPops_v) {
-      colorName_v <- paste0(subBatch_v, "_", name_v, "2Colors_v")
-    } else {
       colorName_v <- paste0(subBatch_v, "_", name_v, "Colors_v")
+    } else {
+      colorName_v <- paste0(subBatch_v, "_", name_v, "BadColors_v")
     } # fi
   } # fi
   

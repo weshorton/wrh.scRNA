@@ -23,7 +23,7 @@
 #' Colors used on UMAPs for b1+b2 lymphoid populations
 #' 
 #' @format ## `b12_lymphoidColors_v`
-#' Named vector of length 11
+#' Named vector of length 6
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Sub Population Name}
@@ -33,15 +33,15 @@
 #' Batch1+2 Lymphoid Colors 2
 #' 
 #' Colors used on UMAPs for b1+b2 lymphoid populations 
-#' when collapsing like sub-pops.
+#' before sub-pops are collapsed.
 #' 
-#' @format ## `b12_lymphoid2Colors_v`
-#' Named vector of length 6
+#' @format ## `b12_lymphoidBadColors_v`
+#' Named vector of length 11
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Collapsed Sub Population Name}
 #' }
-"b12_lymphoid2Colors_v"
+"b12_lymphoidBadColors_v"
 
 #' Batch1+2 Lymphoid Pop Map
 #' 
@@ -61,7 +61,7 @@
 #' Colors used on UMAPs for b1+b2 myeloid populations
 #' 
 #' @format ## `b12_myeloidColors_v`
-#' Named vector of length 7
+#' Named vector of length 6
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Sub Population Name}
@@ -71,15 +71,15 @@
 #' Batch1+2 Myeloid Colors 2
 #' 
 #' Colors used on UMAPs for b1+b2 myeloid populations 
-#' when collapsing like sub-pops.
+#' before sub-pops are collapsed.
 #' 
-#' @format ## `b12_myeloid2Colors_v`
-#' Named vector of length 6
+#' @format ## `b12_myeloidBadColors_v`
+#' Named vector of length 7
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Collapsed Sub Population Name}
 #' }
-"b12_myeloid2Colors_v"
+"b12_myeloidBadColors_v"
 
 #' Batch1+2 Myeloid Pop Map
 #' 
@@ -127,7 +127,7 @@
 #' Colors used on UMAPs for b3 lymphoid populations
 #' 
 #' @format ## `b3_lymphoidColors_v`
-#' Named vector of length 11
+#' Named vector of length 5
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Sub Population Name}
@@ -137,15 +137,15 @@
 #' Batch3 Lymphoid Colors 2
 #' 
 #' Colors used on UMAPs for b3 lymphoid populations 
-#' when collapsing like sub-pops.
+#' before sub-pops collapsed.
 #' 
-#' @format ## `b3_lymphoid2Colors_v`
-#' Named vector of length 5
+#' @format ## `b3_lymphoidBadColors_v`
+#' Named vector of length 11
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Collapsed Sub Population Name}
 #' }
-"b3_lymphoid2Colors_v"
+"b3_lymphoidBadColors_v"
 
 #' Batch3 Lymphoid Pop Map
 #' 
@@ -165,7 +165,7 @@
 #' Colors used on UMAPs for b3 myeloid populations
 #' 
 #' @format ## `b3_myeloidColors_v`
-#' Named vector of length 11
+#' Named vector of length 7
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Sub Population Name}
@@ -175,15 +175,15 @@
 #' Batch3 Myeloid Colors 2
 #' 
 #' Colors used on UMAPs for b3 myeloid populations 
-#' when collapsing like sub-pops.
+#' before sub-pops collapsed.
 #' 
-#' @format ## `b3_myeloid2Colors_v`
-#' Named vector of length 7
+#' @format ## `b3_myeloidBadColors_v`
+#' Named vector of length 11
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Collapsed Sub Population Name}
 #' }
-"b3_myeloid2Colors_v"
+"b3_myeloidBadColors_v"
 
 #' Batch3 Myeloid Pop Map
 #' 
@@ -219,7 +219,7 @@
 #' Colors used on plots for treatments
 #' 
 #' @format ## `treatColors_v`
-#' Named vector of length 11
+#' Named vector of length 9
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{Treatment Name}
@@ -231,9 +231,9 @@
 #' Treatment names
 #' 
 #' @format ## `b12_treats_v`
-#' vector of length 9
+#' vector of length 8
 #' \describe{
-#'    \item{values}{"3xR+4x", "4x", "3x", "3xR", "3xNR", "2x", "Ent", "PTX", "Unt"}
+#'    \item{values}{"4x", "3x", "3xR", "3xNR", "2x", "Ent", "PTX", "Unt"}
 #' }
 "b12_treats_v"
 
@@ -242,9 +242,9 @@
 #' Treatment names
 #' 
 #' @format ## `b3_treats_v`
-#' vector of length 10
+#' vector of length 9
 #' \describe{
-#'    \item{values}{"3xR+4x", "4x", "3x", "3xR", "3xNR", "2x", "Ent", "PTX", "NT", "d80"}
+#'    \item{values}{"4x", "3x", "3xR", "3xNR", "2x", "Ent", "PTX", "NT", "d80"}
 #' }
 "b3_treats_v"
 
