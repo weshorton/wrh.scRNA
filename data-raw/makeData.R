@@ -241,6 +241,38 @@ usethis::use_data(markerCols_lsv, overwrite = T)
 usethis::use_data(dotMarkers_v, overwrite = T)
 
 ###
+### Markers for figures
+###
+
+### Major Pop Dotplot
+majorPopGenes_v <- c("Epcam", "Krt18", "Krt8", "Itgam","Itgax", "Ly6g", "Adgre1", "Arg1",
+                     "Cd3e", "Cd8a", "Cd4", "Ms4a1", "Cd79a", "Esam", "S1pr1", "Pecam1", 
+                     "Mylk", "Myh11", "Col3a1", "Dcn", "Gsn", "Fap", "Mfap5")
+
+### Myeloid Minor Pop Dotplot
+myeloidMinorPopGenes_lsv <- list("TAMs" = c("Itgam", "Adgre1", "Trem2", "Il10", "Cx3cr1"),
+                                 "Recruited" = c("Ftl1", "Itgax", "Cx3cr1"),
+                                 "Immunosuppressive" = c("S100a8", "S100a9", "Il1b"),
+                                 "Inflammatory" = c("Plac8", "Ccr5", "Ccr2", "Itgam"),
+                                 "ncTam" = c("Adgre1", "Itgam", "Mrc1", "Cd163"),
+                                 "DC"= c("Cxcr1", "Batf3", "Btla", "Itgae"))
+
+myeloidMinorPopGenes_v <- unique(unlist(myeloidMinorPopGenes_lsv))
+
+### Lymphoid Minor Pop Dotplot
+lymphoidMinorPopGenes_lsv <- list("NK" = c("Ncr1", "Klrb1c", "Nkg7"),
+                                  "T cells" = c("Cd3g", "Cd3e", "Cd4", "Cd8a"),
+                                  "CD8" = "Cd3g", "Cd3e", "Cd8a", "Gzmb",
+                                  "CD4" = "Cd3g", "Cd3e", "Cd4",
+                                  "B cells" = c("Cd19", "Ms4a1", "Cd79a", "Cd79b", "Cd86", "H2-Ab1"),
+                                  "Plasma cells" = c("Cd19", "Ms4a1", "Cd79a", "Cd79b"))
+lymphoidMinorPopGenes_v <- unique(unlist(lymphoidMinorPopGenes_lsv))
+
+usethis::use_data(majorPopGenes_v, overwrite = T)
+usethis::use_data(myeloidMinorPopGenes_v, overwrite = T)
+usethis::use_data(lymphoidMinorPopGenes_v, overwrite = T)
+
+###
 ### Cell Cycle Genes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ###
 
