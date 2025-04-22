@@ -104,14 +104,14 @@ names(b3_myeloidBadColors_v) <- c("Non-classical Monocytes", "Immunosuppressive 
 
 ### B3 Myeloid collapsed
 b3_myeloidColors_v <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#AD7700")
-names(b3_myeloidColors_v) <- c("Resident Macrophages", "Recruited Monocytes", "Inflammatory Monocytes", 
-                                "TAMs", "Immunosuppressive Myeloid", "comboDCs", "Non-classical Monocytes")
+names(b3_myeloidColors_v) <- c("Resident macrophages", "Recruited monocytes", "Inflammatory monocytes", 
+                                "TAMs", "Immunosuppressive myeloid", "DCs", "Non-classical monocytes")
 
 ### B3 Myeloid Pop Map
 b3_myeloidPopMap_dt <- data.table("sPop" = c("Immunosuppressive Myeloid", "Inflammatory Monocytes", "Non-classical Monocytes", "Recruited Monocytes", "Resident Macrophages", 
                                              "Lyve1 Fcgr3 TAMs", "M2-like TAMs", "M1-like TAMs", "Proliferating TAMs", "cDC1", "DCs"),
-                                  "collapsePop" = c("Immunosuppressive Myeloid", "Inflammatory Monocytes", "Non-classical Monocytes", "Recruited Monocytes", "Resident Macrophages",
-                                                    rep("TAMs", 4), rep("comboDCs", 2)))
+                                  "collapsePop" = c("Immunosuppressive myeloid", "Inflammatory monocytes", "Non-classical monocytes", "Recruited monocytes", "Resident macrophages",
+                                                    rep("TAMs", 4), rep("DCs", 2)))
 
 ### B3 Neoplastic
 b3_neoplasticColors_v <- c("#D1BBD7", "#AE76A3", "#882E72", "#1965B0", "#5289C7", "#7BAFDE", "#90C987", "#CAE0AB", "#F7F056", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
