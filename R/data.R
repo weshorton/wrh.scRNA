@@ -43,6 +43,18 @@
 #' }
 "b12_lymphoidBadColors_v"
 
+#' Batch1+2 B cell Sublcuster colors
+#' 
+#' Colors used on UMAPs for b1+b2 b cell populations
+#' 
+#' @format ## `b12_bCellColors_v`
+#' Named vector of length 4
+#' \describe{
+#'    \item{values}{Hex Color}
+#'    \item{names}{B Cell sub population}
+#' }
+"b12_bCellColors_v"
+
 #' Batch1+2 Lymphoid Pop Map
 #' 
 #' Data.table that matches original sPops
@@ -534,4 +546,15 @@
 #'    \item{values}{gene names}
 #' }
 "myeloidMinorPopGenes_v"
+
+#' ATAC Marker Genes
+#' 
+#' Vector containing genes used for ATAC major population designations
+#' 
+#' @format ## `atacMarkerGenes_v`
+#' Vector of length 21
+#' \describe{
+#'    \item{values}{gene names}
+#' }
+"atacMarkerGenes_v"
 

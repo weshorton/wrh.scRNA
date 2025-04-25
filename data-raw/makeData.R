@@ -30,8 +30,8 @@ names(b12_lymphoidBadColors_v) <- c("CD8 T Resident Memory Cells", "NK Cells", "
                                  "PD1/CXCR6/ICOS-activated Memory T Cells", "Th2 Cells", "Plasma Cells")
 
 ### B12 Lymphoid Collapsed
-b12_lymphoidColors_v <- c("#AE76A3", "#1965B0", "#7BAFDE", "#CAE0AB", "#F6C141", "#E8601C")
-names(b12_lymphoidColors_v) <- c("NK cells", "B cells", "T cells", "CD8", "CD4", "APC")
+b12_lymphoidColors_v <- c("#AE76A3", "#7BAFDE", "#CAE0AB", "#F6C141", "#1965B0", "#E8601C")
+names(b12_lymphoidColors_v) <- c("NK cells", "T cells", "CD8", "CD4", "B cells", "APC")
 
 ### B12 Lymphoid Pop Map
 b12_lymphoidPopMap_dt <- data.table("sPop" = c("CD4 Tregs", "Th2 Cells", "CD8 T Resident Memory Cells", "Cytotoxic CD8 T Resident Memory Cells", "Cytotoxic CD8 T Cells",
@@ -40,6 +40,9 @@ b12_lymphoidPopMap_dt <- data.table("sPop" = c("CD4 Tregs", "Th2 Cells", "CD8 T 
                                     "collapsePop" = c("CD4", "CD4", "CD8", "CD8", "CD8", "B cells", "NK cells", "APC", "T cells", "T cells", "T cells"))
 setkey(b12_lymphoidPopMap_dt, "collapsePop")
 
+### B12 Lymphoid - B cells
+b12_bCellColors_v <- mPopColors_v[c(2,4,5,6)]
+names(b12_bCellColors_v) <- c("PreGC", "BT", "Germinal center", "Plasma")
 
 ### B12 Myeloid
 b12_myeloidBadColors_v <- RColorBrewer::brewer.pal(7, "Dark2")
@@ -48,9 +51,9 @@ names(b12_myeloidBadColors_v) <- c("Non-classical monocytes", "Recruited monocyt
                                 "TAMs", "cDC1s", "Migratory DCs")
 
 ### B12 Myeloid Collapsed
-b12_myeloidColors_v <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-names(b12_myeloidColors_v) <- c("Inflammatory monocytes", "Immunosuppressive myeloid", "Non-classical monocytes", 
-                                 "DCs", "Recruited monocytes", "TAMs")
+b12_myeloidColors_v <- c("#CC79A7", "#D55E00", "#009E73", "#56B4E9", "#F0E442", "#0072B2")
+names(b12_myeloidColors_v) <- c("TAMs", "Recruited monocytes", "Immunosuppressive myeloid", "Inflammatory monocytes",
+                                "Non-classical monocytes", "DCs")
 
 ### B12 Myeloid Pop Map
 b12_myeloidPopMap_dt <- data.table("sPop" = c("cDC1s", "Migratory DCs", "Immunosuppressive myeloid", "Inflammatory monocytes", "Non-classical monocytes", "Recruited monocytes", "TAMs"),
@@ -65,12 +68,14 @@ names(b12_neoplasticColors_v) <- paste0("neo.c", 0:4)
 usethis::use_data(b12_lymphoidBadColors_v, overwrite = T)
 usethis::use_data(b12_lymphoidColors_v, overwrite = T)
 usethis::use_data(b12_lymphoidPopMap_dt, overwrite = T)
+usethis::use_data(b12_bCellColors_v, overwrite = T)
 
 usethis::use_data(b12_myeloidBadColors_v, overwrite = T)
 usethis::use_data(b12_myeloidColors_v, overwrite = T)
 usethis::use_data(b12_myeloidPopMap_dt, overwrite = T)
 
 usethis::use_data(b12_neoplasticColors_v, overwrite = T)
+
 
 ###
 ### B3 Sub-Populations ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -268,9 +273,21 @@ lymphoidMinorPopGenes_lsv <- list("NK" = c("Ncr1", "Klrb1c", "Nkg7"),
                                   "Plasma cells" = c("Cd19", "Ms4a1", "Cd79a", "Cd79b"))
 lymphoidMinorPopGenes_v <- unique(unlist(lymphoidMinorPopGenes_lsv))
 
+### ATAC Major pop genes
+
+atacMarkerGenes_v <- c("Epcam","Krt18","Krt8",           # Neoplastic
+                       "Sphk1",                          # Myoepithelial
+                       "Esam",                           # Endothelial
+                       "Mfap5","Acta2","Dcn",            # CAF
+                       "Itgam","Itgax",                  # GeneralImmune
+                       "Ccr5","Cd14","Cd68",             # Myeloid
+                       "Cd4","Cd3d","Cd3e","Cd8a",       # Tcell
+                       "Cd19","Cd79a","Cd79b","Ms4a1")   # B cell
+
 usethis::use_data(majorPopGenes_v, overwrite = T)
 usethis::use_data(myeloidMinorPopGenes_v, overwrite = T)
 usethis::use_data(lymphoidMinorPopGenes_v, overwrite = T)
+usethis::use_data(atacMarkerGenes_v, overwrite = T)
 
 ###
 ### Cell Cycle Genes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
