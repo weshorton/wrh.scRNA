@@ -51,6 +51,7 @@ figureDotTheme <- function() {
   #' scRNA Figure Dot Theme
   #' @description
     #' Customized theme for dotplots
+  #' @export
   
   #wrh.rUtils::big_label() +
     wrh.rUtils::angle_x() +
@@ -65,6 +66,7 @@ figureDotTheme <- function() {
 transparentTheme <- function() {
   #' Transparent Everything
   #' @description try to make as few artifacts as possible
+  #' @export
   
   my_theme() + theme(
     panel.background = element_rect(fill = "transparent", 
