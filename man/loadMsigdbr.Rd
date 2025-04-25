@@ -6,9 +6,9 @@
 \usage{
 loadMsigdbr(
   species_v = "mmu",
-  category_v = c("H", "C2", "C5"),
-  subcategory_v = c("", "CP:KEGG", "GO:BP"),
-  name_v = c("HALLMARK", "KEGG", "GOBP")
+  category_v = c("H", "C2", "C2", "C2", "C5", "C5"),
+  subcategory_v = c("", "CP:KEGG", "CP:BIOCARTA", "CP:REACTOME", "GO:BP", ""),
+  name_v = c("HALLMARK", "KEGG", "BIOCARTA", "REACTOME", "GOBP", "GO")
 )
 }
 \arguments{

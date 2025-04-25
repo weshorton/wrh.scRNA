@@ -1,5 +1,6 @@
-loadMsigdbr <- function(species_v = "mmu", category_v = c("H", "C2", "C5"), 
-                        subcategory_v = c("", "CP:KEGG", "GO:BP"), name_v = c("HALLMARK", "KEGG", "GOBP")) {
+loadMsigdbr <- function(species_v = "mmu", category_v = c("H", "C2", "C2", "C2", "C5", "C5"), 
+                        subcategory_v = c("", "CP:KEGG", "CP:BIOCARTA", "CP:REACTOME", "GO:BP", ""), 
+                        name_v = c("HALLMARK", "KEGG", "BIOCARTA", "REACTOME", "GOBP", "GO")) {
   #' Load msigdbr
   #' @description
     #' Load various reference sets from msigdbr database
@@ -27,8 +28,11 @@ loadMsigdbr <- function(species_v = "mmu", category_v = c("H", "C2", "C5"),
   
   ### Download
   out_ls <- sapply(1:nrow(run_dt), function(x) {
+    ### Get sub-category from run table
     if (is.na(run_dt[x,SubCat])) {subcat_v <- NULL} else {subcat_v <- run_dt[x,SubCat]}
+    ### Call msigdbr
     y <- msigdbr::msigdbr(species = run_dt[x,Species], category = run_dt[x,Cat], subcategory = subcat_v)
+    ### format output
     out <- split(x = y$gene_symbol, f = y$gs_name)
     return(out)}, simplify = F)
   names(out_ls) <- run_dt$Name
