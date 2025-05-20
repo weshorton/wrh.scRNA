@@ -61,7 +61,7 @@ b12_myeloidPopMap_dt <- data.table("sPop" = c("cDC1s", "Migratory DCs", "Immunos
 setkey(b12_myeloidPopMap_dt, "collapsePop")
 
 ### B12 Neoplastic
-b12_neoplasticColors_v <- c("#AE76A3", "#1965B0", "#7BAFDE", "#CAE0AB", "#F6C141", "#E8601C")
+b12_neoplasticColors_v <- c("#AE76A3", "#1965B0", "#7BAFDE", "#CAE0AB", "#F6C141")
 names(b12_neoplasticColors_v) <- paste0("neo.c", 0:4)
 
 ### Save all B12
