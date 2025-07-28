@@ -37,12 +37,13 @@ names(b12_lymphoidColors_v) <- c("NK cells", "T cells", "CD8", "CD4", "B cells",
 b12_lymphoidPopMap_dt <- data.table("sPop" = c("CD4 Tregs", "Th2 Cells", "CD8 T Resident Memory Cells", "Cytotoxic CD8 T Resident Memory Cells", "Cytotoxic CD8 T Cells",
                                                "Memory B Cells", "NK Cells", "Plasma Cells", "Effector T Cells", "Proliferating Cytotoxic T Cells",
                                                "PD1/CXCR6/ICOS-activated Memory T Cells"),
-                                    "collapsePop" = c("CD4", "CD4", "CD8", "CD8", "CD8", "B cells", "NK cells", "APC", "T cells", "T cells", "T cells"))
+                                    "collapsePop" = c("CD4", "CD4", "CD8", "CD8", "CD8", "B cells", "NK cells", "Antibody-secreting cells", "T cells", "T cells", "T cells"))
 setkey(b12_lymphoidPopMap_dt, "collapsePop")
 
 ### B12 Lymphoid - B cells
-b12_bCellColors_v <- mPopColors_v[c(2,4,5,6)]
-names(b12_bCellColors_v) <- c("PreGC", "BT", "Germinal center", "Plasma")
+b12_bCellPops_dt <- data.table("cluster" = 0:4, "pop" = c("Ighd-hi B cells", "Activated B cells", "Cxcr5-hi B cells", "GC B cells", "Antibody-secreting cells"))
+b12_bCellColors_v <- mPopColors_v[2:6]
+names(b12_bCellColors_v) <- b12_bCellPops_dt$pop
 
 ### B12 Myeloid
 b12_myeloidBadColors_v <- RColorBrewer::brewer.pal(7, "Dark2")
@@ -75,6 +76,9 @@ usethis::use_data(b12_myeloidColors_v, overwrite = T)
 usethis::use_data(b12_myeloidPopMap_dt, overwrite = T)
 
 usethis::use_data(b12_neoplasticColors_v, overwrite = T)
+
+usethis::use_data(b12_bCellPops_dt, overwrite = T)
+usethis::use_data(b12_bCellColors_v, overwrite = T)
 
 
 ###

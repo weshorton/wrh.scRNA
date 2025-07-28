@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{b12_bCellColors_v}}{
 
-Named vector of length 4
+Named vector of length 5
 \describe{
 \item{values}{Hex Color}
 \item{names}{B Cell sub population}

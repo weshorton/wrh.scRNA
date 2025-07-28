@@ -48,7 +48,7 @@
 #' Colors used on UMAPs for b1+b2 b cell populations
 #' 
 #' @format ## `b12_bCellColors_v`
-#' Named vector of length 4
+#' Named vector of length 5
 #' \describe{
 #'    \item{values}{Hex Color}
 #'    \item{names}{B Cell sub population}
@@ -67,6 +67,19 @@
 #'    \item{collapsePop}{collapsed population labels}
 #' }
 "b12_lymphoidPopMap_dt"
+
+#' Batch1+2 B Cell Pops
+#' 
+#' Data.table that matches seurat clusters with
+#' B cell sub-populations
+#' 
+#' @format ## `b12_bCellPops_dt`
+#' data.table with 5 rows and 2 columns
+#' \describe{
+#'    \item{cluster}{seurat cluster assignment}
+#'    \item{pop}{population label}
+#' }
+"b12_bCellPops_dt"
 
 #' Batch1+2 Myeloid Colors
 #' 
