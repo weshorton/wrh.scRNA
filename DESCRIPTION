@@ -7,7 +7,7 @@ Description: Helper functions for some common operations in the Seurat scRNAseq 
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.2.9000
 Depends: R (>= 3.5.1)
 Imports:
     bluster,
