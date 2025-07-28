@@ -31,7 +31,7 @@ names(b12_lymphoidBadColors_v) <- c("CD8 T Resident Memory Cells", "NK Cells", "
 
 ### B12 Lymphoid Collapsed
 b12_lymphoidColors_v <- c("#AE76A3", "#7BAFDE", "#CAE0AB", "#F6C141", "#1965B0", "#E8601C")
-names(b12_lymphoidColors_v) <- c("NK cells", "T cells", "CD8", "CD4", "B cells", "APC")
+names(b12_lymphoidColors_v) <- c("NK cells", "T cells", "CD8", "CD4", "B cells", "Antibody-secreting cells")
 
 ### B12 Lymphoid Pop Map
 b12_lymphoidPopMap_dt <- data.table("sPop" = c("CD4 Tregs", "Th2 Cells", "CD8 T Resident Memory Cells", "Cytotoxic CD8 T Resident Memory Cells", "Cytotoxic CD8 T Cells",
