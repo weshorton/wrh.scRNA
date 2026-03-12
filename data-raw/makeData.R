@@ -58,8 +58,15 @@ names(b12_myeloidColors_v) <- c("TAMs", "Recruited monocytes", "Immunosuppressiv
 
 ### B12 Myeloid Pop Map
 b12_myeloidPopMap_dt <- data.table("sPop" = c("cDC1s", "Migratory DCs", "Immunosuppressive myeloid", "Inflammatory monocytes", "Non-classical monocytes", "Recruited monocytes", "TAMs"),
-                                   "collapsePop" = c("DCs", "DCs", "Immunosuppressive myeloid", "Inflammatory monocytes", "Non-classical monocytes", "Recruited monocytes", "TAMs"))
-setkey(b12_myeloidPopMap_dt, "collapsePop")
+                                   "collapsePop" = c("DCs", "DCs", "Immunosuppressive myeloid", "Inflammatory monocytes", "Non-classical monocytes", "Recruited monocytes", "TAMs"),
+                                   "newPop" = c("m5", "m5", "m2", "m3", "m4", "m1", "m0"))
+setkey(b12_myeloidPopMap_dt, "newPop")
+
+### Change color names
+for (i in 1:length(b12_myeloidColors_v)) {
+  currName_v <- names(b12_myeloidColors_v)[i]
+  names(b12_myeloidColors_v)[names(b12_myeloidColors_v) == currName_v] <- unique(b12_myeloidPopMap_dt[collapsePop == currName_v, newPop])
+}
 
 ### B12 Neoplastic
 b12_neoplasticColors_v <- c("#AE76A3", "#1965B0", "#7BAFDE", "#CAE0AB", "#F6C141")
