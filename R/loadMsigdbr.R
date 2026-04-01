@@ -1,11 +1,11 @@
-loadMsigdbr <- function(species_v = "mmu", category_v = c("H", "C2", "C2", "C2", "C5", "C5"), 
+loadMsigdbr <- function(species_v = "MM", category_v = c("H", "C2", "C2", "C2", "C5", "C5"), 
                         subcategory_v = c("", "CP:KEGG_LEGACY", "CP:BIOCARTA", "CP:REACTOME", "GO:BP", ""), 
                         name_v = c("HALLMARK", "KEGG", "BIOCARTA", "REACTOME", "GOBP", "GO")) {
   #' Load msigdbr
   #' @description
     #' Load various reference sets from msigdbr database
   #' @param species_v what species to use. 
-  #' For mouse, use "Mouse", "mmu", "Mus musculus". For human, use "Human", "hg", "Homo sapiens"
+  #' For mouse, use "MM". For human, use "HS"
   #' @param category_v vector of categories to grab data for
   #' @param subcategory_v vector of subcategories. Must be same length as category_v. Use "" if no subcat
   #' @param name_v character vector of names to label outputs.

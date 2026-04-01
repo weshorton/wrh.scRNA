@@ -5,7 +5,7 @@
 \title{Load msigdbr}
 \usage{
 loadMsigdbr(
-  species_v = "mmu",
+  species_v = "MM",
   category_v = c("H", "C2", "C2", "C2", "C5", "C5"),
   subcategory_v = c("", "CP:KEGG_LEGACY", "CP:BIOCARTA", "CP:REACTOME", "GO:BP", ""),
   name_v = c("HALLMARK", "KEGG", "BIOCARTA", "REACTOME", "GOBP", "GO")
@@ -13,7 +13,7 @@ loadMsigdbr(
 }
 \arguments{
 \item{species_v}{what species to use.
-For mouse, use "Mouse", "mmu", "Mus musculus". For human, use "Human", "hg", "Homo sapiens"}
+For mouse, use "MM". For human, use "HS"}
 
 \item{category_v}{vector of categories to grab data for}
 
