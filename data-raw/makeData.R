@@ -13,7 +13,7 @@ library(AnnotationHub)
 ### scRNAseq Major populations ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ###
 
-mPopColors_v <- c("#D1BBD7", "#882E72", "#5289C7", "#90C987", "#F7F056", "#F1932D")
+mPopColors_v <- c("#F1932D", "#D1BBD7", "#882E72", "#5289C7", "#90C987", "#F7F056")
 names(mPopColors_v) <- c("CAF", "Endothelial", "Myoepithelial", "Lymphoid/NK",
                          "Myeloid", "Neoplastic")
 
