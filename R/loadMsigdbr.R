@@ -22,18 +22,30 @@ loadMsigdbr <- function(species_v = "MM", category_v = c("H", "C2", "C2", "C2", 
     return(x)})
   if (length(species_v) == 1) species_v <- rep(species_v, length(category_v))
   
+  ### Handle db species
+  db_species_v <- sapply(species_v, function(x) {
+    if (x %in% c("Mouse", "mouse", "mmu", "Mmu", "Mus musculus", "MM")) {
+      x <- "MM"
+    } else if (x %in% c("Human", "human", "hg", "Hg", "Homo sapiens")) {
+      x <- "HS"
+    } # fi x
+    return(x)})
+  if (length(db_species_v) == 1) db_species_v <- rep(db_species_v, length(category_v))
+  
   ### Run table
-  run_dt <- data.table("Species" = species_v, "Cat" = category_v, "SubCat" = subcategory_v, "Name" = name_v)
+  run_dt <- data.table("DB_species" = db_species_v, "Species" = species_v, "Cat" = category_v, "SubCat" = subcategory_v, "Name" = name_v)
   run_dt[run_dt == ""] <- NA
+  
+  ### Fix collections if mouse
+  run_dt[DB_species == "MM", Cat := gsub("^H$", "MH", Cat)]
+  run_dt[DB_species == "MM", Cat := gsub("^C", "M", Cat)]
   
   ### Download
   out_ls <- sapply(1:nrow(run_dt), function(x) {
     ### Get sub-category from run table
     if (is.na(run_dt[x,SubCat])) {subcat_v <- NULL} else {subcat_v <- run_dt[x,SubCat]}
-    ### Call msigdbr
-    # y <- msigdbr::msigdbr(species = run_dt[x,Species], category = run_dt[x,Cat], subcategory = subcat_v)
     # New in msigdbr 10.0.0
-    y <- msigdbr::msigdbr(species = run_dt[x,Species], collection = run_dt[x,Cat], subcollection = subcat_v)
+    y <- msigdbr::msigdbr(db_species = run_dt[x,DB_species], species = run_dt[x,Species], collection = run_dt[x,Cat], subcollection = subcat_v)
     ### format output
     out <- split(x = y$gene_symbol, f = y$gs_name)
     return(out)}, simplify = F)
