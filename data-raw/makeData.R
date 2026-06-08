@@ -52,21 +52,26 @@ names(b12_myeloidBadColors_v) <- c("Non-classical monocytes", "Recruited monocyt
                                 "TAMs", "cDC1s", "Migratory DCs")
 
 ### B12 Myeloid Collapsed
-b12_myeloidColors_v <- c("#CC79A7", "#D55E00", "#009E73", "#56B4E9", "#F0E442", "#0072B2")
-names(b12_myeloidColors_v) <- c("TAMs", "Recruited monocytes", "Immunosuppressive myeloid", "Inflammatory monocytes",
-                                "Non-classical monocytes", "DCs")
+b12_myeloidColors_v <- c("#CC79A7", "#D55E00", "#009E73", "#56B4E9", "#F0E442", "#0072B2", "#DC050C")
+names(b12_myeloidColors_v) <- c("Type 1 IFN-activated macrophages and DCs", "M2-like TAMs", "Neutrophils", "Inflammatory monocytes",
+                                "Tumor-resident macrophages", "cDC1 CD103+", "Monocyte-derived DCs")
 
 ### B12 Myeloid Pop Map
 b12_myeloidPopMap_dt <- data.table("sPop" = c("cDC1s", "Migratory DCs", "Immunosuppressive myeloid", "Inflammatory monocytes", "Non-classical monocytes", "Recruited monocytes", "TAMs"),
                                    "collapsePop" = c("DCs", "DCs", "Immunosuppressive myeloid", "Inflammatory monocytes", "Non-classical monocytes", "Recruited monocytes", "TAMs"),
-                                   "newPop" = c("m5", "m5", "m2", "m3", "m4", "m1", "m0"))
-setkey(b12_myeloidPopMap_dt, "newPop")
+                                   "newPop" = c("m6", "m6", "m3", "m4", "m5", "m2", "m1"),
+                                   "finalPop" = c("cDC1 CD103+", "Monocyte-derived DCs", "Neutrophils", "Inflammatory monocytes", "Tumor-resident macrophages", "M2-like TAMs", 
+                                                  "Type 1 IFN-activated macrophages and DCs"))
+setkey(b12_myeloidPopMap_dt, "finalPop")
 
-### Change color names
-for (i in 1:length(b12_myeloidColors_v)) {
-  currName_v <- names(b12_myeloidColors_v)[i]
-  names(b12_myeloidColors_v)[names(b12_myeloidColors_v) == currName_v] <- unique(b12_myeloidPopMap_dt[collapsePop == currName_v, newPop])
-}
+b12_myeloidPopMap_dt$finalPopCollapse <- b12_myeloidPopMap_dt$finalPop
+b12_myeloidPopMap_dt[finalPop %in% c("cDC1 CD103+", "Monocyte-derived DCs"), finalPopCollapse := "DCs"]
+
+### Change color names - this is from when using m's
+# for (i in 1:length(b12_myeloidColors_v)) {
+#   currName_v <- names(b12_myeloidColors_v)[i]
+#   names(b12_myeloidColors_v)[names(b12_myeloidColors_v) == currName_v] <- unique(b12_myeloidPopMap_dt[collapsePop == currName_v, newPop])
+# }
 
 ### B12 Neoplastic
 b12_neoplasticColors_v <- c("#AE76A3", "#1965B0", "#7BAFDE", "#CAE0AB", "#F6C141")
