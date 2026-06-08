@@ -1,10 +1,11 @@
-checkForGene <- function(deg_lslslslsdt, gene_v, pval_v = NULL) {
+checkForGene <- function(deg_lslslslsdt, gene_v, pval_v = NULL, lfc_v = NULL) {
   #' Check For Gene
   #' @description
     #' Check all of the deg tables in either the vsEach or global outputs for a given gene
   #' @param deg_lslslslsdt either a vsEach or a global DEG output.
   #' @param gene_v gene to check
   #' @param pval_v optional numeric value to subset the deg tables for significant hits of gene_v only
+  #' @param lfc_v optional numeric value to subset for significant hits only
   #' @return data.table with one row per hit of gene_v in deg_lslslslsdt
   #' @export
   #' 
@@ -34,11 +35,22 @@ checkForGene <- function(deg_lslslslsdt, gene_v, pval_v = NULL) {
           padjCol_v <- ifelse("p_val_adj" %in% colnames(deg_lsdt), "p_val_adj", ifelse("padj" %in% colnames(deg_lsdt), "padj", stop("Must have 'padj' or 'p_val_adj' in data.table")))
           pvalCol_v <- ifelse("p_val" %in% colnames(deg_lsdt), "p_val", ifelse("pval" %in% colnames(deg_lsdt), "pval", stop("Must have 'pval' or 'p_val' in data.table")))
           
+          # filter for P-value
           if (!is.null(pval_v)) {
             subDEG_dt <- deg_lsdt[Gene == gene_v & get(padjCol_v) < pval_v,]
           } else {
             subDEG_dt <- deg_lsdt[Gene == gene_v,]
           }
+          
+          # Filter for lfc
+          if (nrow(subDEG_dt) > 0) {
+            if (!is.null(lfc_v)) {
+              subDEG_dt <- subDEG_dt[Gene == gene_v & abs(avg_log2FC) > lfc_v,]
+            } else {
+              subDEG_dt <- subDEG_dt[Gene == gene_v,]
+            }
+          }
+          
           if (nrow(subDEG_dt) > 0) {
             row_v <- c(currI_v, currJ_v, currK_v, subDEG_dt$avg_log2FC, subDEG_dt[[pvalCol_v]], subDEG_dt[[padjCol_v]])
             sigResults_mat <- rbind(sigResults_mat, row_v)
@@ -59,6 +71,16 @@ checkForGene <- function(deg_lslslslsdt, gene_v, pval_v = NULL) {
             } else {
               subDEG_dt <- deg_dt[Gene == gene_v & get(padjCol_v) < pval_v]
             }
+            
+            # Filter for lfc
+            if (nrow(subDEG_dt) > 0) {
+              if (!is.null(lfc_v)) {
+                subDEG_dt <- subDEG_dt[Gene == gene_v & abs(avg_log2FC) > lfc_v,]
+              } else {
+                subDEG_dt <- subDEG_dt[Gene == gene_v,]
+              }
+            }
+            
             if (nrow(subDEG_dt) > 0) {
               row_v <- c(currI_v, currJ_v, currK_v, currL_v, subDEG_dt$avg_log2FC, subDEG_dt[[pvalCol_v]], subDEG_dt[[padjCol_v]])
               sigResults_mat <- rbind(sigResults_mat, row_v)
