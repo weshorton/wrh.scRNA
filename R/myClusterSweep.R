@@ -174,6 +174,11 @@ clusterQC <- function(seurat_obj, embedding_v, ndims_v, reductionName_v, reducti
   ### Get a data.frame of all the clustering assignments
   clusterCalls_df <- seurat_obj@meta.data[,uniqClusterRunNames_v, drop = F]
   
+  ### Subset for NAs
+  if (DefaultAssay(seurat_obj) == "sketch") {
+    clusterCalls_df <- clusterCalls_df[!is.na(clusterCalls_df[[1]]),]
+  }
+  
   ### Subset embedding
   embedding_v <- embedding_v[,1:ndims_v]
   
