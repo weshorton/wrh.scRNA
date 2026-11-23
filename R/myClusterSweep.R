@@ -206,6 +206,10 @@ clusterQC <- function(seurat_obj, embedding_v, ndims_v, reductionName_v, reducti
     #                               reduction.name = reductionName_v, 
     #                               verbose = F)
     
+    ### Determine point size based on size of object
+    nCells_v <- ncol(seurat_obj)
+    if (nCells_v > 100000) ptSize_v <- 1 else ptSize_v <- 0.1
+    
     ### Create DimPlot with clusters labelled.
     dim_ls[[i]] <- Seurat::DimPlot(seurat_obj,
                            group.by = currClusterName_v,
