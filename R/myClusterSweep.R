@@ -214,7 +214,7 @@ clusterQC <- function(seurat_obj, embedding_v, ndims_v, reductionName_v, reducti
     dim_ls[[i]] <- Seurat::DimPlot(seurat_obj,
                            group.by = currClusterName_v,
                            reduction = reductionName_v,
-                           label = T, pt.size = 0.1) +
+                           label = T, pt.size = ptSize_v) +
       coord_equal() +
       ggtitle(currClusterName_v)
     
